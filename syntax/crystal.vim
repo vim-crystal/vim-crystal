@@ -1,3 +1,8 @@
+" Language: Crystal
+" Based on Ruby syntax highlight
+" which is made by Mirko Nasato and Doug Kearns
+" ---------------------------------------------
+
 if exists("b:current_syntax")
   finish
 endif
