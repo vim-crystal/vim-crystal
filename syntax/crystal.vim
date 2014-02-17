@@ -200,6 +200,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match  crystalDefine "\<undef\>"  nextgroup=crystalFunction	     skipwhite skipnl
   syn match  crystalClass	"\<class\>"  nextgroup=crystalClassDeclaration  skipwhite skipnl
   syn match  crystalModule "\<module\>" nextgroup=crystalModuleDeclaration skipwhite skipnl
+  " TODO: add 'struct' and 'lib'
 
   syn region crystalMethodBlock start="\<def\>"	matchgroup=crystalDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<class\>"	matchgroup=crystalClass  end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
@@ -358,3 +359,5 @@ hi def link crystalSpaceError		crystalError
 
 
 let b:current_syntax = "crystal"
+
+" vim: nowrap sw=2 sts=2 ts=8 noet:
