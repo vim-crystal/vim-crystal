@@ -9,7 +9,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
   let b:match_ignorecase = 0
 
   let b:match_words =
-        \ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>=\@!' .
+        \ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|struct\|lib\|def\|fun\|begin\)\>=\@!' .
         \ ':' .
         \ '\<\%(else\|elsif\|ensure\|when\|rescue\|break\|redo\|next\|retry\)\>' .
         \ ':' .
@@ -18,7 +18,7 @@ if exists("loaded_matchit") && !exists("b:match_words")
 
   let b:match_skip =
         \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-        \ "\\<ruby\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
+        \ "\\<crystal\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
         \ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
         \ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
         \ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
