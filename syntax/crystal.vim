@@ -228,7 +228,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   " statements without 'do'
   syn region crystalBlockExpression       matchgroup=crystalControl	  start="\<begin\>" end="\<end\>" contains=ALLBUT,@crystalNotTop fold
   syn region crystalCaseExpression	       matchgroup=crystalConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@crystalNotTop fold
-  syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
 
   syn match crystalConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=crystalCaseExpression
   syn match crystalConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=crystalConditionalExpression
