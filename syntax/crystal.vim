@@ -209,7 +209,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match  crystalLib	   "\<lib\>" nextgroup=crystalLibDeclaration skipwhite skipnl
   syn match  crystalMacro  "\<macro\>" nextgroup=crystalMacroDeclaration skipwhite skipnl
 
-  syn region crystalMethodBlock start="\<def\>"	matchgroup=crystalDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  syn region crystalMethodBlock start="\<\%(def\|fun\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|fun\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<class\>"	matchgroup=crystalClass  end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<module\>" matchgroup=crystalModule end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<struct\>" matchgroup=crystalStruct end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
