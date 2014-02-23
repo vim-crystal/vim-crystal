@@ -191,7 +191,7 @@ syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDecl
 " begin case class def do end for if module unless until while
 syn match   crystalControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|rescue\|retry\|return\)\>[?!]\@!"
 syn match   crystalOperator       "\<defined?" display
-syn match   crystalKeyword	       "\<\%(super\|yield\)\>[?!]\@!"
+syn match   crystalKeyword	       "\<\%(super\|yield\|as\|of\)\>[?!]\@!"
 syn match   crystalBoolean	       "\<\%(true\|false\)\>[?!]\@!"
 syn match   crystalPseudoVariable "\<\%(nil\|self\|__ENCODING__\|__FILE__\|__LINE__\|__callee__\|__method__\)\>[?!]\@!" " TODO: reorganise
 syn match   crystalBeginEnd       "\<\%(BEGIN\|END\)\>[?!]\@!"
