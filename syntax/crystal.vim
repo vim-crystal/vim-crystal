@@ -275,10 +275,9 @@ if !exists("crystal_no_special_methods")
 endif
 
 " Macro
-syn match crystalMacro "{%\%(.*%}\)\@=" contains=NONE display
-syn match crystalMacro "\%({%.*\)\@<=%}" contains=NONE display
-syn match crystalMacro "{{\%(.*}}\)\@=" contains=NONE display
-syn match crystalMacro "\%({{.*\)\@<=}}" contains=NONE display
+syn region crystalMacroRegion start="{%" end="%}" contains=ALLBUT,@crystalNotTop transparent display oneline
+syn region crystalMacroRegion start="{{" end="}}" contains=ALLBUT,@crystalNotTop transparent display oneline
+syn match crystalMacro "\%({%\|%}\|{{\|}}\)" nextgroup=crystalMacroRegion skipwhite display
 
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
