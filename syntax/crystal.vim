@@ -28,7 +28,6 @@ endif
 " Expression Substitution and Backslash Notation
 syn match crystalStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"						    contained display
 syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
-syn match crystalQuoteEscape  "\\[\\']"											    contained display
 
 syn region crystalInterpolation	      matchgroup=crystalInterpolationDelimiter start="#{" end="}" contained contains=ALLBUT,@crystalNotTop
 syn match  crystalInterpolation	      "#\%(\$\|@@\=\)\w\+"    display contained contains=crystalInterpolationDelimiter,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable,crystalPredefinedVariable
@@ -94,7 +93,6 @@ syn match  crystalSymbol		"\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
 syn match  crystalSymbol		"[]})\"':]\@<!\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="he=e-1
 syn match  crystalSymbol		"\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
 syn match  crystalSymbol		"[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="hs=s+1,he=e-1
-syn region crystalSymbol		start="[]})\"':]\@<!:'"  end="'"  skip="\\\\\|\\'"  contains=crystalQuoteEscape fold
 syn region crystalSymbol		start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial fold
 
 syn match  crystalBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
@@ -125,8 +123,10 @@ syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("				 end="
 
 " Normal String and Shell Command Output
 syn region crystalString matchgroup=crystalStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial,@Spell fold
-syn region crystalString matchgroup=crystalStringDelimiter start="'"	end="'"  skip="\\\\\|\\'"  contains=crystalQuoteEscape,@Spell    fold
 syn region crystalString matchgroup=crystalStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@crystalStringSpecial fold
+
+" Character
+syn match crystalCharLiteral "'\%([^\\]\|\\[abefnrstv'\\]\|\\\o\{1,3}\|\\x\x\{1,2}\|\\u\x\{4}\)'" contained display
 
 " Generalized Single Quoted String, Symbol and Array of Strings
 syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
@@ -350,6 +350,7 @@ hi def link crystalBeginEnd		Statement
 hi def link crystalAccess			Statement
 hi def link crystalAttribute		Statement
 hi def link crystalPseudoVariable		Constant
+hi def link crystalCharLiteral		Character
 
 hi def link crystalComment			Comment
 hi def link crystalData			Comment
@@ -357,7 +358,6 @@ hi def link crystalDataDirective		Delimiter
 hi def link crystalDocumentation		Comment
 hi def link crystalTodo			Todo
 
-hi def link crystalQuoteEscape		crystalStringEscape
 hi def link crystalStringEscape		Special
 hi def link crystalInterpolationDelimiter	Delimiter
 hi def link crystalNoInterpolation		crystalString
