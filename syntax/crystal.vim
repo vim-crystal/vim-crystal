@@ -258,12 +258,10 @@ endif
 
 " Special Methods
 if !exists("crystal_no_special_methods")
-  syn keyword crystalAccess    public protected private public_class_method private_class_method public_constant private_constant module_function
+  syn keyword crystalAccess    public protected private
   " attr is a common variable name
-  syn match   crystalAttribute "\%(\%(^\|;\)\s*\)\@<=attr\>\(\s*[.=]\)\@!"
-  syn keyword crystalAttribute attr_accessor attr_reader attr_writer
+  syn keyword crystalAttribute getter setter property
   syn match   crystalControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
-  syn keyword crystalEval	    eval class_eval instance_eval module_eval
   syn keyword crystalException raise fail catch throw
   " false positive with 'include?'
   syn match   crystalInclude   "\<include\>[?!]\@!"
@@ -272,10 +270,10 @@ if !exists("crystal_no_special_methods")
 endif
 
 " Macro
-syn match crystalMacro "{%\%(.*%}\)\@="
-syn match crystalMacro "\%({%.*\)\@<=%}"
-syn match crystalMacro "{{\%(.*}}\)\@="
-syn match crystalMacro "\%({{.*\)\@<=}}"
+syn match crystalMacro "{%\%(.*%}\)\@=" contains=NONE display
+syn match crystalMacro "\%({%.*\)\@<=%}" contains=NONE display
+syn match crystalMacro "{{\%(.*}}\)\@=" contains=NONE display
+syn match crystalMacro "\%({{.*\)\@<=}}" contains=NONE display
 
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
@@ -347,7 +345,6 @@ hi def link crystalOperator		Operator
 hi def link crystalBeginEnd		Statement
 hi def link crystalAccess			Statement
 hi def link crystalAttribute		Statement
-hi def link crystalEval			Statement
 hi def link crystalPseudoVariable		Constant
 
 hi def link crystalComment			Comment
