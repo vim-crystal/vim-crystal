@@ -209,12 +209,11 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match  crystalLib	   "\<lib\>" nextgroup=crystalLibDeclaration skipwhite skipnl
   syn match  crystalMacro  "\<macro\>" nextgroup=crystalMacroDeclaration skipwhite skipnl
 
-  syn region crystalMethodBlock start="\<\%(def\|fun\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|fun\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  syn region crystalMethodBlock start="\<\%(def\|fun\|macro\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|fun\|macro\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<class\>"	matchgroup=crystalClass  end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<module\>" matchgroup=crystalModule end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<struct\>" matchgroup=crystalStruct end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
   syn region crystalBlock	     start="\<lib\>" matchgroup=crystalLib    end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<macro\>" matchgroup=crystalMacro    end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>"    display
@@ -271,6 +270,12 @@ if !exists("crystal_no_special_methods")
   syn keyword crystalInclude   autoload extend load prepend require require_relative
   syn keyword crystalKeyword   callcc caller lambda proc
 endif
+
+" Macro
+syn match crystalMacro "{%\%(.*%}\)\@="
+syn match crystalMacro "\%({%.*\)\@<=%}"
+syn match crystalMacro "{{\%(.*}}\)\@="
+syn match crystalMacro "\%({{.*\)\@<=}}"
 
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
@@ -369,6 +374,8 @@ hi def link crystalRegexpCharClass		crystalRegexpSpecial
 hi def link crystalRegexpSpecial		Special
 hi def link crystalRegexpComment		Comment
 hi def link crystalRegexp			crystalString
+
+hi def link crystalMacro		PreProc
 
 hi def link crystalInvalidVariable		Error
 hi def link crystalError			Error
