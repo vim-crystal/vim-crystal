@@ -5,11 +5,11 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 
 - `crystal` filetype detection
 - Syntax highlight
-- Indentation
+- Indentation (Using Ruby's indentation rule yet)
 - vim-matchit support
 
 ![screenshot](https://dl.dropboxusercontent.com/u/2753138/crystal.png)
 
 This plugin is distributed under the [MIT License](http://opensource.org/licenses/MIT).
 
-Copyright (c) 2014 rhysd
+    Copyright (c) 2014-2015 rhysd
