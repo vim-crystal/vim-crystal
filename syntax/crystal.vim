@@ -256,6 +256,11 @@ else
   syn match crystalKeyword "\<\%(alias\|undef\)\>[?!]\@!"
 endif
 
+" Link attribute
+syn region crystalLinkAttrRegion start="@\[" end="]" contains=ALLBUT,@crystalNotTop transparent display oneline
+syn match crystalLinkAttr "@\[" nextgroup=crystalLinkAttrRegion skipwhite
+syn match crystalLinkAttr "]" nextgroup=crystalLinkAttrRegion skipwhite
+
 " Special Methods
 if !exists("crystal_no_special_methods")
   syn keyword crystalAccess    public protected private
@@ -369,6 +374,8 @@ hi def link crystalRegexpCharClass		crystalRegexpSpecial
 hi def link crystalRegexpSpecial		Special
 hi def link crystalRegexpComment		Comment
 hi def link crystalRegexp			crystalString
+
+hi def link crystalLinkAttr		PreProc
 
 hi def link crystalMacro		PreProc
 
