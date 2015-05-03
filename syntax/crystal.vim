@@ -7,7 +7,7 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo
+syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
 
 if exists("crystal_space_errors")
   if !exists("crystal_no_trail_space_error")
@@ -259,9 +259,10 @@ else
 endif
 
 " Link attribute
-syn region crystalLinkAttrRegion start="@\[" end="]" contains=ALLBUT,@crystalNotTop transparent display oneline
-syn match crystalLinkAttr "@\[" nextgroup=crystalLinkAttrRegion skipwhite
-syn match crystalLinkAttr "]" nextgroup=crystalLinkAttrRegion skipwhite
+syn region crystalLinkAttrRegion start="@\[" nextgroup=crystalLinkAttrRegionInner end="]" contains=crystalLinkAttr,crystalLinkAttrRegionInner transparent display oneline
+syn region crystalLinkAttrRegionInner start="\%(@\[\)\@<=" end="]\@=" contained contains=ALLBUT,@crystalNotTop transparent display oneline
+syn match crystalLinkAttr "@\[" contained containedin=crystalLinkAttrRegion display
+syn match crystalLinkAttr "]" contained containedin=crystalLinkAttrRegion display
 
 " Special Methods
 if !exists("crystal_no_special_methods")
