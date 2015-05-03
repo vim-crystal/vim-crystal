@@ -82,7 +82,7 @@ syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+
 syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 syn match crystalBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
-syn match  crystalConstant		"\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=\%(\s*(\)\@!"
+syn match  crystalConstant		"\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@="
 syn match  crystalClassVariable	"@@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" display
 syn match  crystalInstanceVariable "@\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"  display
 syn match  crystalGlobalVariable	"$\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\|-.\)"
@@ -203,7 +203,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match  crystalDefine "\<def\>"    nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match  crystalDefine "\<fun\>"    nextgroup=crystalFunctionDeclaration skipwhite skipnl
   syn match  crystalDefine "\<undef\>"  nextgroup=crystalFunction	     skipwhite skipnl
-  syn match  crystalClass	"\<class\>"  nextgroup=crystalClassDeclaration  skipwhite skipnl
+  syn match  crystalClass  "\<class\>"  nextgroup=crystalClassDeclaration  skipwhite skipnl
   syn match  crystalModule "\<module\>" nextgroup=crystalModuleDeclaration skipwhite skipnl
   syn match  crystalStruct "\<struct\>" nextgroup=crystalStructDeclaration skipwhite skipnl
   syn match  crystalLib	   "\<lib\>" nextgroup=crystalLibDeclaration skipwhite skipnl
