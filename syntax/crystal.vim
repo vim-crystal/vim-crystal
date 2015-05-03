@@ -174,7 +174,8 @@ end
 syn match  crystalAliasDeclaration    "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable nextgroup=crystalAliasDeclaration2 skipwhite
 syn match  crystalAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable
 syn match  crystalMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=crystalConstant,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable
-syn match  crystalFunctionDeclaration   "[^[:space:];#(]\+"	 contained contains=crystalConstant,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable
+syn match  crystalFunctionDeclaration "[^[:space:];#=]\+"	 contained contains=crystalConstant
+syn match  crystalTypeDeclaration     "[^[:space:];#=]\+"	 contained contains=crystalConstant
 syn match  crystalClassDeclaration    "[^[:space:];#<]\+"	 contained contains=crystalConstant,crystalOperator
 syn match  crystalModuleDeclaration   "[^[:space:];#<]\+"	 contained contains=crystalConstant,crystalOperator
 syn match  crystalStructDeclaration   "[^[:space:];#<]\+"	 contained contains=crystalConstant,crystalOperator
@@ -184,7 +185,7 @@ syn match  crystalFunction "\<[_[:alpha:]][_[:alnum:]]*[?!=]\=[[:alnum:]_.:?!=]\
 syn match  crystalFunction "\%(\s\|^\)\@<=[_[:alpha:]][_[:alnum:]]*[?!=]\=\%(\s\|$\)\@=" contained containedin=crystalAliasDeclaration,crystalAliasDeclaration2
 syn match  crystalFunction "\%([[:space:].]\|^\)\@<=\%(\[\]=\=\|\*\*\|[+-]@\=\|[*/%|&^~]\|<<\|>>\|[<>]=\=\|<=>\|===\|[=!]=\|[=!]\~\|!\|`\)\%([[:space:];#(]\|$\)\@=" contained containedin=crystalAliasDeclaration,crystalAliasDeclaration2,crystalMethodDeclaration,crystalFunctionDeclaration
 
-syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDeclaration2,crystalMethodDeclaration,crystalFunctionDeclaration,crystalModuleDeclaration,crystalClassDeclaration,crystalStructDeclaration,crystalLibDeclaration,crystalMacroDeclaration,crystalFunction,crystalBlockParameter
+syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDeclaration2,crystalMethodDeclaration,crystalFunctionDeclaration,crystalModuleDeclaration,crystalClassDeclaration,crystalStructDeclaration,crystalLibDeclaration,crystalMacroDeclaration,crystalFunction,crystalBlockParameter,crystalTypeDeclaration
 
 " Keywords
 " Note: the following keywords have already been defined:
@@ -203,6 +204,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match  crystalDefine "\<def\>"    nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match  crystalDefine "\<fun\>"    nextgroup=crystalFunctionDeclaration skipwhite skipnl
   syn match  crystalDefine "\<undef\>"  nextgroup=crystalFunction	     skipwhite skipnl
+  syn match  crystalDefine "\<type\>"   nextgroup=crystalTypeDeclaration skipwhite skipnl
   syn match  crystalClass  "\<class\>"  nextgroup=crystalClassDeclaration  skipwhite skipnl
   syn match  crystalModule "\<module\>" nextgroup=crystalModuleDeclaration skipwhite skipnl
   syn match  crystalStruct "\<struct\>" nextgroup=crystalStructDeclaration skipwhite skipnl
