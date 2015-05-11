@@ -205,7 +205,7 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn match crystalDefine "\<def\>"    nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match crystalDefine "\<fun\>"    nextgroup=crystalFunctionDeclaration skipwhite skipnl
   syn match crystalDefine "\<undef\>"  nextgroup=crystalFunction	     skipwhite skipnl
-  syn match crystalDefine "\<\%(type\|alias\)\%(\s*\h\w*\s*=\)\@=" nextgroup=crystalTypeDeclaration skipwhite skipnl
+  syn match crystalDefine "\<\%(type\|alias\)\>\%(\s*\h\w*\s*=\)\@=" nextgroup=crystalTypeDeclaration skipwhite skipnl
   syn match crystalClass  "\<class\>"  nextgroup=crystalClassDeclaration  skipwhite skipnl
   syn match crystalModule "\<module\>" nextgroup=crystalModuleDeclaration skipwhite skipnl
   syn match crystalStruct "\<struct\>" nextgroup=crystalStructDeclaration skipwhite skipnl
