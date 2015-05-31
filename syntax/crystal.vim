@@ -273,7 +273,7 @@ if !exists("crystal_no_special_methods")
   " attr is a common variable name
   syn keyword crystalAttribute getter setter property abstract
   syn match   crystalControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
-  syn keyword crystalException raise fail catch throw
+  syn keyword crystalException raise fail
   " false positive with 'include?'
   syn match   crystalInclude   "\<include\>[?!]\@!"
   syn keyword crystalInclude   autoload extend load prepend require require_relative
@@ -305,10 +305,10 @@ syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|un
 syn match crystalKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]" transparent contains=NONE
 syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|undef\|unless\|until\|while\)[?!]" transparent contains=NONE
 
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|autoload\|callcc\|catch\|caller\|exit\)\>"		transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|autoload\|callcc\|caller\|exit\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fail\|fork\|include\|lambda\)\>"			transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(load\|loop\|prepend\|private\|proc\|protected\)\>"		transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|require_relative\|raise\|throw\|trap\)\>"	transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|require_relative\|raise\|trap\)\>"	transparent contains=NONE
 
 " __END__ Directive
 syn region crystalData matchgroup=crystalDataDirective start="^__END__$" end="\%$" fold
