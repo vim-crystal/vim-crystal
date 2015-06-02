@@ -276,8 +276,8 @@ if !exists("crystal_no_special_methods")
   syn keyword crystalException raise fail
   " false positive with 'include?'
   syn match   crystalInclude   "\<include\>[?!]\@!"
-  syn keyword crystalInclude   autoload extend load prepend require require_relative
-  syn keyword crystalKeyword   callcc caller lambda proc
+  syn keyword crystalInclude   extend load prepend require require_relative
+  syn keyword crystalKeyword   caller lambda proc
 endif
 
 " Macro
@@ -300,12 +300,12 @@ endif
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|ifdef\|in\|module\|next\|nil\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(not\|or\|redo\|rescue\|retry\|return\|self\|super\|then\|true\)\>"		  transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|while\|yield\|BEGIN\|END\|__FILE__\|__LINE__\)\>" transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|while\|yield\|__FILE__\|__LINE__\)\>" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]" transparent contains=NONE
 syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|undef\|unless\|until\|while\)[?!]" transparent contains=NONE
 
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|autoload\|callcc\|caller\|exit\)\>"		transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|caller\|exit\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fail\|fork\|include\|lambda\)\>"			transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(load\|loop\|prepend\|private\|proc\|protected\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|require_relative\|raise\|trap\)\>"	transparent contains=NONE
