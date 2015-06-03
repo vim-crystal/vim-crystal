@@ -17,7 +17,13 @@ set cpo&vim
 function! SyntaxCheckers_crystal_crystal_GetLocList() dict
   let makeprg = self.makeprgBuild({ 'args': 'run --no-build --no-color' })
 
-  let errorformat = ''
+  let errorformat =
+    \ '%ESyntax error in %f:%l: %m,'.
+    \ '%C%p^,'.
+    \ '%-C%.%#,'.
+    \ '%EError in %f:%l: %m,'.
+    \ '%C%p^,'.
+    \ '%-C%.%#'
 
   return SyntasticMake({
     \ 'makeprg': makeprg,
@@ -26,8 +32,8 @@ function! SyntaxCheckers_crystal_crystal_GetLocList() dict
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-            \ 'filetype': 'crystal',
-            \ 'name': 'crystal' })
+  \ 'filetype': 'crystal',
+  \ 'name': 'crystal' })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
