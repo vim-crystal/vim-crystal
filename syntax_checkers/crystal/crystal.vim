@@ -18,9 +18,8 @@ function! SyntaxCheckers_crystal_crystal_GetLocList() dict
   let makeprg = self.makeprgBuild({ 'args': 'run --no-build --no-color' })
 
   let errorformat =
+    \ '%ESyntax error in line %l: %m,'.
     \ '%ESyntax error in %f:%l: %m,'.
-    \ '%C%p^,'.
-    \ '%-C%.%#,'.
     \ '%EError in %f:%l: %m,'.
     \ '%C%p^,'.
     \ '%-C%.%#'
