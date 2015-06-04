@@ -7,6 +7,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Syntax highlight
 - Indentation (Using Ruby's indentation rule yet)
 - vim-matchit support
+- Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 
 ![screenshot](https://dl.dropboxusercontent.com/u/2753138/crystal.png)
 
