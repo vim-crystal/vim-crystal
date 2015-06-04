@@ -2,11 +2,11 @@
 " Language:     Crystal
 " Author:       Vitalii Elenhaupt<velenhaupt@gmail.com>
 
-if exists('g:loaded_syntastic_rust_filetype')
+if exists('g:loaded_syntastic_crystal_filetype')
   finish
 endif
 
-let g:loaded_syntastic_rust_filetype = 1
+let g:loaded_syntastic_crystal_filetype = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
