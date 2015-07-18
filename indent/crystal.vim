@@ -1,7 +1,3 @@
-if exists("b:did_indent")
-  finish
-endif
-
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
   finish
@@ -64,10 +60,9 @@ let s:crystal_deindent_keywords =
       \ '\|{%\s*\<\%(ensure\|else\|rescue\|elsif\|when\|end\)\>'
 
 " Regex that defines the start-match for the 'end' keyword.
-"let s:end_start_regex = '\%(^\|[^.]\)\<\%(module\|class\|def\|if\|for\|while\|until\|case\|unless\|begin\|do\)\>'
 " TODO: the do here should be restricted somewhat (only at end of line)?
 let s:end_start_regex =
-      \ '{%\s*\<\%(if\|for\|while\|until\|else\|unless\|begin\|lib\)\>\|' .
+      \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\|lib\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(module\|class\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
       \ '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
