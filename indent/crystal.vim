@@ -47,7 +47,7 @@ let s:skip_expr =
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:crystal_indent_keywords =
-      \ '^\s*\zs\<\%(module\|class\|if\|for\|macro' .
+      \ '^\s*\zs\<\%(module\|class\|struct\|enum\|if\|for\|macro' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|lib' .
       \ '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
@@ -64,7 +64,7 @@ let s:crystal_deindent_keywords =
 let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\|lib\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(module\|class\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
+      \ '\<\%(module\|class\|enum\|struct\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
       \ '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
