@@ -310,9 +310,6 @@ syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fork\|inc
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(loop\|private\|protected\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|raise\)\>"	transparent contains=NONE
 
-" __END__ Directive
-syn region crystalData matchgroup=crystalDataDirective start="^__END__$" end="\%$" fold
-
 hi def link crystalClass			crystalDefine
 hi def link crystalModule			crystalDefine
 hi def link crystalStruct			crystalDefine
