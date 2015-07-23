@@ -191,7 +191,7 @@ syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDecl
 " Keywords
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
-syn match   crystalControl	       "\<\%(and\|break\|in\|next\|not\|or\|redo\|rescue\|retry\|return\)\>[?!]\@!"
+syn match   crystalControl	       "\<\%(break\|in\|next\|rescue\|return\)\>[?!]\@!"
 syn match   crystalOperator       "\<defined?" display
 syn match   crystalKeyword	       "\<\%(super\|yield\|as\|of\)\>[?!]\@!"
 syn match   crystalBoolean	       "\<\%(true\|false\)\>[?!]\@!"
@@ -272,12 +272,12 @@ if !exists("crystal_no_special_methods")
   syn keyword crystalAccess    public protected private
   " attr is a common variable name
   syn keyword crystalAttribute getter setter property abstract
-  syn match   crystalControl   "\<\%(exit!\|\%(abort\|at_exit\|exit\|fork\|loop\|trap\)\>[?!]\@!\)"
-  syn keyword crystalException raise fail
+  syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!"
+  syn keyword crystalException raise
   " false positive with 'include?'
   syn match   crystalInclude   "\<include\>[?!]\@!"
-  syn keyword crystalInclude   extend load prepend require require_relative
-  syn keyword crystalKeyword   caller lambda proc
+  syn keyword crystalInclude   extend require
+  syn keyword crystalKeyword   caller
 endif
 
 " Macro
@@ -297,18 +297,18 @@ else
 endif
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|and\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"		  transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|ifdef\|in\|module\|next\|nil\)\>"		  transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(not\|or\|redo\|rescue\|retry\|return\|self\|super\|then\|true\)\>"		  transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(rescue\|return\|self\|super\|then\|true\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|while\|yield\|__FILE__\|__LINE__\)\>" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]" transparent contains=NONE
 syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|undef\|unless\|until\|while\)[?!]" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|caller\|exit\)\>"		transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fail\|fork\|include\|lambda\)\>"			transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(load\|loop\|prepend\|private\|proc\|protected\)\>"		transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|require_relative\|raise\|trap\)\>"	transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fork\|include\)\>"			transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(loop\|private\|protected\)\>"		transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|raise\)\>"	transparent contains=NONE
 
 " __END__ Directive
 syn region crystalData matchgroup=crystalDataDirective start="^__END__$" end="\%$" fold
