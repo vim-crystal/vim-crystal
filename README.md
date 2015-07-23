@@ -5,7 +5,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 
 - `crystal` filetype detection
 - Syntax highlight
-- Indentation (Using Ruby's indentation rule yet)
+- Indentation
 - vim-matchit support
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 
