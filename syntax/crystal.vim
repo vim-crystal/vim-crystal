@@ -354,8 +354,6 @@ hi def link crystalPseudoVariable		Constant
 hi def link crystalCharLiteral		Character
 
 hi def link crystalComment			Comment
-hi def link crystalData			Comment
-hi def link crystalDataDirective		Delimiter
 hi def link crystalDocumentation		Comment
 hi def link crystalTodo			Todo
 
@@ -384,7 +382,6 @@ hi def link crystalMacro		PreProc
 hi def link crystalInvalidVariable		Error
 hi def link crystalError			Error
 hi def link crystalSpaceError		crystalError
-
 
 let b:current_syntax = "crystal"
 
