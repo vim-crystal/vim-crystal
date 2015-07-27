@@ -1,3 +1,3 @@
-autocmd BufRead,BufNew,BufNewFile *.cr setlocal filetype=crystal
-autocmd BufRead,BufNew,BufNewFile Projectfile setlocal filetype=crystal
-autocmd BufRead,BufNew,BufNewFile *.ecr setlocal filetype=html
+autocmd BufNewFile,BufReadPost *.cr setlocal filetype=crystal
+autocmd BufNewFile,BufReadPost Projectfile setlocal filetype=crystal
+autocmd BufNewFile,BufReadPost *.ecr setlocal filetype=html
