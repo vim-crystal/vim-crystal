@@ -193,7 +193,7 @@ syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDecl
 " begin case class def do end for if module unless until while
 syn match   crystalControl	       "\<\%(break\|in\|next\|rescue\|return\)\>[?!]\@!"
 syn match   crystalOperator       "\<defined?" display
-syn match   crystalKeyword	       "\<\%(super\|yield\|as\|of\|with\)\>[?!]\@!"
+syn match   crystalKeyword	       "\<\%(super\|previous_def\|yield\|as\|of\|with\)\>[?!]\@!"
 syn match   crystalBoolean	       "\<\%(true\|false\)\>[?!]\@!"
 syn match   crystalPseudoVariable "\<\%(nil\|self\|__FILE__\|__LINE__\)\>[?!]\@!" " TODO: reorganise
 
@@ -299,7 +299,7 @@ endif
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|begin\|break\|case\|class\|def\|defined\|do\|else\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|ifdef\|in\|module\|next\|nil\)\>"		  transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(rescue\|return\|self\|super\|then\|true\)\>"		  transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(rescue\|return\|self\|super\|previous_def\|then\|true\)\>"		  transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|while\|yield\|with\|__FILE__\|__LINE__\)\>" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]" transparent contains=NONE
