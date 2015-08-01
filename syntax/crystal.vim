@@ -277,7 +277,7 @@ if !exists("crystal_no_special_methods")
   " false positive with 'include?'
   syn match   crystalInclude   "\<include\>[?!]\@!"
   syn keyword crystalInclude   extend require
-  syn keyword crystalKeyword   caller
+  syn keyword crystalKeyword   caller typeof pointerof sizeof instance_sizeof
 endif
 
 " Macro
@@ -309,6 +309,7 @@ syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|c
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fork\|include\)\>"			transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(loop\|private\|protected\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|raise\)\>"	transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(typeof\|pointerof\|sizeof\|instance_sizeof\|\)\>"	transparent contains=NONE
 
 hi def link crystalClass			crystalDefine
 hi def link crystalModule			crystalDefine
