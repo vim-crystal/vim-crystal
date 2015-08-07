@@ -102,12 +102,6 @@ let s:bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.s:continuation_
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 
-" Regex that describes all indent access modifiers
-let s:access_modifier_regex = '\C^\s*\%(public\|protected\|private\)\s*\%(#.*\)\=$'
-
-" Regex that describes the indent access modifiers (excludes public)
-let s:indent_access_modifier_regex = '\C^\s*\%(protected\|private\)\s*\%(#.*\)\=$'
-
 " Regex that defines blocks.
 "
 " Note that there's a slight problem with this regex and s:continuation_regex.
@@ -486,20 +480,6 @@ function GetCrystalIndent(...)
   " Set up variables for the previous line.
   let line = getline(lnum)
   let ind = indent(lnum)
-
-  if g:crystal_indent_access_modifier_style == 'indent'
-    " If the previous line was a private/protected keyword, add a
-    " level of indent.
-    if s:Match(lnum, s:indent_access_modifier_regex)
-      return indent(lnum) + sw
-    endif
-  elseif g:crystal_indent_access_modifier_style == 'outdent'
-    " If the previous line was a private/protected/public keyword, add
-    " a level of indent, since the keyword has been out-dented.
-    if s:Match(lnum, s:access_modifier_regex)
-      return indent(lnum) + sw
-    endif
-  endif
 
   if s:Match(lnum, s:continuable_regex) && s:Match(lnum, s:continuation_regex)
     return indent(s:GetMSL(lnum)) + sw + sw
