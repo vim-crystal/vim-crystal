@@ -269,7 +269,7 @@ syn match crystalLinkAttr "]" contained containedin=crystalLinkAttrRegion displa
 
 " Special Methods
 if !exists("crystal_no_special_methods")
-  syn keyword crystalAccess    public protected private
+  syn keyword crystalAccess    protected private
   " attr is a common variable name
   syn keyword crystalAttribute getter setter property abstract
   syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!"
@@ -308,7 +308,7 @@ syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|undef\|unless\|until\|
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(abort\|at_exit\|caller\|exit\)\>"		transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(extend\|fork\|include\)\>"			transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(loop\|private\|protected\)\>"		transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|raise\)\>"	transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(require\|raise\)\>"	transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(typeof\|pointerof\|sizeof\|instance_sizeof\|\)\>"	transparent contains=NONE
 
 hi def link crystalClass			crystalDefine
