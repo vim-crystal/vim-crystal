@@ -291,7 +291,6 @@ syn keyword crystalTodo	  FIXME NOTE TODO OPTIMIZE XXX todo contained
 syn match   crystalComment   "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
 if !exists("crystal_no_comment_fold")
   syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent fold keepend
-else
 endif
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
@@ -353,7 +352,6 @@ hi def link crystalPseudoVariable		Constant
 hi def link crystalCharLiteral		Character
 
 hi def link crystalComment			Comment
-hi def link crystalDocumentation		Comment
 hi def link crystalTodo			Todo
 
 hi def link crystalStringEscape		Special
