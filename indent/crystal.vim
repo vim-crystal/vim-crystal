@@ -49,7 +49,7 @@ let s:skip_expr =
 let s:crystal_indent_keywords =
       \ '^\s*\zs\<\%(module\|class\|struct\|enum\|if\|for\|macro' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|lib' .
-      \ '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
+      \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
       \ '\|{%\s*\<\%(if\|for\|while\|until\|lib\|case\|unless\|begin\|else\|elsif\|when\)'
@@ -65,7 +65,7 @@ let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\|lib\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(module\|class\|enum\|struct\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
-      \ '\|\%(public\|protected\|private\)\=\s*def\):\@!\>' .
+      \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
