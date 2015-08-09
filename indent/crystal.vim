@@ -47,7 +47,7 @@ let s:skip_expr =
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:crystal_indent_keywords =
-      \ '^\s*\zs\<\%(module\|class\|struct\|enum\|if\|for\|macro' .
+      \ '^\s*\zs\<\%(module\|\%(abstract\)\=\s*\%(class\|struct\)\|enum\|if\|for\|macro' .
       \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|lib' .
       \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
@@ -64,7 +64,7 @@ let s:crystal_deindent_keywords =
 let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\|lib\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(module\|class\|enum\|struct\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
+      \ '\<\%(module\|\%(abstract\)\=\s*\%(class\|struct\)\|enum\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
       \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
@@ -101,12 +101,6 @@ let s:bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.s:continuation_
 
 " Regex that defines the first part of a splat pattern
 let s:splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
-
-" Regex that describes all indent access modifiers
-let s:access_modifier_regex = '\C^\s*\%(public\|protected\|private\)\s*\%(#.*\)\=$'
-
-" Regex that describes the indent access modifiers (excludes public)
-let s:indent_access_modifier_regex = '\C^\s*\%(protected\|private\)\s*\%(#.*\)\=$'
 
 " Regex that defines blocks.
 "
@@ -486,20 +480,6 @@ function GetCrystalIndent(...)
   " Set up variables for the previous line.
   let line = getline(lnum)
   let ind = indent(lnum)
-
-  if g:crystal_indent_access_modifier_style == 'indent'
-    " If the previous line was a private/protected keyword, add a
-    " level of indent.
-    if s:Match(lnum, s:indent_access_modifier_regex)
-      return indent(lnum) + sw
-    endif
-  elseif g:crystal_indent_access_modifier_style == 'outdent'
-    " If the previous line was a private/protected/public keyword, add
-    " a level of indent, since the keyword has been out-dented.
-    if s:Match(lnum, s:access_modifier_regex)
-      return indent(lnum) + sw
-    endif
-  endif
 
   if s:Match(lnum, s:continuable_regex) && s:Match(lnum, s:continuation_regex)
     return indent(s:GetMSL(lnum)) + sw + sw
