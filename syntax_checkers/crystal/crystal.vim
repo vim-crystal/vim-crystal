@@ -15,7 +15,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! SyntaxCheckers_crystal_crystal_GetLocList() dict
-  let makeprg = self.makeprgBuild({ 'args': 'run --no-build --no-color' })
+  let makeprg = self.makeprgBuild({ 'args': 'run --no-codegen --no-color' })
 
   let errorformat =
     \ '%ESyntax error in line %l: %m,'.
