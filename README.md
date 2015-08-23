@@ -11,7 +11,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 
 ![screenshot](https://dl.dropboxusercontent.com/u/2753138/crystal.png)
 
-This plugin is firstly imported from Ruby's filetype plugin.  But there are many differences between Ruby and Crystal and vim-crystal can't support all of them.  And Crystal is growing rapidly and being added many changes.  If you found some issues or points to improve, pull requests and issues are welcome.
+This plugin was firstly imported from Ruby's filetype plugin.  There are many differences between Ruby and Crystal but vim-crystal can't support all of them yet.  In addition, Crystal is growing rapidly and being added many changes.  If you've found some issues or points to improve, pull requests and issues are welcome.
 
 This plugin is distributed under the [MIT License](http://opensource.org/licenses/MIT).
 
