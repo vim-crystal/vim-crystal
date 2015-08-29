@@ -85,6 +85,7 @@ syn match  crystalConstant		"\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|:
 syn match  crystalClassVariable	"@@\%(\w\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
 syn match  crystalInstanceVariable "@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*"  display
 syn match  crystalGlobalVariable	"$\%(\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\|-.\)"
+syn match  crystalFreshVariable		"\%(\h\|[^\x00-\x7F]\)\@<!%\%(\h\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
 syn match  crystalSymbol		"[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[][=?]\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
 syn match  crystalSymbol		"[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
 syn match  crystalSymbol		"[]})\"':]\@<!:\%(\$\|@@\=\)\=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"
@@ -340,6 +341,7 @@ hi def link crystalConstant		Type
 hi def link crystalGlobalVariable		crystalIdentifier
 hi def link crystalBlockParameter		crystalIdentifier
 hi def link crystalInstanceVariable	crystalIdentifier
+hi def link crystalFreshVariable	crystalIdentifier
 hi def link crystalPredefinedIdentifier	crystalIdentifier
 hi def link crystalPredefinedConstant	crystalPredefinedIdentifier
 hi def link crystalPredefinedVariable	crystalPredefinedIdentifier
