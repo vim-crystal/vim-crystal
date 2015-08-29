@@ -98,7 +98,7 @@ syn region crystalSymbol		start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" co
 syn match  crystalBlockParameter	  "\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*" contained
 syn region crystalBlockParameterList start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=crystalBlockParameter
 
-syn match crystalInvalidVariable	 "$[^ A-Za-z_-]"
+syn match crystalInvalidVariable	 "$[^ %A-Za-z_-]"
 syn match crystalPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~]#
 syn match crystalPredefinedVariable "$\d\+"										   display
 syn match crystalPredefinedVariable "$_\>"											   display
