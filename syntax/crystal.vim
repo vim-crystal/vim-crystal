@@ -82,7 +82,7 @@ syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" cont
 syn match crystalBlockArgument	    "&[_[:lower:]][_[:alnum:]]"		 contains=NONE display transparent
 
 syn match  crystalConstant		"\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@="
-syn match  crystalClassVariable	"@@\%(\w\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
+syn match  crystalClassVariable	"@@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
 syn match  crystalInstanceVariable "@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*"  display
 syn match  crystalGlobalVariable	"$\%(\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\|-.\)"
 syn match  crystalFreshVariable		"\%(\h\|[^\x00-\x7F]\)\@<!%\%(\h\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
