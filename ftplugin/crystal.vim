@@ -29,6 +29,14 @@ endif
 setlocal comments=:#
 setlocal commentstring=#\ %s
 
+" Set format for quickfix window
+setlocal errorformat=
+  \%ESyntax\ error\ in\ line\ %l:\ %m,
+  \%ESyntax\ error\ in\ %f:%l:\ %m,
+  \%EError\ in\ %f:%l:\ %m,
+  \%C%p^,
+  \%-C%.%#
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
