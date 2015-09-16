@@ -273,12 +273,13 @@ if !exists("crystal_no_special_methods")
   syn keyword crystalAccess    protected private
   " attr is a common variable name
   syn keyword crystalAttribute getter setter property abstract
-  syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!"
+  syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!" display
   syn keyword crystalException raise
   " false positive with 'include?'
-  syn match   crystalInclude   "\<include\>[?!]\@!"
+  syn match   crystalInclude   "\<include\>[?!]\@!" display
   syn keyword crystalInclude   extend require
   syn keyword crystalKeyword   caller typeof pointerof sizeof instance_sizeof
+  syn match   crystalRecord    "\<record\>[?!]\@!" display
 endif
 
 " Macro
@@ -326,6 +327,7 @@ hi def link crystalRepeatModifier		crystalRepeat
 hi def link crystalOptionalDo		crystalRepeat
 hi def link crystalControl			Statement
 hi def link crystalInclude			Include
+hi def link crystalRecord			Statement
 hi def link crystalInteger			Number
 hi def link crystalASCIICode		Character
 hi def link crystalFloat			Float
