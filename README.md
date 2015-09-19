@@ -9,6 +9,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - vim-matchit support
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 - Jump to definition using [crystal tool implementations](http://crystal-lang.org/2015/09/05/tools.html)
+- Show context (variable names and their types) using [crystal tool context](http://crystal-lang.org/2015/09/05/tools.html)
 
 ## Syntax Highlight
 
@@ -25,6 +26,14 @@ It makes cursor jump to the definition of name under the curosr.  This command u
 ![screenshort](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/jump-to-definition.gif)
 
 If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gd`.
+
+### `:CrystalContext` (mapping to `gc`)
+
+It shows the _context_ under the cursor. Context includes variable names and their types.
+
+![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-context.gif)
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gc`.
 
 ## License
 
