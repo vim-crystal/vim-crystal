@@ -37,6 +37,15 @@ setlocal errorformat=
   \%C%p^,
   \%-C%.%#
 
+if get(g:, 'crystal_define_mappings', 1)
+  nmap <buffer>gd <Plug>(crystal-jump-to-definition)
+  nmap <buffer>gc <Plug>(crystal-show-context)
+endif
+
+if &l:ofu ==# ''
+  setlocal omnifunc=crystal_lang#complete
+endif
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 

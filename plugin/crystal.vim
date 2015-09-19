@@ -30,13 +30,5 @@ command! -nargs=* CrystalHierarchy echo crystal_lang#type_hierarchy(expand('%'),
 nnoremap <Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
 nnoremap <Plug>(crystal-show-context) :<C-u>CrystalContext<CR>
 
-if get(g:, 'crystal_define_mappings', 1)
-    augroup plugin-ft-crystal
-        autocmd!
-        autocmd FileType crystal nmap <buffer>gd <Plug>(crystal-jump-to-definition)
-        autocmd FileType crystal nmap <buffer>gc <Plug>(crystal-show-context)
-    augroup END
-endif
-
 let &cpo = s:save_cpo
 unlet s:save_cpo

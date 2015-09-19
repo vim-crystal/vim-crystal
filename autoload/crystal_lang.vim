@@ -84,6 +84,47 @@ function! crystal_lang#type_hierarchy(file, option_str) abort
     return s:P.system(cmd)
 endfunction
 
+function! s:find_completion_start() abort
+    let c = col('.')
+    if c <= 1
+        return -1
+    endif
+
+    let line = getline('.')[:c-2]
+    return match(line, '\w\+$')
+endfunction
+
+function! crystal_lang#complete(findstart, base) abort
+    if a:findstart
+        echom 'find start'
+        return s:find_completion_start()
+    endif
+
+    let cmd_result = crystal_lang#context(expand('%'), getpos('.'), '--format json')
+    if cmd_result.failed
+        return
+    endif
+
+    let contexts = s:J.decode(cmd_result.output)
+    if contexts.status !=# 'ok'
+        return
+    endif
+
+    let candidates = []
+
+    for c in contexts.contexts
+        for [name, desc] in items(c)
+            let candidates += [{
+                        \   'word': name,
+                        \   'abbr': name . ' : ' . desc,
+                        \   'menu': '[var]',
+                        \ }]
+        endfor
+    endfor
+
+    return candidates
+endfunction
+
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
