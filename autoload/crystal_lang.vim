@@ -15,11 +15,11 @@ function! s:echo_error(msg, ...) abort
     echohl None
 endfunction
 
-" `pos` is assumed a returned value from getpos()
-function! crystal_lang#impl(file, pos, option_str) abort
+function! crystal_lang#tool(name, file, pos, option_str) abort
     let cmd = printf(
-                \   '%s tool implementations --no-color %s --cursor %s:%d:%d %s',
+                \   '%s tool %s --no-color %s --cursor %s:%d:%d %s',
                 \   g:crystal_compiler_command,
+                \   a:name,
                 \   a:option_str,
                 \   a:file,
                 \   a:pos[1],
@@ -29,6 +29,11 @@ function! crystal_lang#impl(file, pos, option_str) abort
 
     let output = s:P.system(cmd)
     return {"failed": s:P.get_last_status(), "output": output}
+endfunction
+
+" `pos` is assumed a returned value from getpos()
+function! crystal_lang#impl(file, pos, option_str) abort
+    return crystal_lang#tool('implementations', a:file, a:pos, a:option_str)
 endfunction
 
 function! s:jump_to_impl(impl) abort
@@ -62,6 +67,10 @@ function! crystal_lang#jump_to_definition(file, pos) abort
     let message .= "\n"
     let idx = str2nr(input(message, "\n> "))
     call s:jump_to_impl(impl.implementations[idx])
+endfunction
+
+function! crystal_lang#context(file, pos, option_str) abort
+    return crystal_lang#tool('context', a:file, a:pos, a:option_str)
 endfunction
 
 let &cpo = s:save_cpo

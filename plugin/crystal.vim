@@ -23,12 +23,17 @@ end
 let g:crystal_compiler_command = get(g:, 'crystal_compiler_command', 'crystal')
 
 command! -nargs=* CrystalImpl echo crystal_lang#impl(expand('%'), getpos('.'), <q-args>).output
-command! -nargs=* CrystalDef call crystal_lang#jump_to_definition(expand('%'), getpos('.'))
+command! -nargs=0 CrystalDef call crystal_lang#jump_to_definition(expand('%'), getpos('.'))
+command! -nargs=* CrystalContext echo crystal_lang#context(expand('%'), getpos('.'), <q-args>).output
+
+nnoremap <Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
+nnoremap <Plug>(crystal-show-context) :<C-u>CrystalContext<CR>
 
 if get(g:, 'crystal_define_mappings', 1)
     augroup plugin-ft-crystal
         autocmd!
-        autocmd FileType crystal nnoremap <buffer>gd :<C-u>CrystalDef<CR>
+        autocmd FileType crystal nmap <buffer>gd <Plug>(crystal-jump-to-definition)
+        autocmd FileType crystal nmap <buffer>gc <Plug>(crystal-show-context)
     augroup END
 endif
 
