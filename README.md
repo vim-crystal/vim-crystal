@@ -8,6 +8,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Indentation
 - vim-matchit support
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
+- Completion (currently for variable names)
 - Jump to definition using [crystal tool implementations](http://crystal-lang.org/2015/09/05/tools.html)
 - Show context (variable names and their types) using [crystal tool context](http://crystal-lang.org/2015/09/05/tools.html)
 - Show types hierarchy using `crystal tool hierarchy`
@@ -40,7 +41,15 @@ If you don't set `g:crystal_define_mappings` to 0, you can use this feature with
 
 It shows types hierarchy of current code.
 
-![screenshort](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-hierarchy.gif)
+![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-hierarchy.gif)
+
+## Completion
+
+Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins-completion`)
+
+![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/completion.gif)
+
+Currently you can complete variable names.
 
 ## License
 
