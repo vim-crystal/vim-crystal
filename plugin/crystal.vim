@@ -20,6 +20,17 @@ else
   let g:syntastic_extra_filetypes = ['crystal']
 end
 
+let g:crystal_compiler_command = get(g:, 'crystal_compiler_command', 'crystal')
+
+command! -nargs=* CrystalImpl echo crystal_lang#impl(expand('%'), getpos('.'), <q-args>).output
+command! -nargs=* CrystalDef call crystal_lang#jump_to_definition(expand('%'), getpos('.'))
+
+if get(g:, 'crystal_define_mappings', 1)
+    augroup plugin-ft-crystal
+        autocmd!
+        autocmd FileType crystal nnoremap <buffer>gd :<C-u>CrystalDef<CR>
+    augroup END
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
