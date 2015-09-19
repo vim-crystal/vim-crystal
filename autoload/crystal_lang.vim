@@ -116,8 +116,7 @@ function! crystal_lang#complete(findstart, base) abort
         for [name, desc] in items(c)
             let candidates += [{
                         \   'word': name,
-                        \   'abbr': name . ' : ' . desc,
-                        \   'menu': '[var]',
+                        \   'menu': ': ' . desc . ' [var]',
                         \ }]
         endfor
     endfor
