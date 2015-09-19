@@ -18,7 +18,7 @@ This plugin was firstly imported from Ruby's filetype plugin.  There are many di
 
 ## Commands
 
-### `:CrystalDef`
+### `:CrystalDef` (mapping to `gd`)
 
 It makes cursor jump to the definition of name under the curosr.  This command uses `crystal tool implementations`.
 
