@@ -32,7 +32,6 @@ function! crystal_lang#impl(file, pos, option_str) abort
 endfunction
 
 function! s:jump_to_impl(impl) abort
-    let i = a:impl
     execute 'edit' a:impl.filename
     call cursor(a:impl.line, a:impl.column)
 endfunction
@@ -52,7 +51,17 @@ function! crystal_lang#jump_to_definition(file, pos) abort
 
     if len(impl.implementations) == 1
         call s:jump_to_impl(impl.implementations[0])
+        return
     endif
+
+    let message = "Multiple definitions detected.  Choose a number\n\n"
+    for idx in range(len(impl.implementations))
+        let i = impl.implementations[idx]
+        let message .= printf("[%d] %s:%d:%d\n", idx, i.filename, i.line, i.column)
+    endfor
+    let message .= "\n"
+    let idx = str2nr(input(message, "\n> "))
+    call s:jump_to_impl(impl.implementations[idx])
 endfunction
 
 let &cpo = s:save_cpo
