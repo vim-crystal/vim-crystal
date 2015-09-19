@@ -10,6 +10,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 - Jump to definition using [crystal tool implementations](http://crystal-lang.org/2015/09/05/tools.html)
 - Show context (variable names and their types) using [crystal tool context](http://crystal-lang.org/2015/09/05/tools.html)
+- Show types hierarchy using `crystal tool hierarchy`
 
 ## Syntax Highlight
 
@@ -34,6 +35,12 @@ It shows the _context_ under the cursor. Context includes variable names and the
 ![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-context.gif)
 
 If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gc`.
+
+### `:CrystalHierarychy`
+
+It shows types hierarchy of current code.
+
+![screenshort](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-hierarchy.gif)
 
 ## License
 

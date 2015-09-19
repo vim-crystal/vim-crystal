@@ -73,5 +73,17 @@ function! crystal_lang#context(file, pos, option_str) abort
     return crystal_lang#tool('context', a:file, a:pos, a:option_str)
 endfunction
 
+function! crystal_lang#type_hierarchy(file, option_str) abort
+    let cmd = printf(
+                \   '%s tool hierarchy --no-color %s %s',
+                \   g:crystal_compiler_command,
+                \   a:option_str,
+                \   a:file
+                \ )
+
+    return s:P.system(cmd)
+endfunction
+
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
