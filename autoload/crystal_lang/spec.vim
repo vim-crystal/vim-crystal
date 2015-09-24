@@ -11,21 +11,22 @@ endfunction
 
 function! crystal_lang#spec#get_switched_path(absolute_path) abort
     let base = fnamemodify(a:absolute_path, ':t:r')
-    let parent = fnamemodify(a:absolute_path, ':h')
 
     " TODO: Make cleverer
     if base =~# '_spec$'
-        return substitute(parent, '/spec/', '/src/', '') . '/' . matchstr(base, '.\+\ze_spec$') . '.cr'
+        let parent = fnamemodify(substitute(a:absolute_path, '/spec/', '/src/', ''), ':h')
+        return parent . '/' . matchstr(base, '.\+\ze_spec$') . '.cr'
     else
-        return substitute(parent, '/src/', '/spec/', '') . '/' . base . '_spec.cr'
+        let parent = fnamemodify(substitute(a:absolute_path, '/src/', '/spec/', ''), ':h')
+        return parent . '/' . base . '_spec.cr'
     endif
 endfunction
 
-function! crystal_lang#spec#switch_current_file() abort
-    let current_path = expand('%:p')
-    if current_path !~# '.cr$'
-        return s:echo_error('Not crystal source file: ' . current_path)
+function! crystal_lang#spec#switch_file(...) abort
+    let path = a:0 == 0 ? expand('%:p') : fnamemodify(a:1, ':p')
+    if path !~# '.cr$'
+        return s:echo_error('Not crystal source file: ' . path)
     endif
 
-    execute 'edit!' crystal_lang#spec#get_switched_path(current_path)
+    execute 'edit!' crystal_lang#spec#get_switched_path(path)
 endfunction

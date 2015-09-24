@@ -12,6 +12,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Jump to definition using [crystal tool implementations](http://crystal-lang.org/2015/09/05/tools.html)
 - Show context (variable names and their types) using [crystal tool context](http://crystal-lang.org/2015/09/05/tools.html)
 - Show types hierarchy using `crystal tool hierarchy`
+- `crystal spec` integration
 
 ## Syntax Highlight
 
@@ -20,6 +21,10 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 This plugin was firstly imported from Ruby's filetype plugin.  There are many differences between Ruby and Crystal but vim-crystal can't support all of them yet.  In addition, Crystal is growing rapidly and being added many changes.  If you've found some issues or points to improve, pull requests and issues are welcome.
 
 ## Commands
+
+### `:CrystalSpecSwitch`
+
+It switches current source file and its spec file.  This command assumes the standard directory layout which `crystal init` generates.
 
 ### `:CrystalDef` (mapping to `gd`)
 

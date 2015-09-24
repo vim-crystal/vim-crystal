@@ -26,7 +26,7 @@ command! -nargs=* CrystalImpl echo crystal_lang#impl(expand('%'), getpos('.'), <
 command! -nargs=0 CrystalDef call crystal_lang#jump_to_definition(expand('%'), getpos('.'))
 command! -nargs=* CrystalContext echo crystal_lang#context(expand('%'), getpos('.'), <q-args>).output
 command! -nargs=* CrystalHierarchy echo crystal_lang#type_hierarchy(expand('%'), <q-args>)
-command! -nargs=* CrystalSpecSwitch call crystal_lang#spec#switch_current_file()
+command! -nargs=? CrystalSpecSwitch call crystal_lang#spec#switch_file(<f-args>)
 
 nnoremap <Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
 nnoremap <Plug>(crystal-show-context) :<C-u>CrystalContext<CR>
