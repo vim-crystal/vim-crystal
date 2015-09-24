@@ -40,6 +40,7 @@ setlocal errorformat=
 if get(g:, 'crystal_define_mappings', 1)
   nmap <buffer>gd <Plug>(crystal-jump-to-definition)
   nmap <buffer>gc <Plug>(crystal-show-context)
+  nmap <buffer>gs <Plug>(crystal-spec-switch)
 endif
 
 if &l:ofu ==# ''
