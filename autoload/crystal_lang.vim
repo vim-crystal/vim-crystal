@@ -150,18 +150,21 @@ function! s:run_spec(root, path) abort
     " Note:
     " `crystal spec` can't understand absolute path.
     let cmd = printf(
-            \   'cd %s && %s spec %s',
-            \   a:root,
+            \   '%s spec %s',
             \   g:crystal_compiler_command,
             \   a:path
             \ )
 
     " Note:
     " Currently `crystal spec` can't disable ANSI color sequence.
-    " Note:
-    " s:P.system() is not available because vimproc#system() doesn't succeed
-    " cwd to next command on '&&'
-    echo substitute(system(cmd), '\e[\d\+m', '', 'g')
+    let saved_cwd = getcwd()
+    let cd = haslocaldir() ? 'lcd' : 'cd'
+    try
+        execute cd a:root
+        echo substitute(s:P.system(cmd), '\e[\d\+m', '', 'g')
+    finally
+        execute cd saved_cwd
+    endtry
 endfunction
 
 function! crystal_lang#run_all_spec(...) abort
@@ -193,8 +196,8 @@ function! crystal_lang#run_current_spec(...) abort
         call s:run_spec(root_dir, rel_path)
     else
         let spec_path = substitute(rel_path, '^src', 'spec', '') . '/' . fnamemodify(path, ':t:r') . '_spec.cr'
-        if !filereadable(spec_path)
-            return s:echo_error("Could not find a spec source corresponding to " . path)
+        if !filereadable(root_dir . '/' . spec_path)
+            return s:echo_error("Error: Could not find a spec source corresponding to " . path)
         endif
         call s:run_spec(root_dir, spec_path)
     endif
