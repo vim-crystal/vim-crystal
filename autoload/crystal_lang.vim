@@ -146,5 +146,30 @@ function! crystal_lang#switch_spec_file(...) abort
     execute 'edit!' crystal_lang#get_spec_switched_path(path)
 endfunction
 
+function! s:run_spec(path) abort
+    " Note:
+    " `crystal spec` can't understand absolute path.
+    let cmd = printf(
+            \   'cd %s && %s spec %s',
+            \   fnamemodify(a:path, ':h'),
+            \   g:crystal_compiler_command,
+            \   fnamemodify(a:path, ':t')
+            \ )
+
+    " Note:
+    " Currently `crystal spec` can't disable ANSI color sequence.
+    echo substitute(s:P.system(cmd), '\e[\d\+m', '', 'g')
+endfunction
+
+function! crystal_lang#run_all_spec(...) abort
+    let path = a:0 == 0 ? expand('%:p:h') : a:1
+    let dir = finddir('spec', path . ';')
+    if dir ==# ''
+        return s:echo_error("'spec' directory is not found")
+    endif
+
+    call s:run_spec(fnamemodify(dir, ':p:h'))
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

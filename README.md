@@ -24,13 +24,17 @@ This plugin was firstly imported from Ruby's filetype plugin.  There are many di
 
 ## Spec Integration
 
-### `:CrystalSpecSwitch` (mapping to `gs`)
+### `:CrystalSpecSwitch` (mapping to `gss`)
 
 It switches current source file and its spec file.  This command assumes the standard directory layout which `crystal init` generates.
 
-If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gs`.
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gss`.
 
+### `:CrystalSpecRunAll` (mapping to `gsa`)
 
+It runs the all specs for current file's project.
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
 
 ## Tool Integration
 

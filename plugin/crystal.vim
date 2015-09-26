@@ -26,10 +26,12 @@ command! -nargs=0 CrystalDef call crystal_lang#jump_to_definition(expand('%'), g
 command! -nargs=* CrystalContext echo crystal_lang#context(expand('%'), getpos('.'), <q-args>).output
 command! -nargs=* CrystalHierarchy echo crystal_lang#type_hierarchy(expand('%'), <q-args>)
 command! -nargs=? CrystalSpecSwitch call crystal_lang#switch_spec_file(<f-args>)
+command! -nargs=? CrystalSpecRunAll call crystal_lang#run_all_spec(<f-args>)
 
 nnoremap <Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
 nnoremap <Plug>(crystal-show-context) :<C-u>CrystalContext<CR>
 nnoremap <Plug>(crystal-spec-switch) :<C-u>CrystalSpecSwitch<CR>
+nnoremap <Plug>(crystal-spec-run-all) :<C-u>CrystalSpecRunAll<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
