@@ -146,19 +146,22 @@ function! crystal_lang#switch_spec_file(...) abort
     execute 'edit!' crystal_lang#get_spec_switched_path(path)
 endfunction
 
-function! s:run_spec(path) abort
+function! s:run_spec(root, path) abort
     " Note:
     " `crystal spec` can't understand absolute path.
     let cmd = printf(
             \   'cd %s && %s spec %s',
-            \   fnamemodify(a:path, ':h'),
+            \   a:root,
             \   g:crystal_compiler_command,
-            \   fnamemodify(a:path, ':t')
+            \   a:path
             \ )
 
     " Note:
     " Currently `crystal spec` can't disable ANSI color sequence.
-    echo substitute(s:P.system(cmd), '\e[\d\+m', '', 'g')
+    " Note:
+    " s:P.system() is not available because vimproc#system() doesn't succeed
+    " cwd to next command on '&&'
+    echo substitute(system(cmd), '\e[\d\+m', '', 'g')
 endfunction
 
 function! crystal_lang#run_all_spec(...) abort
