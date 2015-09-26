@@ -171,7 +171,33 @@ function! crystal_lang#run_all_spec(...) abort
         return s:echo_error("'spec' directory is not found")
     endif
 
-    call s:run_spec(fnamemodify(dir, ':p:h'))
+    let spec_path = fnamemodify(dir, ':p:h')
+    call s:run_spec(fnamemodify(spec_path, ':h'), fnamemodify(spec_path, ':t'))
+endfunction
+
+function! crystal_lang#run_current_spec(...) abort
+    let path = a:0 == 0 ? expand('%:p') : fnamemodify(a:1, ':p')
+    if path !~# '.cr$'
+        return s:echo_error('Not crystal source file: ' . path)
+    endif
+    let source_dir = fnamemodify(path, ':h')
+
+    let dir = finddir('spec', source_dir . ';')
+    if dir ==# ''
+        return s:echo_error("'spec' directory is not found")
+    endif
+    let root_dir = fnamemodify(dir, ':p:h:h')
+    let rel_path = source_dir[strlen(root_dir)+1 : ]
+
+    if path =~# '_spec.cr$'
+        call s:run_spec(root_dir, rel_path)
+    else
+        let spec_path = substitute(rel_path, '^src', 'spec', '') . '/' . fnamemodify(path, ':t:r') . '_spec.cr'
+        if !filereadable(spec_path)
+            return s:echo_error("Could not find a spec source corresponding to " . path)
+        endif
+        call s:run_spec(root_dir, spec_path)
+    endif
 endfunction
 
 let &cpo = s:save_cpo

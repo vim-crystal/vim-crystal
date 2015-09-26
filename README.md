@@ -36,6 +36,12 @@ It runs the all specs for current file's project.
 
 If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
 
+### `:CrystalSpecRunCurrent` (mapping to `gsc`)
+
+It runs spec for current buffer.  When current buffer is a spec source, `:CrystalSpecRunCurrent` simply run it.  When current buffer is not a spec source, `:CrystalSpecRunCurrent` finds corresponding spec source and runs it.
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
+
 ## Tool Integration
 
 ### `:CrystalDef` (mapping to `gd`)
