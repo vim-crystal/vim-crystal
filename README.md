@@ -24,6 +24,8 @@ This plugin was firstly imported from Ruby's filetype plugin.  There are many di
 
 ## Spec Integration
 
+Below commands output the result of spec(s) in Vim.  The output is colorful if possible.
+
 ### `:CrystalSpecSwitch` (mapping to `gss`)
 
 It switches current source file and its spec file.  This command assumes the standard directory layout which `crystal init` generates.

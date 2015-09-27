@@ -4,6 +4,7 @@ set cpo&vim
 let s:V = vital#of('crystal')
 let s:P = s:V.import('Process')
 let s:J = s:V.import('Web.JSON')
+let s:C = s:V.import('ColorEcho')
 
 function! s:echo_error(msg, ...) abort
     echohl ErrorMsg
@@ -161,7 +162,7 @@ function! s:run_spec(root, path) abort
     let cd = haslocaldir() ? 'lcd' : 'cd'
     try
         execute cd a:root
-        echo substitute(s:P.system(cmd), '\e[\d\+m', '', 'g')
+        call s:C.echo(s:P.system(cmd))
     finally
         execute cd saved_cwd
     endtry
