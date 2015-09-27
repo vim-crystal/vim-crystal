@@ -4,6 +4,7 @@ set cpo&vim
 let s:V = vital#of('crystal')
 let s:P = s:V.import('Process')
 let s:J = s:V.import('Web.JSON')
+let s:C = s:V.import('ColorEcho')
 
 function! s:echo_error(msg, ...) abort
     echohl ErrorMsg
@@ -124,6 +125,92 @@ function! crystal_lang#complete(findstart, base) abort
     return candidates
 endfunction
 
+function! crystal_lang#get_spec_switched_path(absolute_path) abort
+    let base = fnamemodify(a:absolute_path, ':t:r')
+
+    " TODO: Make cleverer
+    if base =~# '_spec$'
+        let parent = fnamemodify(substitute(a:absolute_path, '/spec/', '/src/', ''), ':h')
+        return parent . '/' . matchstr(base, '.\+\ze_spec$') . '.cr'
+    else
+        let parent = fnamemodify(substitute(a:absolute_path, '/src/', '/spec/', ''), ':h')
+        return parent . '/' . base . '_spec.cr'
+    endif
+endfunction
+
+function! crystal_lang#switch_spec_file(...) abort
+    let path = a:0 == 0 ? expand('%:p') : fnamemodify(a:1, ':p')
+    if path !~# '.cr$'
+        return s:echo_error('Not crystal source file: ' . path)
+    endif
+
+    execute 'edit!' crystal_lang#get_spec_switched_path(path)
+endfunction
+
+function! s:run_spec(root, path, ...) abort
+    " Note:
+    " `crystal spec` can't understand absolute path.
+    let cmd = printf(
+            \   '%s spec %s%s',
+            \   g:crystal_compiler_command,
+            \   a:path,
+            \   a:0 == 0 ? '' : (':' . a:1)
+            \ )
+
+    " Note:
+    " Currently `crystal spec` can't disable ANSI color sequence.
+    let saved_cwd = getcwd()
+    let cd = haslocaldir() ? 'lcd' : 'cd'
+    try
+        execute cd a:root
+        call s:C.echo(s:P.system(cmd))
+    finally
+        execute cd saved_cwd
+    endtry
+endfunction
+
+function! crystal_lang#run_all_spec(...) abort
+    let path = a:0 == 0 ? expand('%:p:h') : a:1
+    let dir = finddir('spec', path . ';')
+    if dir ==# ''
+        return s:echo_error("'spec' directory is not found")
+    endif
+
+    let spec_path = fnamemodify(dir, ':p:h')
+    call s:run_spec(fnamemodify(spec_path, ':h'), fnamemodify(spec_path, ':t'))
+endfunction
+
+function! crystal_lang#run_current_spec(...) abort
+    " /foo/bar/src/poyo.cr
+    let path = a:0 == 0 ? expand('%:p') : fnamemodify(a:1, ':p')
+    if path !~# '.cr$'
+        return s:echo_error('Not crystal source file: ' . path)
+    endif
+
+    " /foo/bar/src
+    let source_dir = fnamemodify(path, ':h')
+
+    let dir = finddir('spec', source_dir . ';')
+    if dir ==# ''
+        return s:echo_error("'spec' directory is not found")
+    endif
+
+    " /foo/bar
+    let root_dir = fnamemodify(dir, ':p:h:h')
+
+    " src
+    let rel_path = source_dir[strlen(root_dir)+1 : ]
+
+    if path =~# '_spec.cr$'
+        call s:run_spec(root_dir, path[strlen(root_dir)+1 : ], line('.'))
+    else
+        let spec_path = substitute(rel_path, '^src', 'spec', '') . '/' . fnamemodify(path, ':t:r') . '_spec.cr'
+        if !filereadable(root_dir . '/' . spec_path)
+            return s:echo_error("Error: Could not find a spec source corresponding to " . path)
+        endif
+        call s:run_spec(root_dir, spec_path)
+    endif
+endfunction
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
