@@ -7,11 +7,12 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Syntax highlight
 - Indentation
 - vim-matchit support
+- `crystal tool` integration ([implementations](http://crystal-lang.org/2015/09/05/tools.html), [context](http://crystal-lang.org/2015/09/05/tools.html) and so on)
+- `crystal spec` integration
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 - Completion (currently for variable names)
-- Jump to definition using [crystal tool implementations](http://crystal-lang.org/2015/09/05/tools.html)
-- Show context (variable names and their types) using [crystal tool context](http://crystal-lang.org/2015/09/05/tools.html)
-- Show types hierarchy using `crystal tool hierarchy`
+
+
 
 ## Syntax Highlight
 
@@ -19,7 +20,29 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 
 This plugin was firstly imported from Ruby's filetype plugin.  There are many differences between Ruby and Crystal but vim-crystal can't support all of them yet.  In addition, Crystal is growing rapidly and being added many changes.  If you've found some issues or points to improve, pull requests and issues are welcome.
 
-## Commands
+
+
+## Spec Integration
+
+### `:CrystalSpecSwitch` (mapping to `gss`)
+
+It switches current source file and its spec file.  This command assumes the standard directory layout which `crystal init` generates.
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gss`.
+
+### `:CrystalSpecRunAll` (mapping to `gsa`)
+
+It runs the all specs for current file's project.
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
+
+### `:CrystalSpecRunCurrent` (mapping to `gsc`)
+
+It runs spec for current buffer.  When current buffer is a spec source, `:CrystalSpecRunCurrent` simply run it.  When current buffer is not a spec source, `:CrystalSpecRunCurrent` finds corresponding spec source and runs it.
+
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
+
+## Tool Integration
 
 ### `:CrystalDef` (mapping to `gd`)
 
@@ -43,6 +66,8 @@ It shows types hierarchy of current code.
 
 ![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-hierarchy.gif)
 
+
+
 ## Completion
 
 Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins-completion`)
@@ -50,6 +75,8 @@ Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins
 ![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/completion.gif)
 
 Currently you can complete variable names.
+
+
 
 ## License
 
