@@ -147,13 +147,14 @@ function! crystal_lang#switch_spec_file(...) abort
     execute 'edit!' crystal_lang#get_spec_switched_path(path)
 endfunction
 
-function! s:run_spec(root, path) abort
+function! s:run_spec(root, path, ...) abort
     " Note:
     " `crystal spec` can't understand absolute path.
     let cmd = printf(
-            \   '%s spec %s',
+            \   '%s spec %s%s',
             \   g:crystal_compiler_command,
-            \   a:path
+            \   a:path,
+            \   a:0 == 0 ? '' : (':' . a:1)
             \ )
 
     " Note:
@@ -180,21 +181,28 @@ function! crystal_lang#run_all_spec(...) abort
 endfunction
 
 function! crystal_lang#run_current_spec(...) abort
+    " /foo/bar/src/poyo.cr
     let path = a:0 == 0 ? expand('%:p') : fnamemodify(a:1, ':p')
     if path !~# '.cr$'
         return s:echo_error('Not crystal source file: ' . path)
     endif
+
+    " /foo/bar/src
     let source_dir = fnamemodify(path, ':h')
 
     let dir = finddir('spec', source_dir . ';')
     if dir ==# ''
         return s:echo_error("'spec' directory is not found")
     endif
+
+    " /foo/bar
     let root_dir = fnamemodify(dir, ':p:h:h')
+
+    " src
     let rel_path = source_dir[strlen(root_dir)+1 : ]
 
     if path =~# '_spec.cr$'
-        call s:run_spec(root_dir, rel_path)
+        call s:run_spec(root_dir, path[strlen(root_dir)+1 : ], line('.'))
     else
         let spec_path = substitute(rel_path, '^src', 'spec', '') . '/' . fnamemodify(path, ':t:r') . '_spec.cr'
         if !filereadable(root_dir . '/' . spec_path)
