@@ -24,7 +24,9 @@ This plugin was firstly imported from Ruby's filetype plugin.  There are many di
 
 ## Spec Integration
 
-Below commands output the result of spec(s) in Vim.  The output is colorful if possible.
+![screen shot: run spec](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/spec.gif)
+
+Running spec(s) and show the result in Vim.  The output is colorful if possible as executed in CLI.
 
 ### `:CrystalSpecSwitch` (mapping to `gss`)
 
