@@ -3,23 +3,23 @@
 " which is made by Mirko Nasato and Doug Kearns
 " ---------------------------------------------
 
-if exists("b:current_syntax")
+if exists('b:current_syntax')
   finish
 endif
 
 syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
 
-if exists("crystal_space_errors")
-  if !exists("crystal_no_trail_space_error")
+if exists('crystal_space_errors')
+  if !exists('crystal_no_trail_space_error')
     syn match crystalSpaceError display excludenl "\s\+$"
   endif
-  if !exists("crystal_no_tab_space_error")
+  if !exists('crystal_no_tab_space_error')
     syn match crystalSpaceError display " \+\t"me=e-1
   endif
 endif
 
 " Operators
-if exists("crystal_operators")
+if exists('crystal_operators')
   syn match  crystalOperator "[~!^&|*/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::"
   syn match  crystalOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!="
   syn region crystalBracketOperator matchgroup=crystalOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@crystalNotTop
@@ -168,7 +168,7 @@ syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<
 syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart		     fold keepend
 syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
 
-if exists('main_syntax') && main_syntax == 'ecrystal'
+if exists('main_syntax') && g:main_syntax ==# 'ecrystal'
   let b:crystal_no_expensive = 1
 end
 
@@ -200,7 +200,7 @@ syn match   crystalPseudoVariable "\<\%(nil\|self\|__FILE__\|__LINE__\)\>[?!]\@!
 
 " Expensive Mode - match 'end' with the appropriate opening keyword for syntax
 " based folding and special highlighting of module/class/method definitions
-if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
+if !exists('b:crystal_no_expensive') && !exists('crystal_no_expensive')
   syn match crystalDefine "\<alias\>"  nextgroup=crystalAliasDeclaration  skipwhite skipnl
   syn match crystalDefine "\<def\>"    nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match crystalDefine "\<fun\>"    nextgroup=crystalFunctionDeclaration skipwhite skipnl
@@ -244,10 +244,10 @@ if !exists("b:crystal_no_expensive") && !exists("crystal_no_expensive")
   syn region crystalOptionalDoLine   matchgroup=crystalRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@crystalNotTop
   syn region crystalRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalRepeat end="\<end\>" contains=ALLBUT,@crystalNotTop nextgroup=crystalOptionalDoLine fold
 
-  if !exists("crystal_minlines")
+  if !exists('crystal_minlines')
     let crystal_minlines = 500
   endif
-  exec "syn sync minlines=" . crystal_minlines
+  exec 'syn sync minlines=' . crystal_minlines
 
 else
   syn match crystalControl "\<def\>[?!]\@!"    nextgroup=crystalMethodDeclaration skipwhite skipnl
@@ -269,7 +269,7 @@ syn match crystalLinkAttr "@\[" contained containedin=crystalLinkAttrRegion disp
 syn match crystalLinkAttr "]" contained containedin=crystalLinkAttrRegion display
 
 " Special Methods
-if !exists("crystal_no_special_methods")
+if !exists('crystal_no_special_methods')
   syn keyword crystalAccess    protected private
   " attr is a common variable name
   syn keyword crystalAttribute getter setter property abstract
@@ -291,7 +291,7 @@ syn match crystalMacro "\%({%\|%}\|{{\|}}\)" nextgroup=crystalMacroRegion skipwh
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo	  FIXME NOTE TODO OPTIMIZE XXX todo contained
 syn match   crystalComment   "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
-if !exists("crystal_no_comment_fold")
+if !exists('crystal_no_comment_fold')
   syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent fold keepend
 endif
 
@@ -333,7 +333,7 @@ hi def link crystalASCIICode		Character
 hi def link crystalFloat			Float
 hi def link crystalBoolean			Boolean
 hi def link crystalException		Exception
-if !exists("crystal_no_identifiers")
+if !exists('crystal_no_identifiers')
   hi def link crystalIdentifier		Identifier
 else
   hi def link crystalIdentifier		NONE
@@ -384,6 +384,6 @@ hi def link crystalInvalidVariable		Error
 hi def link crystalError			Error
 hi def link crystalSpaceError		crystalError
 
-let b:current_syntax = "crystal"
+let b:current_syntax = 'crystal'
 
 " vim: nowrap sw=2 sts=2 ts=8 noet:

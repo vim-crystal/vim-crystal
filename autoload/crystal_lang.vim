@@ -11,7 +11,7 @@ function! s:echo_error(msg, ...) abort
     if a:0 == 0
         echomsg a:msg
     else
-        echomsg call('printf', [msg] + a:000)
+        echomsg call('printf', [a:msg] + a:000)
     endif
     echohl None
 endfunction
@@ -72,7 +72,7 @@ function! crystal_lang#tool(name, file, pos, option_str) abort
 
     try
         let output = s:run_cmd(cmd)
-        return {"failed": s:P.get_last_status(), "output": output}
+        return {'failed': s:P.get_last_status(), 'output': output}
     finally
         " Note:
         " If the entry point is temporary file, delete it finally.
@@ -250,7 +250,7 @@ function! crystal_lang#run_current_spec(...) abort
     else
         let spec_path = substitute(rel_path, '^src', 'spec', '') . '/' . fnamemodify(path, ':t:r') . '_spec.cr'
         if !filereadable(root_dir . '/' . spec_path)
-            return s:echo_error("Error: Could not find a spec source corresponding to " . path)
+            return s:echo_error('Error: Could not find a spec source corresponding to ' . path)
         endif
         call s:run_spec(root_dir, spec_path)
     endif

@@ -1,5 +1,5 @@
 " Only load this indent file when no other was loaded.
-if exists("b:did_indent")
+if exists('b:did_indent')
   finish
 endif
 let b:did_indent = 1
@@ -18,7 +18,7 @@ setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue,==begin,==end
 setlocal indentkeys+==private,=protected,=public
 
 " Only define the function once.
-if exists("*GetCrystalIndent")
+if exists('*GetCrystalIndent')
   finish
 endif
 
@@ -119,6 +119,9 @@ let s:block_continuation_regex = '^\s*[^])}\t ].*'.s:block_regex
 " Regex that describes a leading operator (only a method call's dot for now)
 let s:leading_operator_regex = '^\s*[.]'
 
+" Regex that describes all indent access modifiers
+let s:access_modifier_regex = '\C^\s*\%(public\|protected\|private\)\s*\%(#.*\)\=$'
+
 " 2. Auxiliary Functions {{{1
 " ======================
 
@@ -139,7 +142,7 @@ endfunction
 
 " Check if the character at lnum:col is inside a string delimiter
 function s:IsInStringDelimiter(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') == 'crystalStringDelimiter'
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') ==# 'crystalStringDelimiter'
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
@@ -150,15 +153,15 @@ function s:PrevNonBlankNonString(lnum)
     " Go in and out of blocks comments as necessary.
     " If the line isn't empty (with opt. comment) or in a string, end search.
     let line = getline(lnum)
-    if line =~ '^=begin'
+    if line =~# '^=begin'
       if in_block
         let in_block = 0
       else
         break
       endif
-    elseif !in_block && line =~ '^=end'
+    elseif !in_block && line =~# '^=end'
       let in_block = 1
-    elseif !in_block && line !~ '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
+    elseif !in_block && line !~# '^\s*#.*$' && !(s:IsInStringOrComment(lnum, 1)
           \ && s:IsInStringOrComment(lnum, strlen(line)))
       break
     endif
@@ -265,25 +268,25 @@ function s:ExtraBrackets(lnum)
   " close anything, save it for later.
   while pos != -1
     if !s:IsInStringOrComment(a:lnum, pos + 1)
-      if line[pos] == '('
+      if line[pos] ==# '('
         call add(opening.parentheses, {'type': '(', 'pos': pos})
-      elseif line[pos] == ')'
+      elseif line[pos] ==# ')'
         if empty(opening.parentheses)
           call add(closing.parentheses, {'type': ')', 'pos': pos})
         else
           let opening.parentheses = opening.parentheses[0:-2]
         endif
-      elseif line[pos] == '{'
+      elseif line[pos] ==# '{'
         call add(opening.braces, {'type': '{', 'pos': pos})
-      elseif line[pos] == '}'
+      elseif line[pos] ==# '}'
         if empty(opening.braces)
           call add(closing.braces, {'type': '}', 'pos': pos})
         else
           let opening.braces = opening.braces[0:-2]
         endif
-      elseif line[pos] == '['
+      elseif line[pos] ==# '['
         call add(opening.brackets, {'type': '[', 'pos': pos})
-      elseif line[pos] == ']'
+      elseif line[pos] ==# ']'
         if empty(opening.brackets)
           call add(closing.brackets, {'type': ']', 'pos': pos})
         else
@@ -345,7 +348,7 @@ function! s:FindContainingClass()
       call setpos('.', saved_position)
       return found_lnum
     endif
-  endif
+  endwhile
 
   call setpos('.', saved_position)
   return 0
@@ -380,14 +383,14 @@ function GetCrystalIndent(...)
 
   " If this line is an access modifier keyword, align according to the closest
   " class declaration.
-  if g:crystal_indent_access_modifier_style == 'indent'
+  if g:crystal_indent_access_modifier_style ==? 'indent'
     if s:Match(clnum, s:access_modifier_regex)
       let class_line = s:FindContainingClass()
       if class_line > 0
         return indent(class_line) + sw
       endif
     endif
-  elseif g:crystal_indent_access_modifier_style == 'outdent'
+  elseif g:crystal_indent_access_modifier_style ==? 'outdent'
     if s:Match(clnum, s:access_modifier_regex)
       let class_line = s:FindContainingClass()
       if class_line > 0
@@ -404,7 +407,7 @@ function GetCrystalIndent(...)
     call cursor(clnum, col)
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
-      if line[col-1]==')' && col('.') != col('$') - 1
+      if line[col-1] ==# ')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       else
         let ind = indent(s:GetMSL(line('.')))
@@ -427,11 +430,11 @@ function GetCrystalIndent(...)
       let msl  = s:GetMSL(line('.'))
       let line = getline(line('.'))
 
-      if strpart(line, 0, col('.') - 1) =~ '=\s*$' &&
-            \ strpart(line, col('.') - 1, 2) !~ 'do'
+      if strpart(line, 0, col('.') - 1) =~# '=\s*$' &&
+            \ strpart(line, col('.') - 1, 2) !~# 'do'
         " assignment to case/begin/etc, on the same line, hanging indent
         let ind = virtcol('.') - 1
-      elseif getline(msl) =~ '=\s*\(#.*\)\=$'
+      elseif getline(msl) =~# '=\s*\(#.*\)\=$'
         " in the case of assignment to the msl, align to the starting line,
         " not to the msl
         let ind = indent(line('.'))
@@ -450,7 +453,7 @@ function GetCrystalIndent(...)
 
   " If we are at the closing delimiter of a "<<" heredoc-style string, set the
   " indent to 0.
-  if line =~ '^\k\+\s*$'
+  if line =~# '^\k\+\s*$'
         \ && s:IsInStringDelimiter(clnum, 1)
         \ && search('\V<<'.line, 'nbW') > 0
     return 0
@@ -468,7 +471,7 @@ function GetCrystalIndent(...)
   let lnum = s:PrevNonBlankNonString(clnum - 1)
 
   " If the line is empty and inside a string, use the previous line.
-  if line =~ '^\s*$' && lnum != prevnonblank(clnum - 1)
+  if line =~# '^\s*$' && lnum != prevnonblank(clnum - 1)
     return indent(prevnonblank(clnum))
   endif
 
@@ -489,7 +492,7 @@ function GetCrystalIndent(...)
   if s:Match(lnum, s:block_regex)
     let msl = s:GetMSL(lnum)
 
-    if getline(msl) =~ '=\s*\(#.*\)\=$'
+    if getline(msl) =~# '=\s*\(#.*\)\=$'
       " in the case of assignment to the msl, align to the starting line,
       " not to the msl
       let ind = indent(lnum) + sw
@@ -516,11 +519,11 @@ function GetCrystalIndent(...)
   "
   " If it contained hanging closing brackets, find the rightmost one, find its
   " match and indent according to that.
-  if line =~ '[[({]' || line =~ '[])}]\s*\%(#.*\)\=$'
+  if line =~# '[[({]' || line =~# '[])}]\s*\%(#.*\)\=$'
     let [opening, closing] = s:ExtraBrackets(lnum)
 
     if opening.pos != -1
-      if opening.type == '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
+      if opening.type ==# '(' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
         if col('.') + 1 == col('$')
           return ind + sw
         else
