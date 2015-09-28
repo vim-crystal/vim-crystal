@@ -16,6 +16,13 @@ function! s:echo_error(msg, ...) abort
     echohl None
 endfunction
 
+function! s:run_cmd(cmd) abort
+    if !executable(g:crystal_compiler_command)
+        throw "vim-crystal: Error: '" . g:crystal_compiler_command . "' command is not found."
+    endif
+    return s:P.system(a:cmd)
+endfunction
+
 function! crystal_lang#tool(name, file, pos, option_str) abort
     let cmd = printf(
                 \   '%s tool %s --no-color %s --cursor %s:%d:%d %s',
@@ -28,7 +35,7 @@ function! crystal_lang#tool(name, file, pos, option_str) abort
                 \   a:file
                 \ )
 
-    let output = s:P.system(cmd)
+    let output = s:run_cmd(cmd)
     return {"failed": s:P.get_last_status(), "output": output}
 endfunction
 
@@ -82,7 +89,7 @@ function! crystal_lang#type_hierarchy(file, option_str) abort
                 \   a:file
                 \ )
 
-    return s:P.system(cmd)
+    return s:run_cmd(cmd)
 endfunction
 
 function! s:find_completion_start() abort
@@ -157,13 +164,11 @@ function! s:run_spec(root, path, ...) abort
             \   a:0 == 0 ? '' : (':' . a:1)
             \ )
 
-    " Note:
-    " Currently `crystal spec` can't disable ANSI color sequence.
     let saved_cwd = getcwd()
     let cd = haslocaldir() ? 'lcd' : 'cd'
     try
         execute cd a:root
-        call s:C.echo(s:P.system(cmd))
+        call s:C.echo(s:run_cmd(cmd))
     finally
         execute cd saved_cwd
     endtry
