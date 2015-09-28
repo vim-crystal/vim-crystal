@@ -68,7 +68,7 @@ It shows the _context_ under the cursor. Context includes variable names and the
 
 If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gc`.
 
-### `:CrystalHierarychy`
+### `:CrystalHierarchy`
 
 It shows types hierarchy of current code.
 
