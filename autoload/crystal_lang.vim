@@ -23,7 +23,42 @@ function! s:run_cmd(cmd) abort
     return s:P.system(a:cmd)
 endfunction
 
+function! s:find_root_by_spec(d) abort
+    let dir = finddir('spec', a:d . ';')
+    if dir ==# ''
+        return ''
+    endif
+
+    " Note: ':h:h' for {root}/spec/ -> {root}/spec -> {root}
+    return fnamemodify(dir, ':p:h:h')
+endfunction
+
+function! s:entrypoint_for(file_path) abort
+    let parent_dir = fnamemodify(a:file_path, ':p:h')
+    let root_dir = s:find_root_by_spec(parent_dir)
+    if root_dir ==# ''
+        " No spec diretory found. No need to make temporary file
+        return a:file_path
+    endif
+
+    let temp_name = root_dir . '/__vim-crystal-temporary-entrypoint-' . fnamemodify(a:file_path, ':t')
+    let contents = [
+                \   'require "spec"',
+                \   'require "./spec/**"',
+                \   printf('require "./%s"', fnamemodify(a:file_path, ':p')[strlen(root_dir)+1 : ])
+                \ ]
+
+    let result = writefile(contents, temp_name)
+    if result == -1
+        " Note: When writefile() failed
+        return a:file_path
+    endif
+
+    return temp_name
+endfunction
+
 function! crystal_lang#tool(name, file, pos, option_str) abort
+    let entrypoint = s:entrypoint_for(a:file)
     let cmd = printf(
                 \   '%s tool %s --no-color %s --cursor %s:%d:%d %s',
                 \   g:crystal_compiler_command,
@@ -32,11 +67,19 @@ function! crystal_lang#tool(name, file, pos, option_str) abort
                 \   a:file,
                 \   a:pos[1],
                 \   a:pos[2],
-                \   a:file
+                \   entrypoint
                 \ )
 
-    let output = s:run_cmd(cmd)
-    return {"failed": s:P.get_last_status(), "output": output}
+    try
+        let output = s:run_cmd(cmd)
+        return {"failed": s:P.get_last_status(), "output": output}
+    finally
+        " Note:
+        " If the entry point is temporary file, delete it finally.
+        if a:file !=# entrypoint
+            call delete(entrypoint)
+        endif
+    endtry
 endfunction
 
 " `pos` is assumed a returned value from getpos()
@@ -176,13 +219,11 @@ endfunction
 
 function! crystal_lang#run_all_spec(...) abort
     let path = a:0 == 0 ? expand('%:p:h') : a:1
-    let dir = finddir('spec', path . ';')
-    if dir ==# ''
+    let root_path = s:find_root_by_spec(path)
+    if root_path ==# ''
         return s:echo_error("'spec' directory is not found")
     endif
-
-    let spec_path = fnamemodify(dir, ':p:h')
-    call s:run_spec(fnamemodify(spec_path, ':h'), fnamemodify(spec_path, ':t'))
+    call s:run_spec(root_path, 'spec')
 endfunction
 
 function! crystal_lang#run_current_spec(...) abort
@@ -195,13 +236,11 @@ function! crystal_lang#run_current_spec(...) abort
     " /foo/bar/src
     let source_dir = fnamemodify(path, ':h')
 
-    let dir = finddir('spec', source_dir . ';')
-    if dir ==# ''
+    " /foo/bar
+    let root_dir = s:find_root_by_spec(source_dir)
+    if root_dir ==# ''
         return s:echo_error("'spec' directory is not found")
     endif
-
-    " /foo/bar
-    let root_dir = fnamemodify(dir, ':p:h:h')
 
     " src
     let rel_path = source_dir[strlen(root_dir)+1 : ]
