@@ -1,0 +1,4 @@
+language: python
+python: "3.4"
+install: pip install vim-vint
+script: vint $(git ls-files | grep -e '.vim$' | grep -v vital)
