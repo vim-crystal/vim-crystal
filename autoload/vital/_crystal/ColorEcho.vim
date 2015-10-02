@@ -73,12 +73,12 @@ let s:echorizer = {
         \ }
 
 function s:echorizer.eat() abort
-    let matched = match(self.value, '\e\[\d*m')
+    let matched = match(self.value, '\e\[\d*;\=m')
     if matched == -1
         return {}
     endif
 
-    let matched_end = matchend(self.value, '\e\[\d*m')
+    let matched_end = matchend(self.value, '\e\[\d*;\=m')
 
     let token = {
         \   'body': matched == 0 ? '' : self.value[ : matched-1],
