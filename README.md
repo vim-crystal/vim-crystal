@@ -54,11 +54,10 @@ If you don't set `g:crystal_define_mappings` to 0, you can use this feature with
 
 TODO: Screenshot here
 
-You can run formatter manually by command or automatically at saving buffer.
+You can run formatter manually by `:CrystalFormat` or automatically at saving buffer.
 
 When you set `g:crystal_auto_format` to `1`, current buffer is automatically formatted on `BufWritePost`.
 
-When you execute `:CrystalFormat` in visual mode, the selected area is formatted.  If you want to format whole buffer, please use `:%CrystalFormat`.
 
 ## Tool Integration
 
