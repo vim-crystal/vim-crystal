@@ -256,5 +256,42 @@ function! crystal_lang#run_current_spec(...) abort
     endif
 endfunction
 
+function! crystal_lang#format_string(code, ...) abort
+    let cmd = printf(
+            \   '%s tool format --no-color %s -',
+            \   g:crystal_compiler_command,
+            \   get(a:, 1, '')
+            \ )
+    let output = s:P.system(cmd, a:code)
+    if s:P.get_last_status()
+        throw 'vim-crystal: Error on formatting: ' . output
+    endif
+    return output
+endfunction
+
+function! crystal_lang#format(option_str) abort
+    if !executable(g:crystal_compiler_command)
+        " Finish command silently
+        return
+    endif
+
+    let formatted = crystal_lang#format_string(join(getline(1, '$'), "\n"), a:option_str)
+
+    let pos_save = getpos('.')
+    let sel_save = &l:selection
+    let &l:selection = 'inclusive'
+    let [save_g_reg, save_g_regtype] = [getreg('g'), getregtype('g')]
+
+    try
+        call setreg('g', formatted, 'v')
+        silent normal! gg"_dG
+        silent normal! "gp
+    finally
+        call setreg('g', save_g_reg, save_g_regtype)
+        let &l:selection = sel_save
+        call setpos('.', pos_save)
+    endtry
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
