@@ -8,7 +8,7 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 - Syntax highlight
 - Indentation
 - vim-matchit support
-- `crystal tool` integration ([implementations](http://crystal-lang.org/2015/09/05/tools.html), [context](http://crystal-lang.org/2015/09/05/tools.html) and so on)
+- `crystal tool` integration ([implementations](http://crystal-lang.org/2015/09/05/tools.html), [context](http://crystal-lang.org/2015/09/05/tools.html), [formatter](http://crystal-lang.org/2015/10/16/crystal-0.9.0-released.html), and so on)
 - `crystal spec` integration
 - Syntax check (Using [Syntastic](https://github.com/scrooloose/syntastic))
 - Completion (currently for variable names)
@@ -49,6 +49,16 @@ It runs spec for current buffer.
 2. When current buffer is not a spec source, `:CrystalSpecRunCurrent` finds corresponding spec source and runs all specs in the source.
 
 If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
+
+## Formatter Integration
+
+TODO: Screenshot here
+
+You can run formatter manually by command or automatically at saving buffer.
+
+When you set `g:crystal_auto_format` to `1`, current buffer is automatically formatted on `BufWritePost`.
+
+When you execute `:CrystalFormat` in visual mode, the selected area is formatted.  If you want to format whole buffer, please use `:%CrystalFormat`.
 
 ## Tool Integration
 
