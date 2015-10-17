@@ -56,7 +56,7 @@ If you don't set `g:crystal_define_mappings` to 0, you can use this feature with
 
 You can run formatter manually by `:CrystalFormat` or automatically at saving buffer.
 
-When you set `g:crystal_auto_format` to `1`, current buffer is automatically formatted on `BufWritePost`.  The variable is set to `0` by default because `crystal tool formatter` currently seems buggy.
+When you set `g:crystal_auto_format` to `1`, current buffer is automatically formatted on `BufWritePre`.  The variable is set to `0` by default because `crystal tool formatter` currently seems buggy.
 
 
 ## Tool Integration
