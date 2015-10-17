@@ -284,7 +284,7 @@ function! crystal_lang#format(option_str) abort
 
     try
         call setreg('g', formatted, 'v')
-        silent! undojoin | normal! gg"_dG
+        silent normal! gg"_dG
         silent normal! "gp
     finally
         call setreg('g', save_g_reg, save_g_regtype)
