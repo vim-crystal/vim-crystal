@@ -276,6 +276,7 @@ function! crystal_lang#format(option_str) abort
     endif
 
     let formatted = crystal_lang#format_string(join(getline(1, '$'), "\n"), a:option_str)
+    let formatted = substitute(formatted, '\n$', '', '')
 
     let pos_save = getpos('.')
     let sel_save = &l:selection
@@ -286,8 +287,7 @@ function! crystal_lang#format(option_str) abort
 
     try
         call setreg('g', formatted, 'v')
-        silent normal! gg"_dG
-        silent normal! "gp
+        silent normal! ggvG$"gp
     finally
         call setreg('g', save_g_reg, save_g_regtype)
         let &l:selection = sel_save
