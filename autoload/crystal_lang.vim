@@ -279,7 +279,9 @@ function! crystal_lang#format(option_str) abort
 
     let pos_save = getpos('.')
     let sel_save = &l:selection
+    let ve_save = &virtualedit
     let &l:selection = 'inclusive'
+    let &virtualedit = ''
     let [save_g_reg, save_g_regtype] = [getreg('g'), getregtype('g')]
 
     try
@@ -289,6 +291,7 @@ function! crystal_lang#format(option_str) abort
     finally
         call setreg('g', save_g_reg, save_g_regtype)
         let &l:selection = sel_save
+        let &virtualedit = ve_save
         call setpos('.', pos_save)
     endtry
 endfunction
