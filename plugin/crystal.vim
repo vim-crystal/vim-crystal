@@ -20,7 +20,7 @@ else
 end
 
 let g:crystal_compiler_command = get(g:, 'crystal_compiler_command', 'crystal')
-let g:crystal_auto_format = get(g:, 'crystal_auto_format', 1)
+let g:crystal_auto_format = get(g:, 'crystal_auto_format', 0)
 
 command! -nargs=* CrystalImpl echo crystal_lang#impl(expand('%'), getpos('.'), <q-args>).output
 command! -nargs=0 CrystalDef call crystal_lang#jump_to_definition(expand('%'), getpos('.'))
