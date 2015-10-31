@@ -269,6 +269,24 @@ function! crystal_lang#format_string(code, ...) abort
     return output
 endfunction
 
+function! s:get_positions() abort
+    let result = {}
+    let fname = expand('%')
+    let current_winnr = winnr()
+    for i in range(1, winnr('$'))
+        let bufnr = winbufnr(i)
+        if bufnr == -1
+            continue
+        endif
+        if bufname(bufnr) ==# fname
+            execute i 'wincmd w'
+            let result[i] = getpos('.')
+        endif
+    endfor
+    execute current_winnr 'wincmd w'
+    return result
+endfunction
+
 function! crystal_lang#format(option_str) abort
     if !executable(g:crystal_compiler_command)
         " Finish command silently
@@ -278,12 +296,12 @@ function! crystal_lang#format(option_str) abort
     let formatted = crystal_lang#format_string(join(getline(1, '$'), "\n"), a:option_str)
     let formatted = substitute(formatted, '\n$', '', '')
 
-    let pos_save = getpos('.')
     let sel_save = &l:selection
     let ve_save = &virtualedit
     let &l:selection = 'inclusive'
     let &virtualedit = ''
     let [save_g_reg, save_g_regtype] = [getreg('g'), getregtype('g')]
+    let positions_save = s:get_positions()
 
     try
         call setreg('g', formatted, 'v')
@@ -292,7 +310,12 @@ function! crystal_lang#format(option_str) abort
         call setreg('g', save_g_reg, save_g_regtype)
         let &l:selection = sel_save
         let &virtualedit = ve_save
-        call setpos('.', pos_save)
+        let winnr = winnr()
+        for w in keys(positions_save)
+            execute w 'wincmd w'
+            call setpos('.', positions_save[w])
+        endfor
+        execute winnr 'wincmd w'
     endtry
 endfunction
 
