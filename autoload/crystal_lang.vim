@@ -271,7 +271,7 @@ endfunction
 
 function! s:get_positions() abort
     let result = {}
-    let fname = expand('%')
+    let fname = bufname('%')
     let current_winnr = winnr()
     for i in range(1, winnr('$'))
         let bufnr = winbufnr(i)
