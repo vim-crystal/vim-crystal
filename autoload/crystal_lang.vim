@@ -269,7 +269,7 @@ function! crystal_lang#format_string(code, ...) abort
     return output
 endfunction
 
-function! s:get_positions() abort
+function! s:get_saved_states() abort
     let result = {}
     let fname = bufname('%')
     let current_winnr = winnr()
@@ -280,7 +280,10 @@ function! s:get_positions() abort
         endif
         if bufname(bufnr) ==# fname
             execute i 'wincmd w'
-            let result[i] = getpos('.')
+            let result[i] = {
+                \     'pos': getpos('.'),
+                \     'screen': winsaveview()
+                \ }
         endif
     endfor
     execute current_winnr 'wincmd w'
@@ -301,7 +304,7 @@ function! crystal_lang#format(option_str) abort
     let &l:selection = 'inclusive'
     let &virtualedit = ''
     let [save_g_reg, save_g_regtype] = [getreg('g'), getregtype('g')]
-    let positions_save = s:get_positions()
+    let windows_save = s:get_saved_states()
 
     try
         call setreg('g', formatted, 'v')
@@ -311,9 +314,11 @@ function! crystal_lang#format(option_str) abort
         let &l:selection = sel_save
         let &virtualedit = ve_save
         let winnr = winnr()
-        for w in keys(positions_save)
-            execute w 'wincmd w'
-            call setpos('.', positions_save[w])
+        for winnr in keys(windows_save)
+            let w = windows_save[winnr]
+            execute winnr 'wincmd w'
+            call setpos('.', w.pos)
+            call winrestview(w.screen)
         endfor
         execute winnr 'wincmd w'
     endtry
