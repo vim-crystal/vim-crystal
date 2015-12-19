@@ -28,6 +28,7 @@ endif
 
 setlocal comments=:#
 setlocal commentstring=#\ %s
+setlocal suffixesadd=.cr
 
 " Set format for quickfix window
 setlocal errorformat=
