@@ -33,7 +33,7 @@ function! s:find_root_by_spec(d) abort
     return fnamemodify(dir, ':p:h:h')
 endfunction
 
-function! s:entrypoint_for(file_path) abort
+function! crystal_lang#entrypoint_for(file_path) abort
     let parent_dir = fnamemodify(a:file_path, ':p:h')
     let root_dir = s:find_root_by_spec(parent_dir)
     if root_dir ==# ''
@@ -58,7 +58,7 @@ function! s:entrypoint_for(file_path) abort
 endfunction
 
 function! crystal_lang#tool(name, file, pos, option_str) abort
-    let entrypoint = s:entrypoint_for(a:file)
+    let entrypoint = crystal_lang#entrypoint_for(a:file)
     let cmd = printf(
                 \   '%s tool %s --no-color %s --cursor %s:%d:%d %s',
                 \   g:crystal_compiler_command,
