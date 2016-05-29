@@ -59,7 +59,7 @@ nnoremap <Plug>(crystal-format) :<C-u>CrystalFormat<CR>
 
 augroup plugin-ft-crystal
     autocmd!
-    autocmd BufWritePre <buffer> if &ft ==# 'crystal' && g:crystal_auto_format | CrystalFormat | endif
+    autocmd BufWritePre <buffer> if g:crystal_auto_format | CrystalFormat | endif
 augroup END
 
 if get(g:, 'crystal_define_mappings', 1)
