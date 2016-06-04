@@ -48,7 +48,7 @@ It runs spec for current buffer.
 1. When current buffer is a spec source, `:CrystalSpecRunCurrent` runs the spec under the cursor.  You should execute this command after moving cursor to `it ... do` line or `describe ... do` line.
 2. When current buffer is not a spec source, `:CrystalSpecRunCurrent` finds corresponding spec source and runs all specs in the source.
 
-If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsa`.
+If you don't set `g:crystal_define_mappings` to 0, you can use this feature with mapping `gsc`.
 
 ## Formatter Integration
 
