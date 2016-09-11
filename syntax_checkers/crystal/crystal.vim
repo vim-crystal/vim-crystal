@@ -19,7 +19,7 @@ function! SyntaxCheckers_crystal_crystal_GetLocList() dict
     let entrypoint = crystal_lang#entrypoint_for(file)
     let makeprg = self.makeprgBuild({
                 \   'args': 'run --no-codegen --no-color',
-                \   'post_args': entrypoint
+                \   'post_args': entrypoint ==# file ? '' : entrypoint
                 \ })
     let errorformat =
                 \ '%ESyntax error in line %l: %m,'.
