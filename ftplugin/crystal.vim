@@ -30,6 +30,9 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal suffixesadd=.cr
 
+setlocal expandtab
+setlocal shiftwidth=2
+
 " Set format for quickfix window
 setlocal errorformat=
   \%ESyntax\ error\ in\ line\ %l:\ %m,
