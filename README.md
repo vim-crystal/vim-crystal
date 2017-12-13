@@ -19,6 +19,13 @@ This is filetype support for [Crystal programming language](http://crystal-lang.
 
 Please copy `autoload`, `ftdetect`, `ftplugin`, `indent`, `plugin` and `syntax` directories into your `~/.vim` (or `~/vimfiles` in Windows) directory.
 
+```
+$ cp -R autoload ftdetect ftplugin indent plugin syntax ~/.vim/
+
+$ # If you use vim-syntastic
+$ cp -R syntax_checkers ~/.vim/
+```
+
 If you use Vim8, `:packadd` is available to install. Please see `:help packages` for more detail.
 
 Otherwise, please use your favorite plugin manager like [vim-plug](https://github.com/junegunn/vim-plug).
