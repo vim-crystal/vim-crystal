@@ -1,7 +1,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:V = vital#of('crystal')
+let s:V = vital#crystal#new()
 let s:P = s:V.import('Process')
 let s:J = s:V.import('Web.JSON')
 let s:C = s:V.import('ColorEcho')
@@ -147,7 +147,6 @@ endfunction
 
 function! crystal_lang#complete(findstart, base) abort
     if a:findstart
-        echom 'find start'
         return s:find_completion_start()
     endif
 
