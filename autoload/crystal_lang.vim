@@ -278,14 +278,23 @@ function! crystal_lang#format_string(code, ...) abort
     return output
 endfunction
 
-function! crystal_lang#format(option_str) abort
+" crystal_lang#format(option_str [, on_save])
+function! crystal_lang#format(option_str, ...) abort
     if !executable(g:crystal_compiler_command)
         " Finish command silently
         return
     endif
 
-    let formatted = crystal_lang#format_string(join(getline(1, '$'), "\n"), a:option_str)
-    let formatted = substitute(formatted, '\n$', '', '')
+    let on_save = a:0 > 0 ? a:1 : 0
+
+    let before = join(getline(1, '$'), "\n")
+    let formatted = crystal_lang#format_string(before, a:option_str)
+    if !on_save
+        let after = substitute(formatted, '\n$', '', '')
+        if before ==# after
+            return
+        endif
+    endif
 
     let view_save = winsaveview()
     let pos_save = getpos('.')
