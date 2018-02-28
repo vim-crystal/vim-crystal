@@ -1,6 +1,6 @@
 " Language: Crystal
 " Based on Ruby syntax highlight
-" which is made by Mirko Nasato and Doug Kearns
+" which was made by Mirko Nasato and Doug Kearns
 " ---------------------------------------------
 
 if exists('b:current_syntax')
@@ -127,7 +127,7 @@ syn region crystalString matchgroup=crystalStringDelimiter start="\"" end="\"" s
 syn region crystalString matchgroup=crystalStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@crystalStringSpecial fold
 
 " Character
-syn match crystalCharLiteral "'\%([^\\]\|\\[abefnrstv'\\]\|\\\o\{1,3}\|\\x\x\{1,2}\|\\u\x\{4}\)'" contained display
+syn match crystalCharLiteral "'\%([^\\]\|\\[abefnrstv'\\]\|\\\o\{1,3}\|\\x\x\{1,2}\|\\u\x\{4}\)'" display
 
 " Generalized Single Quoted String, Symbol and Array of Strings
 syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
