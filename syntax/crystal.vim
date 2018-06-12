@@ -272,7 +272,7 @@ syn match crystalLinkAttr "]" contained containedin=crystalLinkAttrRegion displa
 if !exists('g:crystal_no_special_methods')
   syn keyword crystalAccess    protected private
   " attr is a common variable name
-  syn keyword crystalAttribute getter setter property abstract
+  syn keyword crystalAttribute getter setter property class_getter class_setter class_property abstract
   syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!" display
   syn keyword crystalException raise
   " false positive with 'include?'
