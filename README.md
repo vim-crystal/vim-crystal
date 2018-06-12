@@ -80,7 +80,7 @@ When you set `g:crystal_auto_format` to `1`, current buffer is automatically for
 
 ### `:CrystalDef` (mapping to `gd`)
 
-It makes cursor jump to the definition of name under the curosr.  This command uses `crystal tool implementations`.
+It makes cursor jump to the definition of name under the cursor.  This command uses `crystal tool implementations`.
 
 ![screenshort](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/jump-to-definition.gif)
 
