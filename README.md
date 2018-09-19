@@ -100,6 +100,15 @@ It shows types hierarchy of current code.
 
 ![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/show-hierarchy.gif)
 
+### `:CrystalImpl`
+
+It shows how the identifier under the cursor is implemented. For example, when the cursor is on some
+property of an object instance, `:CrystalImpl` would report where the property is defined with
+`property` macro.
+
+### `:CrystalExpand`
+
+It expands macro invocation under the cursor.
 
 
 ## Completion
