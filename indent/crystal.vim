@@ -47,8 +47,8 @@ let s:skip_expr =
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:crystal_indent_keywords =
-      \ '^\s*\zs\<\%(module\|\%(abstract\)\=\s*\%(class\|struct\)\|enum\|if\|for\|macro' .
-      \ '\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|lib' .
+      \ '^\s*\zs\<\%(module\|\%(abstract\|private\|public\)\=\s*\%(class\|struct\)\|enum\|if\|for' .
+      \ '\|macro\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|lib' .
       \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
