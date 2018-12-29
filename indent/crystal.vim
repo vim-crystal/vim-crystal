@@ -64,7 +64,7 @@ let s:crystal_deindent_keywords =
 let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\|lib\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(module\|\%(abstract\)\=\s*\%(class\|struct\)\|enum\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
+      \ '\<\%(module\|\%(private\s\+\)\%(abstract\s\+\)\=\%(class\|struct\)\|enum\|macro\|if\|for\|while\|until\|case\|unless\|begin\|lib' .
       \ '\|\%(protected\|private\)\=\s*def\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
