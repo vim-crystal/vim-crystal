@@ -180,7 +180,7 @@ end
 
 syn match crystalAliasDeclaration    "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable nextgroup=crystalAliasDeclaration2 skipwhite
 syn match crystalAliasDeclaration2   "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable
-syn match crystalMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=crystalFunction,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable
+syn match crystalMethodDeclaration   "[^[:space:];#(]\+"	 contained contains=crystalConstant,crystalFunction,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable
 syn match crystalFunctionDeclaration "[^[:space:];#(=]\+"	 contained contains=crystalFunction
 syn match crystalTypeDeclaration     "[^[:space:];#=]\+"	 contained contains=crystalTypeName
 syn match crystalClassDeclaration    "[^[:space:];#<]\+"	 contained contains=crystalClassName,crystalOperator
