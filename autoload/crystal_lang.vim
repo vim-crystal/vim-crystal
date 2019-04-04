@@ -51,9 +51,9 @@ function! crystal_lang#entrypoint_for(file_path) abort
         return a:file_path
     endif
 
-    let spec_for_file = get(b:, 'crystal_spec_file', get(g:, 'crystal_spec_file', ''))
-    if spec_for_file !=# ''
-      let require_spec_str = './' . spec_for_file
+    let required_spec_path = get(b:, 'crystal_required_spec_path', get(g:, 'crystal_required_spec_path', ''))
+    if required_spec_path !=# ''
+      let require_spec_str = './' . required_spec_path
     else
       let require_spec_str = './spec/**'
     endif
