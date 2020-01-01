@@ -7,6 +7,32 @@ if exists('b:current_syntax')
   finish
 endif
 
+if has("folding") && exists("crystal_fold")
+  setlocal foldmethod=syntax
+endif
+
+let s:foldable_groups = split(
+      \	  get(
+      \	    b:,
+      \	    'crystal_foldable_groups',
+      \	    get(g:, 'crystal_foldable_groups', 'ALL')
+      \	  )
+      \	)
+
+function! s:foldable(...) abort
+  if index(s:foldable_groups, 'ALL') > -1
+    return 1
+  endif
+
+  for l:i in a:000
+    if index(s:foldable_groups, l:i) > -1
+      return 1
+    endif
+  endfor
+
+  return 0
+endfunction
+
 syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
 
 if exists('g:crystal_space_errors')
@@ -100,7 +126,12 @@ syn match  crystalSymbol		"\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
 syn match  crystalSymbol		"[]})\"':]\@<!\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="he=e-1
 syn match  crystalSymbol		"\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
 syn match  crystalSymbol		"[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="hs=s+1,he=e-1
-syn region crystalSymbol		start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial fold
+
+if s:foldable(":")
+  syn region crystalSymbol		start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial fold
+else
+  syn region crystalSymbol  start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial
+endif
 
 syn match  crystalBlockParameter	  "\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" contained
 syn region crystalBlockParameterList start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=crystalBlockParameter
@@ -118,45 +149,87 @@ syn match crystalPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(STDERR\
 syn match crystalPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(crystal_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
 
 " Normal Regular Expression
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial fold
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial fold
+if s:foldable("/")
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial fold
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial fold
+else
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
+endif
 
 " Generalized Regular Expression
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@crystalRegexpSpecial fold
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"				 end="}[iomxneus]*"   skip="\\\\\|\\}"	 contains=@crystalRegexpSpecial fold
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"				 end=">[iomxneus]*"   skip="\\\\\|\\>"	 contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape fold
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\["				 end="\][iomxneus]*"  skip="\\\\\|\\\]"	 contains=@crystalRegexpSpecial fold
-syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("				 end=")[iomxneus]*"   skip="\\\\\|\\)"	 contains=@crystalRegexpSpecial fold
+if s:foldable("%")
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@crystalRegexpSpecial fold
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"				 end="}[iomxneus]*"   skip="\\\\\|\\}"	 contains=@crystalRegexpSpecial fold
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"				 end=">[iomxneus]*"   skip="\\\\\|\\>"	 contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape fold
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\["				 end="\][iomxneus]*"  skip="\\\\\|\\\]"	 contains=@crystalRegexpSpecial fold
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("				 end=")[iomxneus]*"   skip="\\\\\|\\)"	 contains=@crystalRegexpSpecial fold
+else
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@crystalRegexpSpecial
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"     end="}[iomxneus]*"   skip="\\\\\|\\}"  contains=@crystalRegexpSpecial
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"     end=">[iomxneus]*"   skip="\\\\\|\\>"  contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\["     end="\][iomxneus]*"  skip="\\\\\|\\\]"  contains=@crystalRegexpSpecial
+  syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("     end=")[iomxneus]*"   skip="\\\\\|\\)"  contains=@crystalRegexpSpecial
+endif
 
 " Normal String and Shell Command Output
-syn region crystalString matchgroup=crystalStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial,@Spell fold
-syn region crystalString matchgroup=crystalStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@crystalStringSpecial fold
+if s:foldable("%")
+  syn region crystalString matchgroup=crystalStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial,@Spell fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="`"	end="`"  skip="\\\\\|\\`"  contains=@crystalStringSpecial fold
+else
+  syn region crystalString matchgroup=crystalStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial,@Spell
+  syn region crystalString matchgroup=crystalStringDelimiter start="`" end="`"  skip="\\\\\|\\`"  contains=@crystalStringSpecial
+endif
 
 " Character
 syn match crystalCharLiteral "'\%([^\\]\|\\[abefnrstv'\\]\|\\\o\{1,3}\|\\x\x\{1,2}\|\\u\x\{4}\)'" contains=crystalStringEscape display
 
 " Generalized Single Quoted String, Symbol and Array of Strings
-syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]{"				   end="}"   skip="\\\\\|\\}"	fold contains=crystalNestedCurlyBraces,crystalDelimEscape
-syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]<"				   end=">"   skip="\\\\\|\\>"	fold contains=crystalNestedAngleBrackets,crystalDelimEscape
-syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\["				   end="\]"  skip="\\\\\|\\\]"	fold contains=crystalNestedSquareBrackets,crystalDelimEscape
-syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]("				   end=")"   skip="\\\\\|\\)"	fold contains=crystalNestedParentheses,crystalDelimEscape
-syn region crystalString matchgroup=crystalStringDelimiter start="%q "				   end=" "   skip="\\\\\|\\)"	fold
-syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)"   end="\z1" skip="\\\\\|\\\z1" fold
-syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s{"				   end="}"   skip="\\\\\|\\}"	fold contains=crystalNestedCurlyBraces,crystalDelimEscape
-syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s<"				   end=">"   skip="\\\\\|\\>"	fold contains=crystalNestedAngleBrackets,crystalDelimEscape
-syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\["				   end="\]"  skip="\\\\\|\\\]"	fold contains=crystalNestedSquareBrackets,crystalDelimEscape
-syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s("				   end=")"   skip="\\\\\|\\)"	fold contains=crystalNestedParentheses,crystalDelimEscape
+if s:foldable("%")
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]{"				   end="}"   skip="\\\\\|\\}"	fold contains=crystalNestedCurlyBraces,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]<"				   end=">"   skip="\\\\\|\\>"	fold contains=crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\["				   end="\]"  skip="\\\\\|\\\]"	fold contains=crystalNestedSquareBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]("				   end=")"   skip="\\\\\|\\)"	fold contains=crystalNestedParentheses,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%q "				   end=" "   skip="\\\\\|\\)"	fold
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)"   end="\z1" skip="\\\\\|\\\z1" fold
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s{"				   end="}"   skip="\\\\\|\\}"	fold contains=crystalNestedCurlyBraces,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s<"				   end=">"   skip="\\\\\|\\>"	fold contains=crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\["				   end="\]"  skip="\\\\\|\\\]"	fold contains=crystalNestedSquareBrackets,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s("				   end=")"   skip="\\\\\|\\)"	fold contains=crystalNestedParentheses,crystalDelimEscape
+else
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1"
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]{"       end="}"   skip="\\\\\|\\}" contains=crystalNestedCurlyBraces,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]<"       end=">"   skip="\\\\\|\\>" contains=crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\["       end="\]"  skip="\\\\\|\\\]" contains=crystalNestedSquareBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]("       end=")"   skip="\\\\\|\\)" contains=crystalNestedParentheses,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%q "       end=" "   skip="\\\\\|\\)"
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)"   end="\z1" skip="\\\\\|\\\z1"
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s{"       end="}"   skip="\\\\\|\\}" contains=crystalNestedCurlyBraces,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s<"       end=">"   skip="\\\\\|\\>" contains=crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\["       end="\]"  skip="\\\\\|\\\]" contains=crystalNestedSquareBrackets,crystalDelimEscape
+  syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s("       end=")"   skip="\\\\\|\\)" contains=crystalNestedParentheses,crystalDelimEscape
+endif
 
 " Generalized Double Quoted String and Array of Strings and Shell Command Output
 " Note: %= is not matched here as the beginning of a double quoted string
-syn region crystalString matchgroup=crystalStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	    end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\={"				    end="}"   skip="\\\\\|\\}"	 contains=@crystalStringSpecial,crystalNestedCurlyBraces,crystalDelimEscape    fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=<"				    end=">"   skip="\\\\\|\\>"	 contains=@crystalStringSpecial,crystalNestedAngleBrackets,crystalDelimEscape  fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@crystalStringSpecial,crystalNestedSquareBrackets,crystalDelimEscape fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=("				    end=")"   skip="\\\\\|\\)"	 contains=@crystalStringSpecial,crystalNestedParentheses,crystalDelimEscape    fold
-syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx] "				    end=" "   skip="\\\\\|\\)"   contains=@crystalStringSpecial fold
+if s:foldable("%")
+  syn region crystalString matchgroup=crystalStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"	    end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\={"				    end="}"   skip="\\\\\|\\}"	 contains=@crystalStringSpecial,crystalNestedCurlyBraces,crystalDelimEscape    fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=<"				    end=">"   skip="\\\\\|\\>"	 contains=@crystalStringSpecial,crystalNestedAngleBrackets,crystalDelimEscape  fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=\["				    end="\]"  skip="\\\\\|\\\]"	 contains=@crystalStringSpecial,crystalNestedSquareBrackets,crystalDelimEscape fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=("				    end=")"   skip="\\\\\|\\)"	 contains=@crystalStringSpecial,crystalNestedParentheses,crystalDelimEscape    fold
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx] "				    end=" "   skip="\\\\\|\\)"   contains=@crystalStringSpecial fold
+else
+  syn region crystalString matchgroup=crystalStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)"     end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\={"        end="}"   skip="\\\\\|\\}" contains=@crystalStringSpecial,crystalNestedCurlyBraces,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=<"        end=">"   skip="\\\\\|\\>" contains=@crystalStringSpecial,crystalNestedAngleBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=\["        end="\]"  skip="\\\\\|\\\]" contains=@crystalStringSpecial,crystalNestedSquareBrackets,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=("        end=")"   skip="\\\\\|\\)" contains=@crystalStringSpecial,crystalNestedParentheses,crystalDelimEscape
+  syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx] "        end=" "   skip="\\\\\|\\)"  contains=@crystalStringSpecial
+endif
 
 " Here Document
 syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+	 end=+$+ oneline contains=ALLBUT,@crystalNotTop
@@ -164,15 +237,27 @@ syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(cl
 syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs'\%([^']*\)'+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
 syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs`\%([^`]*\)`+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
 
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc			fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
+if s:foldable("<<")
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc                       fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2	matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial fold keepend
 
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3    matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart		     fold keepend
-syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3    matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart                       fold keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial fold keepend
+else
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial  keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial  keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc                        keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial  keepend
+
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3    matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial  keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial  keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-'\z([^']*\)'\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart                        keepend
+  syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3  matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial  keepend
+endif
 
 if exists('g:main_syntax') && g:main_syntax ==# 'ecrystal'
   let b:crystal_no_expensive = 1
@@ -219,27 +304,89 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalMacro  "\<macro\>" nextgroup=crystalMacroDeclaration skipwhite skipnl
   syn match crystalEnum	  "\<enum\>" nextgroup=crystalEnumDeclaration skipwhite skipnl
 
-  syn region crystalMethodBlock start="\<\%(def\|macro\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<class\>"	matchgroup=crystalClass  end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<module\>" matchgroup=crystalModule end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<struct\>" matchgroup=crystalStruct end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<lib\>" matchgroup=crystalLib    end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
-  syn region crystalBlock	     start="\<enum\>" matchgroup=crystalEnum    end="\<end\>"		       contains=ALLBUT,@crystalNotTop fold
+  if s:foldable("def")
+    syn region crystalMethodBlock start="\<\%(def\|macro\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalMethodBlock start="\<\%(def\|macro\)\>"	matchgroup=crystalDefine end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("class")
+    syn region crystalBlock	start="\<class\>" matchgroup=crystalClass	end="\<end\>"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlock	start="\<class\>" matchgroup=crystalClass	end="\<end\>"	contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("module")
+    syn region crystalBlock	start="\<module\>" matchgroup=crystalModule end="\<end\>"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlock	start="\<module\>" matchgroup=crystalModule end="\<end\>"	contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("struct")
+    syn region crystalBlock	start="\<struct\>" matchgroup=crystalStruct end="\<end\>"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlock	start="\<struct\>" matchgroup=crystalStruct end="\<end\>"	contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("lib")
+    syn region crystalBlock	start="\<lib\>" matchgroup=crystalLib	end="\<end\>"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlock	start="\<lib\>" matchgroup=crystalLib	end="\<end\>"	contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("enum")
+    syn region crystalBlock	start="\<enum\>" matchgroup=crystalEnum	end="\<end\>"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlock	start="\<enum\>" matchgroup=crystalEnum	end="\<end\>"	contains=ALLBUT,@crystalNotTop
+  endif
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>"    display
   syn match crystalRepeatModifier	     "\<\%(while\|until\)\>" display
 
-  syn region crystalDoBlock      matchgroup=crystalControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@crystalNotTop fold
+  if s:foldable("do")
+    syn region crystalDoBlock      matchgroup=crystalControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalDoBlock      matchgroup=crystalControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@crystalNotTop
+  endif
+
   " curly bracket block or hash literal
-  syn region crystalCurlyBlock	matchgroup=crystalCurlyBlockDelimiter  start="{" end="}"				contains=ALLBUT,@crystalNotTop fold
-  syn region crystalArrayLiteral	matchgroup=crystalArrayDelimiter	    start="\%(\w\|[\]})]\)\@<!\[" end="]"	contains=ALLBUT,@crystalNotTop fold
+  if s:foldable("{")
+    syn region crystalCurlyBlock	matchgroup=crystalCurlyBlockDelimiter  start="{" end="}"				contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalCurlyBlock matchgroup=crystalCurlyBlockDelimiter  start="{" end="}"    contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("[")
+    syn region crystalArrayLiteral	matchgroup=crystalArrayDelimiter	    start="\%(\w\|[\]})]\)\@<!\[" end="]"	contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalArrayLiteral matchgroup=crystalArrayDelimiter     start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@crystalNotTop
+  endif
 
   " statements without 'do'
-  syn region crystalBlockExpression  matchgroup=crystalControl     start="\<begin\>"  end="\<end\>" contains=ALLBUT,@crystalNotTop fold
-  syn region crystalCaseExpression   matchgroup=crystalConditional start="\<case\>"   end="\<end\>" contains=ALLBUT,@crystalNotTop fold
-  syn region crystalSelectExpression matchgroup=crystalConditional start="\<select\>" end="\<end\>" contains=ALLBUT,@crystalNotTop fold
-  syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  if s:foldable("begin")
+    syn region crystalBlockExpression  matchgroup=crystalControl     start="\<begin\>"  end="\<end\>" contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalBlockExpression  matchgroup=crystalControl     start="\<begin\>"  end="\<end\>" contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("case")
+    syn region crystalCaseExpression   matchgroup=crystalConditional start="\<case\>"   end="\<end\>" contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalCaseExpression   matchgroup=crystalConditional start="\<case\>"   end="\<end\>" contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("select")
+    syn region crystalSelectExpression matchgroup=crystalConditional start="\<select\>" end="\<end\>" contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalSelectExpression matchgroup=crystalConditional start="\<select\>" end="\<end\>" contains=ALLBUT,@crystalNotTop
+  endif
+
+  if s:foldable("if")
+    syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop fold
+  else
+    syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop
+  endif
 
   syn match crystalConditional "\<\%(then\|else\|when\)\>[?!]\@!"  contained containedin=crystalCaseExpression
   syn match crystalConditional "\<\%(when\|else\)\>[?!]\@!"        contained containedin=crystalSelectExpression
@@ -250,7 +397,12 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
 
   " statements with optional 'do'
   syn region crystalOptionalDoLine   matchgroup=crystalRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@crystalNotTop
-  syn region crystalRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalRepeat end="\<end\>" contains=ALLBUT,@crystalNotTop nextgroup=crystalOptionalDoLine fold
+
+  if s:foldable("for")
+    syn region crystalRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalRepeat end="\<end\>" contains=ALLBUT,@crystalNotTop nextgroup=crystalOptionalDoLine fold
+  else
+    syn region crystalRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=crystalRepeat end="\<end\>" contains=ALLBUT,@crystalNotTop nextgroup=crystalOptionalDoLine
+  endif
 
   if !exists('g:crystal_minlines')
     let g:crystal_minlines = 500
@@ -300,8 +452,10 @@ syn match crystalMacro "\%({%\|%}\|{{\|}}\)" nextgroup=crystalMacroRegion skipwh
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo	  FIXME NOTE TODO OPTIMIZE XXX todo contained
 syn match   crystalComment   "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
-if !exists('g:crystal_no_comment_fold')
+if !exists('g:crystal_no_comment_fold') && s:foldable("#")
   syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent fold keepend
+else
+  syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent keepend
 endif
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
