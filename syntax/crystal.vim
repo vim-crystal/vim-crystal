@@ -14,7 +14,7 @@ if exists('g:main_syntax') && g:main_syntax ==# 'ecrystal'
 end
 
 " Folding Config
-if has('folding') && exists('crystal_fold')
+if has('folding') && exists('g:crystal_fold')
   setlocal foldmethod=syntax
 endif
 
@@ -354,11 +354,8 @@ syn match crystalMacro "\%({%\|%}\|{{\|}}\)" nextgroup=crystalMacroRegion skipwh
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo	  FIXME NOTE TODO OPTIMIZE XXX todo contained
 syn match   crystalComment   "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
-if !exists('g:crystal_no_comment_fold') && s:foldable('#')
-  syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent fold keepend
-else
-  syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent keepend
-endif
+
+SynFold '#' syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent keepend
 
 " Note: this is a hack to prevent 'keywords' being highlighted as such when called as methods with an explicit receiver
 syn match crystalKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(alias\|begin\|break\|case\|class\|def\|defined\|do\|else\|select\)\>"		  transparent contains=NONE
