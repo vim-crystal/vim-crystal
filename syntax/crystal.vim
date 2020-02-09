@@ -119,12 +119,12 @@ syn cluster crystalRegexpSpecial	 contains=crystalInterpolation,crystalNoInterpo
 
 " Numbers and ASCII Codes
 syn match crystalASCIICode	"\%(\w\|[]})\"'/]\)\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\=\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)\)"
-syn match crystalInteger	"\<0x\x\+\%(_\x\+\)*\%(_*[ufi]\%(32\|64\)\)\=\>" display
-syn match crystalInteger	"\<[1-9]\d*\%(_\d\+\)*\%(_*[ufi]\%(32\|64\)\)\=\>" display
-syn match crystalInteger	"\<0o\o\+\%(_\o\+\)*\%(_*[ufi]\%(32\|64\)\)\=\>" display
-syn match crystalInteger	"\<0b[01]\+\%(_[01]\+\)*\%(_*[ufi]\%(32\|64\)\)\=\>" display
-syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\.\d\+\%(_\d\+\)*\%(_*f\%(32\|64\)\)\=\>" display
-syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\%(_\d\+\)*\)\%(\.\d\+\%(_\d\+\)*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\%(_*f\%(32\|64\)\)\=\>" display
+syn match crystalInteger	"\<0x\x[[:xdigit:]_]*\%(_*[ufi]\%(32\|64\)\)\=\>" display
+syn match crystalInteger	"\<0o\o[0-7_]*\%(_*[ufi]\%(32\|64\)\)\=\>" display
+syn match crystalInteger	"\<0b[01][01_]*\%(_*[ufi]\%(32\|64\)\)\=\>" display
+syn match crystalInteger	"\<[1-9][[:digit:]_]*\%(_*[ufi]\%(32\|64\)\)\=\>" display
+syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<[1-9][[:digit:]_]*\.\d[[:digit:]_]*\%(_*f\%(32\|64\)\)\=\>" display
+syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<[1-9][[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\%(_*f\%(32\|64\)\)\=\>" display
 
 " Identifiers
 syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
