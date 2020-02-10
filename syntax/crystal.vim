@@ -124,7 +124,7 @@ syn match crystalInteger	"\<0o\o[0-7_]*\%([ui]\%(8\|16\|32\|64\|128\)\|f\%(32\|6
 syn match crystalInteger	"\<0b[01][01_]*\%([ui]\%(8\|16\|32\|64\|128\)\|f\%(32\|64\)\)\=\>" display
 syn match crystalInteger	"\<\%(0_*\|[1-9][[:digit:]_]*\)\%([ui]\%(8\|16\|32\|64\|128\)\|f\%(32\|64\)\)\=\>" display
 syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<[1-9][[:digit:]_]*\.\d[[:digit:]_]*\%(f\%(32\|64\)\)\=\>" display
-syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<[1-9][[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=\d\+\%(_\d\+\)*\)\%(_*f\%(32\|64\)\)\=\>" display
+syn match crystalFloat	"\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<[1-9][[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=[[:digit:]_]\+\)\%(f\%(32\|64\)\)\=\>" display
 
 " Identifiers
 syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
