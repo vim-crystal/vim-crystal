@@ -1,6 +1,6 @@
 Filetype Support for [Crystal](http://crystal-lang.org/)
 ========================================================
-[![Build Status](https://travis-ci.org/rhysd/vim-crystal.svg?branch=travis)](https://travis-ci.org/rhysd/vim-crystal)
+[![CI](https://github.com/rhysd/vim-crystal/workflows/CI/badge.svg?event=push)](https://github.com/rhysd/vim-crystal/actions?query=CI+branch%3Amaster)
 
 This is filetype support for [Crystal programming language](http://crystal-lang.org/).
 
