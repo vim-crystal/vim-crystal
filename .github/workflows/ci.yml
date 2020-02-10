@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  vint:
+    name: Linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - run: pip install vim-vint
+      - name: Run vint
+        run: vint --warning --verbose --enable-neovim $(git ls-files | grep -e '.vim$' | grep -v vital)

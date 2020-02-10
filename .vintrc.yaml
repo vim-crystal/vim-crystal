@@ -1,6 +1,6 @@
 cmdargs:
-    color: true
+  color: true
 
 policies:
-    ProhibitImplicitScopeVariable:
-        enabled: false
+  ProhibitImplicitScopeVariable:
+    enabled: false
