@@ -124,9 +124,9 @@ syn match crystalASCIICode "\%(\w\|[]})\"'/]\)\@<!\%(?\%(\\M-\\C-\|\\C-\\M-\|\\M
 syn match crystalInteger   "\<0x[[:xdigit:]_]\+\%([ui]\%(8\|16\|32\|64\|128\)\|f\%(32\|64\)\)\=\>" display
 syn match crystalInteger   "\<0o[0-7_]\+\%([ui]\%(8\|16\|32\|64\|128\)\)\=\>" display
 syn match crystalInteger   "\<0b[01_]\+\%([ui]\%(8\|16\|32\|64\|128\)\)\=\>" display
-syn match crystalInteger   "\<\d[[:digit:]_]*\%([ui]\%(8\|16\|32\|64\|128\)\|[fF]\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
-syn match crystalFloat     "\<\d[[:digit:]_]*\.\d[[:digit:]_]*\%([fF]\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
-syn match crystalFloat     "\<\d[[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=[[:digit:]_]\+\)\%([fF]\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
+syn match crystalInteger   "\<\d[[:digit:]_]*\%([ui]\%(8\|16\|32\|64\|128\)\|f\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
+syn match crystalFloat     "\<\d[[:digit:]_]*\.\d[[:digit:]_]*\%(f\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
+syn match crystalFloat     "\<\d[[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=[[:digit:]_]\+\)\%(f\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
 " Note: 042 is invalid but 0, 0_, 0_u8 and 0_1 are valid (#73)
 syn match crystalInvalidInteger "\.\@<!\<0\d\+\>" contained containedin=crystalFloat,crystalInteger display
 
