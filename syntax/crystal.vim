@@ -354,6 +354,9 @@ if !exists('g:crystal_no_special_methods')
   syn match   crystalRecord    "\<record\%(\s\+\u\w*\)\@=" display
 endif
 
+" This definition must be put after crystalNestedCurlyBraces to give higher priority
+syn match  crystalMacro       "\%({%\|%}\|{{\|}}\)" display contained containedin=crystalMacroRegion
+
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo      FIXME NOTE TODO OPTIMIZE XXX todo contained
@@ -410,6 +413,7 @@ hi def link crystalClassName            crystalConstant
 hi def link crystalModuleName           crystalConstant
 hi def link crystalStructName           crystalConstant
 hi def link crystalLibName              crystalConstant
+hi def link crystalMacro                crystalDefine
 hi def link crystalEnumName             crystalConstant
 hi def link crystalGlobalVariable       crystalIdentifier
 hi def link crystalBlockParameter       crystalIdentifier
