@@ -59,6 +59,10 @@ com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 " Not-Top Cluster
 syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
 
+" Macro
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
+
 " Whitespace Errors
 if exists('g:crystal_space_errors')
   if !exists('g:crystal_no_trail_space_error')
@@ -316,7 +320,7 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   exec 'syn sync minlines=' . g:crystal_minlines
 
 else
-  " Non-expencive mode
+  " Non-expensive mode
   syn match crystalControl "\<def\>[?!]\@!"    nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match crystalControl "\<fun\>[?!]\@!"    nextgroup=crystalFunctionDeclaration skipwhite skipnl
   syn match crystalControl "\<class\>[?!]\@!"  nextgroup=crystalClassDeclaration  skipwhite skipnl
@@ -350,11 +354,6 @@ if !exists('g:crystal_no_special_methods')
   syn match   crystalRecord    "\<record\%(\s\+\u\w*\)\@=" display
 endif
 
-" Macro
-syn region crystalMacroRegion start="{%" end="%}" contains=ALLBUT,@crystalNotTop transparent display oneline
-syn region crystalMacroRegion start="{{" end="}}" contains=ALLBUT,@crystalNotTop transparent display oneline
-syn match  crystalMacro       "\%({%\|%}\|{{\|}}\)" nextgroup=crystalMacroRegion skipwhite display
-
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo      FIXME NOTE TODO OPTIMIZE XXX todo contained
@@ -381,7 +380,6 @@ hi def link crystalClass               crystalDefine
 hi def link crystalModule              crystalDefine
 hi def link crystalStruct              crystalDefine
 hi def link crystalLib                 crystalDefine
-hi def link crystalMacro               crystalDefine
 hi def link crystalEnum                crystalDefine
 hi def link crystalMethodExceptional   crystalDefine
 hi def link crystalDefine              Define
@@ -447,6 +445,7 @@ hi def link crystalRegexpSpecial        Special
 hi def link crystalRegexpComment        Comment
 hi def link crystalRegexp               crystalString
 hi def link crystalMacro                PreProc
+hi def link crystalMacroDelim           crystalMacro
 hi def link crystalLinkAttr             crystalMacro
 hi def link crystalError                Error
 hi def link crystalInvalidVariable      crystalError
