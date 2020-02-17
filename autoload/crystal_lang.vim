@@ -319,12 +319,16 @@ endfunction
 
 " crystal_lang#format(option_str [, on_save])
 function! crystal_lang#format(option_str, ...) abort
-    if !executable(g:crystal_compiler_command)
-        " Finish command silently
-        return
-    endif
-
     let on_save = a:0 > 0 ? a:1 : 0
+
+    if !executable(g:crystal_compiler_command)
+        if on_save
+            " Finish command silently on save
+            return
+        else
+            throw 'vim-crystal: Command for formatting is not executable: ' . g:crystal_compiler_command
+        endif
+    endif
 
     let before = join(getline(1, '$'), "\n")
     let formatted = crystal_lang#format_string(before, a:option_str)
