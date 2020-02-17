@@ -5,6 +5,8 @@ let s:V = vital#crystal#new()
 let s:P = s:V.import('Process')
 let s:C = s:V.import('ColorEcho')
 
+let s:IS_WINDOWS = has('win32')
+
 if exists('*json_decode')
     function! s:decode_json(text) abort
         return json_decode(a:text)
@@ -297,14 +299,20 @@ function! crystal_lang#run_current_spec(...) abort
 endfunction
 
 function! crystal_lang#format_string(code, ...) abort
+    if s:IS_WINDOWS
+        let redirect = '2> nul'
+    else
+        let redirect = '2>/dev/null'
+    endif
     let cmd = printf(
-            \   '%s tool format --no-color %s -',
+            \   '%s tool format --no-color %s - %s',
             \   g:crystal_compiler_command,
-            \   get(a:, 1, '')
+            \   get(a:, 1, ''),
+            \   redirect,
             \ )
     let output = s:P.system(cmd, a:code)
     if s:P.get_last_status()
-        throw 'vim-crystal: Error on formatting: ' . output
+        throw 'vim-crystal: Error on formatting with command: ' . cmd
     endif
     return output
 endfunction
