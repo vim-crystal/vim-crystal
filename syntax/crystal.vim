@@ -59,10 +59,6 @@ com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 " Not-Top Cluster
 syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
 
-" Macro
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
-
 " Whitespace Errors
 if exists('g:crystal_space_errors')
   if !exists('g:crystal_no_trail_space_error')
@@ -354,8 +350,10 @@ if !exists('g:crystal_no_special_methods')
   syn match   crystalRecord    "\<record\%(\s\+\u\w*\)\@=" display
 endif
 
-" This definition must be put after crystalNestedCurlyBraces to give higher priority
-syn match  crystalMacro       "\%({%\|%}\|{{\|}}\)" display contained containedin=crystalMacroRegion
+" Macro
+" Note: This definition must be put after crystalNestedCurlyBraces to give higher priority
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=ALLBUT,@crystalNotTop containedin=ALL
 
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
@@ -413,7 +411,6 @@ hi def link crystalClassName            crystalConstant
 hi def link crystalModuleName           crystalConstant
 hi def link crystalStructName           crystalConstant
 hi def link crystalLibName              crystalConstant
-hi def link crystalMacro                crystalDefine
 hi def link crystalEnumName             crystalConstant
 hi def link crystalGlobalVariable       crystalIdentifier
 hi def link crystalBlockParameter       crystalIdentifier
