@@ -48,7 +48,7 @@ let s:skip_expr =
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:crystal_indent_keywords =
       \ '^\s*\zs\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\)' .
-      \ '\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue' .
+      \ '\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue\|union' .
       \ '\|\%(private\|protected\)\=\s*\%(def\|class\|struct\|module\|macro\|lib\|enum\)\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(if\|for\|while\|until\|case\|unless\|begin\):\@!\>' .
@@ -65,7 +65,7 @@ let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\)' .
-      \ '\|if\|for\|while\|until\|case\|unless\|begin' .
+      \ '\|if\|for\|while\|until\|case\|unless\|begin\|union' .
       \ '\|\%(private\|protected\)\=\s*\%(def\|lib\|enum\|macro\|module\)\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
