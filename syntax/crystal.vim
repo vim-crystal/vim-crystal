@@ -172,15 +172,15 @@ syn match crystalPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(STDERR\
 syn match crystalPredefinedConstant "\%(\%(\.\@<!\.\)\@<!\|::\)\_s*\zs\%(crystal_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
 
 " Normal Regular Expression
-SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
-SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[iomxneus]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
+SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[imx]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
+SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[imx]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
 
 " Generalized Regular Expression
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1[iomxneus]*" skip="\\\\\|\\\z1" contains=@crystalRegexpSpecial
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"  end="}[iomxneus]*"  skip="\\\\\|\\}"  contains=@crystalRegexpSpecial
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"  end=">[iomxneus]*"  skip="\\\\\|\\>"  contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\[" end="\][iomxneus]*" skip="\\\\\|\\\]" contains=@crystalRegexpSpecial
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("  end=")[iomxneus]*"  skip="\\\\\|\\)"  contains=@crystalRegexpSpecial
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"  end="}[imx]*"  skip="\\\\\|\\}"  contains=@crystalRegexpSpecial
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"  end=">[imx]*"  skip="\\\\\|\\>"  contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\[" end="\][imx]*" skip="\\\\\|\\\]" contains=@crystalRegexpSpecial
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("  end=")[imx]*"  skip="\\\\\|\\)"  contains=@crystalRegexpSpecial
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r|"  end="|[imx]*"  skip="\\\\\|\\|"  contains=@crystalRegexpSpecial
 
 " Normal String
 let s:spell_cluster = exists('crystal_spellcheck_strings') ? ',@Spell' : ''
