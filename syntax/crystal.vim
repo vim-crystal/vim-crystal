@@ -98,22 +98,22 @@ syn region crystalNestedAngleBrackets  matchgroup=crystalString start="<"  skip=
 syn region crystalNestedSquareBrackets matchgroup=crystalString start="\[" skip="\\\\\|\\\]" end="\]" transparent contained
 
 " These are mostly Oniguruma ready
-syn region crystalRegexpComment     matchgroup=crystalRegexpSpecial   start="(?#" skip="\\)" end=")" contained
-syn region crystalRegexpParens      matchgroup=crystalRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\)" end=")" contained transparent contains=@crystalRegexpSpecial
-syn region crystalRegexpBrackets    matchgroup=crystalRegexpCharClass start="\[\^\=" skip="\\\]" end="\]" contained transparent contains=crystalStringEscape,crystalRegexpEscape,crystalRegexpCharClass oneline
-syn match  crystalRegexpCharClass   "\\[DdHhSsWw]" contained display
-syn match  crystalRegexpCharClass   "\[:\^\=\%(alnum\|alpha\|ascii\|blank\|cntrl\|digit\|graph\|lower\|print\|punct\|space\|upper\|xdigit\):\]" contained
-syn match  crystalRegexpEscape      "\\[].*?+^$|\\/(){}[]" contained
-syn match  crystalRegexpQuantifier  "[*?+][?+]\=" contained display
-syn match  crystalRegexpQuantifier  "{\d\+\%(,\d*\)\=}?\=" contained display
-syn match  crystalRegexpAnchor      "[$^]\|\\[ABbGZz]" contained display
-syn match  crystalRegexpDot         "\." contained display
-syn match  crystalRegexpSpecial     "|"  contained display
-syn match  crystalRegexpSpecial     "\\[1-9]\d\=\d\@!" contained display
-syn match  crystalRegexpSpecial     "\\k<\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\=>" contained display
-syn match  crystalRegexpSpecial     "\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" contained display
-syn match  crystalRegexpSpecial     "\\g<\%([a-z_]\w*\|-\=\d\+\)>" contained display
-syn match  crystalRegexpSpecial     "\\g'\%([a-z_]\w*\|-\=\d\+\)'" contained display
+syn region crystalRegexpComment    matchgroup=crystalRegexpSpecial   start="(?#" skip="\\)" end=")" contained
+syn region crystalRegexpParens     matchgroup=crystalRegexpSpecial   start="(\(?:\|?<\=[=!]\|?>\|?<[a-z_]\w*>\|?[imx]*-[imx]*:\=\|\%(?#\)\@!\)" skip="\\)" end=")" contained transparent contains=@crystalRegexpSpecial
+syn region crystalRegexpBrackets   matchgroup=crystalRegexpCharClass start="\[\^\=" skip="\\\]" end="\]" contained transparent contains=crystalStringEscape,crystalRegexpEscape,crystalRegexpCharClass oneline
+syn match  crystalRegexpCharClass  "\\[DdHhSsWw]" contained display
+syn match  crystalRegexpCharClass  "\[:\^\=\%(alnum\|alpha\|ascii\|blank\|cntrl\|digit\|graph\|lower\|print\|punct\|space\|upper\|xdigit\):\]" contained
+syn match  crystalRegexpEscape     "\\[].*?+^$|\\/(){}[]" contained
+syn match  crystalRegexpQuantifier "[*?+][?+]\=" contained display
+syn match  crystalRegexpQuantifier "{\d\+\%(,\d*\)\=}?\=" contained display
+syn match  crystalRegexpAnchor     "[$^]\|\\[ABbGZz]" contained display
+syn match  crystalRegexpDot        "\." contained display
+syn match  crystalRegexpSpecial    "|"  contained display
+syn match  crystalRegexpSpecial    "\\[1-9]\d\=\d\@!" contained display
+syn match  crystalRegexpSpecial    "\\k<\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\=>" contained display
+syn match  crystalRegexpSpecial    "\\k'\%([a-z_]\w*\|-\=\d\+\)\%([+-]\d\+\)\='" contained display
+syn match  crystalRegexpSpecial    "\\g<\%([a-z_]\w*\|-\=\d\+\)>" contained display
+syn match  crystalRegexpSpecial    "\\g'\%([a-z_]\w*\|-\=\d\+\)'" contained display
 
 syn cluster crystalStringSpecial         contains=crystalInterpolation,crystalNoInterpolation,crystalStringEscape
 syn cluster crystalExtendedStringSpecial contains=@crystalStringSpecial,crystalNestedParentheses,crystalNestedCurlyBraces,crystalNestedAngleBrackets,crystalNestedSquareBrackets
@@ -134,25 +134,25 @@ syn match crystalInvalidInteger "\.\@<!\<0\d\+\>" contained containedin=crystalF
 syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
 syn match crystalBlockArgument         "&[_[:lower:]][_[:alnum:]]"          contains=NONE display transparent
 
-syn match  crystalTypeName          "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalClassName         "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalModuleName        "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalStructName        "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalLibName           "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalEnumName          "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
-syn match  crystalConstant          "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@="
-syn match  crystalClassVariable     "@@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
-syn match  crystalInstanceVariable  "@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
-syn match  crystalGlobalVariable    "$\%(\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\|-.\)"
-syn match  crystalFreshVariable     "\%(\h\|[^\x00-\x7F]\)\@<!%\%(\h\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
-syn match  crystalSymbol            "[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[][=?]\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
-syn match  crystalSymbol            "[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
-syn match  crystalSymbol            "[]})\"':]\@<!:\%(\$\|@@\=\)\=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"
-syn match  crystalSymbol            "[]})\"':]\@<!:\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\%([?!=]>\@!\)\="
-syn match  crystalSymbol            "\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
-syn match  crystalSymbol            "[]})\"':]\@<!\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="he=e-1
-syn match  crystalSymbol            "\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
-syn match  crystalSymbol            "[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="hs=s+1,he=e-1
+syn match  crystalTypeName         "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalClassName        "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalModuleName       "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalStructName       "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalLibName          "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalEnumName         "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@=" contained
+syn match  crystalConstant         "\%(\%([.@$]\@<!\.\)\@<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@="
+syn match  crystalClassVariable    "@@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
+syn match  crystalInstanceVariable "@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
+syn match  crystalGlobalVariable   "$\%(\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\|-.\)"
+syn match  crystalFreshVariable    "\%(\h\|[^\x00-\x7F]\)\@<!%\%(\h\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
+syn match  crystalSymbol           "[]})\"':]\@<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[][=?]\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
+syn match  crystalSymbol           "[]})\"':]\@<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
+syn match  crystalSymbol           "[]})\"':]\@<!:\%(\$\|@@\=\)\=\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*"
+syn match  crystalSymbol           "[]})\"':]\@<!:\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\%([?!=]>\@!\)\="
+syn match  crystalSymbol           "\%([{(,]\_s*\)\@<=\l\w*[!?]\=::\@!"he=e-1
+syn match  crystalSymbol           "[]})\"':]\@<!\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="he=e-1
+syn match  crystalSymbol           "\%([{(,]\_s*\)\@<=[[:space:],{]\l\w*[!?]\=::\@!"hs=s+1,he=e-1
+syn match  crystalSymbol           "[[:space:],{]\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*[!?]\=:\s\@="hs=s+1,he=e-1
 
 SynFold ':' syn region crystalSymbol start="[]})\"':]\@<!:\"" end="\"" skip="\\\\\|\\\"" contains=@crystalStringSpecial
 
@@ -287,7 +287,7 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>" display
-  syn match crystalRepeatModifier "\<\%(while\|until\)\>" display
+  syn match crystalRepeatModifier      "\<\%(while\|until\)\>" display
 
   SynFold 'do' syn region crystalDoBlock matchgroup=crystalControl start="\<do\>" end="\<end\>" contains=ALLBUT,@crystalNotTop
 
