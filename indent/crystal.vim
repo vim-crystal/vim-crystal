@@ -47,7 +47,7 @@ let s:skip_expr =
 
 " Regex used for words that, at the start of a line, add a level of indent.
 let s:crystal_indent_keywords =
-      \ '^\s*\zs\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\|def\)' .
+      \ '^\s*\zs\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\)' .
       \ '\|if\|for\|while\|until\|else\|elsif\|case\|when\|unless\|begin\|ensure\|rescue' .
       \ '\|\%(private\|protected\)\=\s*\%(def\|class\|struct\|module\|macro\|lib\|enum\)\):\@!\>' .
       \ '\|\%([=,*/%+-]\|<<\|>>\|:\s\)\s*\zs' .
@@ -64,9 +64,9 @@ let s:crystal_deindent_keywords =
 let s:end_start_regex =
       \ '{%\s*\<\%(if\|for\|while\|until\|unless\|begin\)\>\|' .
       \ '\C\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
-      \ '\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\|def\)' .
+      \ '\<\%(\%(\%(private\|protected\)\s\+\)\=\%(abstract\s\+\)\=\%(class\|struct\)' .
       \ '\|if\|for\|while\|until\|case\|unless\|begin' .
-      \ '\|\%(private\|protected\)\=\s*\%(lib\|enum\|macro\|module\)\):\@!\>' .
+      \ '\|\%(private\|protected\)\=\s*\%(def\|lib\|enum\|macro\|module\)\):\@!\>' .
       \ '\|\%(^\|[^.:@$]\)\@<=\<do:\@!\>'
 
 " Regex that defines the middle-match for the 'end' keyword.
