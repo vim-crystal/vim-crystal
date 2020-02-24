@@ -92,10 +92,10 @@ syn match  crystalNoInterpolation    "\\#\$\W" display contained
 
 syn match crystalDelimEscape "\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
-syn region crystalNestedParentheses    start="("  skip="\\\\\|\\)"  matchgroup=crystalString end=")"  transparent contained
-syn region crystalNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=crystalString end="}"  transparent contained
-syn region crystalNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=crystalString end=">"  transparent contained
-syn region crystalNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=crystalString end="\]" transparent contained
+syn region crystalNestedParentheses    matchgroup=crystalString start="("  skip="\\\\\|\\)"  end=")"  transparent contained
+syn region crystalNestedCurlyBraces    matchgroup=crystalString start="{"  skip="\\\\\|\\}"  end="}"  transparent contained
+syn region crystalNestedAngleBrackets  matchgroup=crystalString start="<"  skip="\\\\\|\\>"  end=">"  transparent contained
+syn region crystalNestedSquareBrackets matchgroup=crystalString start="\[" skip="\\\\\|\\\]" end="\]" transparent contained
 
 " These are mostly Oniguruma ready
 syn region crystalRegexpComment     matchgroup=crystalRegexpSpecial   start="(?#" skip="\\)" end=")" contained
@@ -195,27 +195,30 @@ SynFold 'string' syn region crystalString matchgroup=crystalStringDelimiter star
 syn match crystalCharLiteral "'\%([^\\]\|\\[abefnrstv'\\]\|\\\o\{1,3}\|\\x\x\{1,2}\|\\u\x\{4}\)'" contains=crystalStringEscape display
 
 " Generalized Single Quoted String, Symbol and Array of Strings
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1"
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]{" end="}" skip="\\\\\|\\}" contains=crystalNestedCurlyBraces,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]<" end=">" skip="\\\\\|\\>" contains=crystalNestedAngleBrackets,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi]\[" end="\]" skip="\\\\\|\\\]" contains=crystalNestedSquareBrackets,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[qwi](" end=")" skip="\\\\\|\\)" contains=crystalNestedParentheses,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q " end=" " skip="\\\\\|\\)"
-SynFold '%' syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\z([~`!@#$%^&*_\-+=|\:;"',.? /]\)" end="\z1" skip="\\\\\|\\\z1"
-SynFold '%' syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s{" end="}" skip="\\\\\|\\}" contains=crystalNestedCurlyBraces,crystalDelimEscape
-SynFold '%' syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s<" end=">" skip="\\\\\|\\>" contains=crystalNestedAngleBrackets,crystalDelimEscape
-SynFold '%' syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s\[" end="\]" skip="\\\\\|\\\]" contains=crystalNestedSquareBrackets,crystalDelimEscape
-SynFold '%' syn region crystalSymbol matchgroup=crystalSymbolDelimiter start="%s(" end=")" skip="\\\\\|\\)" contains=crystalNestedParentheses,crystalDelimEscape
+syn region crystalNestedRawParentheses    matchgroup=crystalString start="("  end=")"  transparent contained
+syn region crystalNestedRawCurlyBraces    matchgroup=crystalString start="{"  end="}"  transparent contained
+syn region crystalNestedRawAngleBrackets  matchgroup=crystalString start="<"  end=">"  transparent contained
+syn region crystalNestedRawSquareBrackets matchgroup=crystalString start="\[" end="\]" transparent contained
+
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q("  end=")"  contains=crystalNestedRawParentheses
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q{"  end="}"  contains=crystalNestedRawCurlyBraces
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q<"  end=">"  contains=crystalNestedRawAngleBrackets
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q\[" end="\]" contains=crystalNestedRawSquareBrackets
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%q|"  end="|"
+
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[wi]("  end=")"  skip="\\\\\|\\)"  contains=crystalNestedParentheses,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[wi]{"  end="}"  skip="\\\\\|\\}"  contains=crystalNestedCurlyBraces,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[wi]<"  end=">"  skip="\\\\\|\\>"  contains=crystalNestedAngleBrackets,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[wi]\[" end="\]" skip="\\\\\|\\\]" contains=crystalNestedSquareBrackets,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[wi]|"  end="|"  skip="\\\\\|\\|"  contains=crystalDelimEscape
 
 " Generalized Double Quoted String and Array of Strings and Shell Command Output
 " Note: %= is not matched here as the beginning of a double quoted string
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%\z([~`!@#$%^&*_\-+|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\z([~`!@#$%^&*_\-+=|\:;"',.?/]\)" end="\z1" skip="\\\\\|\\\z1" contains=@crystalStringSpecial
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\={" end="}" skip="\\\\\|\\}" contains=@crystalStringSpecial,crystalNestedCurlyBraces,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=<" end=">" skip="\\\\\|\\>" contains=@crystalStringSpecial,crystalNestedAngleBrackets,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=\[" end="\]" skip="\\\\\|\\\]" contains=@crystalStringSpecial,crystalNestedSquareBrackets,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[QWIx]\=(" end=")" skip="\\\\\|\\)" contains=@crystalStringSpecial,crystalNestedParentheses,crystalDelimEscape
-SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx] " end=" " skip="\\\\\|\\)" contains=@crystalStringSpecial
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\=("  end=")"  skip="\\\\\|\\)"  contains=@crystalStringSpecial,crystalNestedParentheses,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\={"  end="}"  skip="\\\\\|\\}"  contains=@crystalStringSpecial,crystalNestedCurlyBraces,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\=<"  end=">"  skip="\\\\\|\\>"  contains=@crystalStringSpecial,crystalNestedAngleBrackets,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\=\[" end="\]" skip="\\\\\|\\\]" contains=@crystalStringSpecial,crystalNestedSquareBrackets,crystalDelimEscape
+SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\=|"  end="|"  skip="\\\\\|\\|"  contains=@crystalStringSpecial,crystalDelimEscape
 
 " Here Document
 syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
