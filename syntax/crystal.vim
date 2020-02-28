@@ -116,7 +116,7 @@ syn match  crystalRegexpSpecial    "\\g<\%([a-z_]\w*\|-\=\d\+\)>" contained disp
 syn match  crystalRegexpSpecial    "\\g'\%([a-z_]\w*\|-\=\d\+\)'" contained display
 
 syn cluster crystalStringSpecial         contains=crystalInterpolation,crystalNoInterpolation,crystalStringEscape
-syn cluster crystalExtendedStringSpecial contains=@crystalStringSpecial,crystalNestedParentheses,crystalNestedCurlyBraces,crystalNestedAngleBrackets,crystalNestedSquareBrackets
+syn cluster crystalExtendedStringSpecial contains=@crystalStringSpecial,crystalNestedParentheses,crystalNestedCurlyBraces,crystalNestedAngleBrackets,crystalNestedSquareBrackets,crystalNestedRawParentheses,crystalNestedRawCurlyBraces,crystalNestedRawAngleBrackets,crystalNestedRawSquareBrackets
 syn cluster crystalRegexpSpecial         contains=crystalInterpolation,crystalNoInterpolation,crystalStringEscape,crystalRegexpSpecial,crystalRegexpEscape,crystalRegexpBrackets,crystalRegexpCharClass,crystalRegexpDot,crystalRegexpQuantifier,crystalRegexpAnchor,crystalRegexpParens,crystalRegexpComment
 
 " Numbers and ASCII Codes
