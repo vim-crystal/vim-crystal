@@ -331,7 +331,15 @@ function! crystal_lang#format(option_str, ...) abort
     endif
 
     let before = join(getline(1, '$'), "\n")
-    let formatted = crystal_lang#format_string(before, a:option_str)
+    try
+        let formatted = crystal_lang#format_string(before, a:option_str)
+    catch /^vim-crystal: /
+        echohl ErrorMsg
+        echomsg v:exception . ': Your code was not formatted. Exception was thrown at ' . v:throwpoint
+        echohl None
+        return
+    endtry
+
     if !on_save
         let after = substitute(formatted, '\n$', '', '')
         if before ==# after
