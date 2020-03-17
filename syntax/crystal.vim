@@ -16,7 +16,7 @@ endif
 syn iskeyword @,48-57,_,192-255,@-@
 
 " eCrystal Config
-if exists('g:main_syntax') && g:main_syntax ==# 'ecrystal'
+if exists('g:main_syntax') && g:main_syntax == 'ecrystal'
   let b:crystal_no_expensive = 1
 end
 
@@ -61,8 +61,9 @@ endfunction
 
 com! -nargs=* SynFold call s:run_syntax_fold(<q-args>)
 
-" Not-Top Cluster
-syn cluster crystalNotTop contains=@crystalExtendedStringSpecial,@crystalRegexpSpecial,@crystalDeclaration,crystalConditional,crystalExceptional,crystalMethodExceptional,crystalTodo,crystalLinkAttr
+" Top and Not-Top Clusters
+syn cluster crystalTop    contains=TOP
+syn cluster crystalNotTop contains=CONTAINED
 
 " Whitespace Errors
 if exists('g:crystal_space_errors')
@@ -78,14 +79,14 @@ endif
 if exists('g:crystal_operators')
   syn match  crystalOperator "[~!^&|*/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::"
   syn match  crystalOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\|//"
-  syn region crystalBracketOperator matchgroup=crystalOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@crystalNotTop
+  syn region crystalBracketOperator matchgroup=crystalOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=@crystalTop
 endif
 
 " Expression Substitution and Backslash Notation
 syn match crystalStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"                            contained display
 syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 
-syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=ALLBUT,@crystalNotTop
+syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=@crystalTop
 syn match  crystalInterpolation      "#\%(\$\|@@\=\)\w\+" display contained contains=crystalInterpolationDelim,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable,crystalPredefinedVariable
 syn match  crystalInterpolationDelim "#\ze\%(\$\|@@\=\)\w\+" display contained
 syn match  crystalInterpolation      "#\$\%(-\w\|\W\)" display contained contains=crystalInterpolationDelim,crystalPredefinedVariable,crystalInvalidVariable
@@ -226,10 +227,10 @@ SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[
 SynFold '%' syn region crystalString matchgroup=crystalStringDelimiter start="%[Qx]\=|"  end="|"  skip="\\\\\|\\|"  contains=@crystalStringSpecial,crystalDelimEscape
 
 " Here Document
-syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
-syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs"\%([^"]*\)"+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
-syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs'\%([^']*\)'+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
-syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs`\%([^`]*\)`+ end=+$+ oneline contains=ALLBUT,@crystalNotTop
+syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs\%(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)+ end=+$+ oneline contains=@crystalTop
+syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs"\%([^"]*\)"+ end=+$+ oneline contains=@crystalTop
+syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs'\%([^']*\)'+ end=+$+ oneline contains=@crystalTop
+syn region crystalHeredocStart matchgroup=crystalStringDelimiter start=+\%(\%(class\s*\|\%([]})"'.]\|::\)\)\_s*\|\w\)\@<!<<-\=\zs`\%([^`]*\)`+ end=+$+ oneline contains=@crystalTop
 
 SynFold '<<' syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<\z(\%(\h\|[^\x00-\x7F]\)\%(\w\|[^\x00-\x7F]\)*\)\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial keepend
 SynFold '<<' syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]})"'.]\)\s\|\w\)\@<!<<"\z([^"]*\)"\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+2 matchgroup=crystalStringDelimiter end=+^\z1$+ contains=crystalHeredocStart,crystalHeredoc,@crystalStringSpecial keepend
@@ -283,28 +284,28 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalMacro  "\<macro\>"  nextgroup=crystalMacroDeclaration skipwhite skipnl
   syn match crystalEnum   "\<enum\>"   nextgroup=crystalEnumDeclaration skipwhite skipnl
 
-  SynFold 'def'    syn region crystalMethodBlock start="\<\%(def\|macro\)\>" matchgroup=crystalDefine end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>"  contains=ALLBUT,@crystalNotTop
-  SynFold 'class'  syn region crystalBlock       start="\<class\>"           matchgroup=crystalClass  end="\<end\>"                                 contains=ALLBUT,@crystalNotTop
-  SynFold 'module' syn region crystalBlock       start="\<module\>"          matchgroup=crystalModule end="\<end\>"                                 contains=ALLBUT,@crystalNotTop
-  SynFold 'struct' syn region crystalBlock       start="\<struct\>"          matchgroup=crystalStruct end="\<end\>"                                 contains=ALLBUT,@crystalNotTop
-  SynFold 'lib'    syn region crystalBlock       start="\<lib\>"             matchgroup=crystalLib    end="\<end\>"                                 contains=ALLBUT,@crystalNotTop
-  SynFold 'enum'   syn region crystalBlock       start="\<enum\>"            matchgroup=crystalEnum   end="\<end\>"                                 contains=ALLBUT,@crystalNotTop
+  SynFold 'def'    syn region crystalMethodBlock start="\<\%(def\|macro\)\>" matchgroup=crystalDefine end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>"  contains=@crystalTop
+  SynFold 'class'  syn region crystalBlock       start="\<class\>"           matchgroup=crystalClass  end="\<end\>"                                 contains=@crystalTop
+  SynFold 'module' syn region crystalBlock       start="\<module\>"          matchgroup=crystalModule end="\<end\>"                                 contains=@crystalTop
+  SynFold 'struct' syn region crystalBlock       start="\<struct\>"          matchgroup=crystalStruct end="\<end\>"                                 contains=@crystalTop
+  SynFold 'lib'    syn region crystalBlock       start="\<lib\>"             matchgroup=crystalLib    end="\<end\>"                                 contains=@crystalTop
+  SynFold 'enum'   syn region crystalBlock       start="\<enum\>"            matchgroup=crystalEnum   end="\<end\>"                                 contains=@crystalTop
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>" display
   syn match crystalRepeatModifier      "\<\%(while\|until\)\>" display
 
-  SynFold 'do' syn region crystalDoBlock matchgroup=crystalControl start="\<do\>" end="\<end\>" contains=ALLBUT,@crystalNotTop
+  SynFold 'do' syn region crystalDoBlock matchgroup=crystalControl start="\<do\>" end="\<end\>" contains=@crystalTop
 
   " curly bracket block or hash literal
-  SynFold '{' syn region crystalCurlyBlock   matchgroup=crystalCurlyBlockDelimiter start="{"                     end="}" contains=ALLBUT,@crystalNotTop
-  SynFold '[' syn region crystalArrayLiteral matchgroup=crystalArrayDelimiter      start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@crystalNotTop
+  SynFold '{' syn region crystalCurlyBlock   matchgroup=crystalCurlyBlockDelimiter start="{"                     end="}" contains=@crystalTop
+  SynFold '[' syn region crystalArrayLiteral matchgroup=crystalArrayDelimiter      start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=@crystalTop
 
   " statements without 'do'
-  SynFold 'begin'  syn region crystalBlockExpression       matchgroup=crystalControl     start="\<begin\>"  end="\<end\>" contains=ALLBUT,@crystalNotTop
-  SynFold 'case'   syn region crystalCaseExpression        matchgroup=crystalConditional start="\<case\>"   end="\<end\>" contains=ALLBUT,@crystalNotTop
-  SynFold 'select' syn region crystalSelectExpression      matchgroup=crystalConditional start="\<select\>" end="\<end\>" contains=ALLBUT,@crystalNotTop
-  SynFold 'if'     syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=ALLBUT,@crystalNotTop
+  SynFold 'begin'  syn region crystalBlockExpression       matchgroup=crystalControl     start="\<begin\>"  end="\<end\>" contains=@crystalTop
+  SynFold 'case'   syn region crystalCaseExpression        matchgroup=crystalConditional start="\<case\>"   end="\<end\>" contains=@crystalTop
+  SynFold 'select' syn region crystalSelectExpression      matchgroup=crystalConditional start="\<select\>" end="\<end\>" contains=@crystalTop
+  SynFold 'if'     syn region crystalConditionalExpression matchgroup=crystalConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|ifdef\|unless\)\>" end="\%(\%(\%(\.\@<!\.\)\|::\)\s*\)\@<!\<end\>" contains=@crystalTop
 
   syn match crystalConditional "\<\%(then\|else\|when\)\>[?!]\@!" contained containedin=crystalCaseExpression
   syn match crystalConditional "\<\%(when\|else\)\>[?!]\@!" contained containedin=crystalSelectExpression
@@ -313,7 +314,7 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalExceptional       "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalBlockExpression
   syn match crystalMethodExceptional "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalMethodBlock
 
-  SynFold 'macro' syn region crystalMacroBlock matchgroup=crystalMacroRegion start="\z(\\\=\){%\s*\%(\%(if\|for\|begin\)\>.*\|.*\<do\>\)\s*%}" end="\z1{%\s*end\s*%}" transparent contains=TOP
+  SynFold 'macro' syn region crystalMacroBlock matchgroup=crystalMacroRegion start="\z(\\\=\){%\s*\%(\%(if\|for\|begin\)\>.*\|.*\<do\>\)\s*%}" end="\z1{%\s*end\s*%}" transparent contains=@crystalTop
 
   if !exists('g:crystal_minlines')
     let g:crystal_minlines = 500
@@ -335,7 +336,7 @@ endif
 
 " Link attribute
 syn region crystalLinkAttrRegion      start="@\[" nextgroup=crystalLinkAttrRegionInner end="]" contains=crystalLinkAttr,crystalLinkAttrRegionInner transparent display oneline
-syn region crystalLinkAttrRegionInner start="\%(@\[\)\@<=" end="]\@=" contained contains=ALLBUT,@crystalNotTop transparent display oneline
+syn region crystalLinkAttrRegionInner start="\%(@\[\)\@<=" end="]\@=" contained contains=@crystalTop transparent display oneline
 syn match  crystalLinkAttr            "@\[" contained containedin=crystalLinkAttrRegion display
 syn match  crystalLinkAttr            "]" contained containedin=crystalLinkAttrRegion display
 
@@ -356,8 +357,11 @@ endif
 
 " Macro
 " Note: This definition must be put after crystalNestedCurlyBraces to give higher priority
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=TOP,@crystalExpensive containedin=ALL
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=TOP,@crystalExpensive containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=@crystalMacroGroup containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=@crystalMacroGroup containedin=ALL
+
+" Cluster for groups that can appear inside macro expressions
+syn cluster crystalMacroGroup contains=@crystalTop
 
 " Cluster for Expensive Mode groups that can't appear inside macro
 " regions
@@ -365,16 +369,26 @@ syn cluster crystalExpensive contains=
       \ crystalMethodBlock,crystalBlock,crystalDoBlock,crystalBlockExpression,crystalCaseExpression,
       \ crystalSelectExpression,crystalConditionalExpression
 
+syn cluster crystalMacroGroup remove=@crystalExpensive
+
 " Some keywords will have to be redefined for them to be highlighted
 " properly
-syn keyword crystalMacroKeyword contained containedin=crystalMacroRegion
+syn keyword crystalMacroKeyword contained
       \ if else elsif end for in begin do
-syn cluster crystalNotTop add=crystalMacroKeyword
+
+syn cluster crystalMacroGroup add=crystalMacroKeyword
 
 " Comments and Documentation
 syn match   crystalSharpBang "\%^#!.*" display
 syn keyword crystalTodo      FIXME NOTE TODO OPTIMIZE XXX todo contained
-syn match   crystalComment   "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
+
+if exists('g:main_syntax') && g:main_syntax ==# 'ecrystal'
+  " eCrystal tags can contain Crystal comments, so we need to modify the
+  " pattern for comments so that it does not consume delimiters
+  syn match crystalComment "#.*\ze\%($\|-\=%>\)" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
+else
+  syn match crystalComment "#.*" contains=crystalSharpBang,crystalSpaceError,crystalTodo,@Spell
+endif
 
 SynFold '#' syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\s*#.*\n\)\)\%(\(^\s*#.*\n\)\{1,}\)\@=" end="\%(^\s*#.*\n\)\@<=\%(^\s*#.*\n\)\%(^\s*#\)\@!" contains=crystalComment transparent keepend
 

@@ -74,6 +74,11 @@ if &l:ofu ==# ''
   setlocal omnifunc=crystal_lang#complete
 endif
 
+if exists('AutoPairsLoaded')
+  let b:AutoPairs = { '{%': '%}' }
+  call extend(b:AutoPairs, g:AutoPairs, 'force')
+endif
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
