@@ -75,8 +75,8 @@ if exists('AutoPairsLoaded')
 endif
 
 " Load the subtype's vim-endwise settings
-if exists('loaded_endwise')
-  exec 'doautocmd endwise Filetype ' . b:ecrystal_subtype
+if exists('loaded_endwise') && b:ecrystal_subtype != ''
+  exec 'doautocmd endwise FileType ' . b:ecrystal_subtype
 endif
 
 " Start RagTag
