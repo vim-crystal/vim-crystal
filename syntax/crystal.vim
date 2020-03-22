@@ -293,7 +293,6 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>" display
-  syn match crystalRepeatModifier      "\<\%(while\|until\)\>" display
 
   SynFold 'do' syn region crystalDoBlock matchgroup=crystalControl start="\<do\>" end="\<end\>" contains=TOP
 
@@ -421,7 +420,6 @@ hi def link crystalConditional         Conditional
 hi def link crystalConditionalModifier crystalConditional
 hi def link crystalExceptional         crystalConditional
 hi def link crystalRepeat              Repeat
-hi def link crystalRepeatModifier      crystalRepeat
 hi def link crystalControl             Statement
 hi def link crystalInclude             Include
 hi def link crystalRecord              Statement
