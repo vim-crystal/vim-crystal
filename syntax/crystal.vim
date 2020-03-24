@@ -16,7 +16,7 @@ endif
 syn iskeyword @,48-57,_,192-255,@-@
 
 " eCrystal Config
-if exists('g:main_syntax') && g:main_syntax == 'ecrystal'
+if exists('g:main_syntax') && g:main_syntax ==# 'ecrystal'
   let b:crystal_no_expensive = 1
 end
 

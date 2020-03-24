@@ -84,23 +84,20 @@ else
   endfunction
 endif
 
-" Return the current cursor position
-function s:Cursor()
-  return [line('.'), col('.')]
-endfunction
-
 " Does the given pattern match at the cursor's position?
 function s:MatchCursor(pattern)
-  return searchpos(a:pattern, 'cnz', line('.')) == s:Cursor()
+  return searchpos(a:pattern, 'cnz', line('.')) == [line('.'), col('.')]
 endfunction
 
 " Does the given pattern match at the given position?
 function s:MatchAt(lnum, col, pattern)
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
-  call cursor(a:lnum, a:col)
-  let result = s:MatchCursor(a:pattern)
-  call cursor(pos)
+  try
+    let result = s:MatchCursor(a:pattern)
+  finally
+    call setpos('.', pos)
+  endtry
 
   return result
 endfunction
@@ -108,24 +105,24 @@ endfunction
 " Is the cell at the given position part of a tag? If so, return the
 " position of the opening delimiter.
 function s:MatchECR(...)
-  let pos = s:Cursor()
-
   if a:0
     let lnum = a:1
     let col = a:2
 
     call cursor(lnum, col)
-  else
-    let [lnum, col] = pos
   endif
 
-  let flags = s:MatchCursor(s:ecr_open) ? 'bcWz' : 'bWz'
+  let pos = getcurpos()
 
-  let [open_lnum, open_col] = searchpairpos(
-        \ s:ecr_open, '', s:ecr_close,
-        \ flags, g:crystal#indent#skip_expr)
+  try
+    let flags = s:MatchCursor(s:ecr_open) ? 'bcWz' : 'bWz'
 
-  call cursor(pos)
+    let [open_lnum, open_col] = searchpairpos(
+          \ s:ecr_open, '', s:ecr_close,
+          \ flags, g:crystal#indent#skip_expr)
+  finally
+    call setpos('.', pos)
+  endtry
 
   return [open_lnum, open_col]
 endfunction
@@ -134,7 +131,7 @@ endfunction
 " respective positions of the opening and closing delimiters for that
 " tag.
 function s:MatchECRControl(...)
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
   if a:0
     let lnum = a:1
@@ -142,7 +139,7 @@ function s:MatchECRControl(...)
 
     call cursor(lnum, col)
   else
-    let [lnum, col] = pos
+    let [lnum, col] = [line('.'), col('.')]
   endif
 
   let open = { 'lnum': 0, 'col': 0 }
@@ -151,7 +148,7 @@ function s:MatchECRControl(...)
   let [open.lnum, open.col] = s:MatchECR(lnum, col)
 
   if !open.lnum
-    call cursor(pos)
+    call setpos('.', pos)
     return [open, close]
   endif
 
@@ -161,7 +158,7 @@ function s:MatchECRControl(...)
     let open.lnum = 0
     let open.col = 0
 
-    call cursor(pos)
+    call setpos('.', pos)
     return [open, close]
   endif
 
@@ -169,7 +166,7 @@ function s:MatchECRControl(...)
         \ s:ecr_control_open, '', s:ecr_close,
         \ 'Wz', g:crystal#indent#skip_expr)
 
-  call cursor(pos)
+  call setpos('.', pos)
   return [open, close]
 endfunction
 
@@ -192,7 +189,7 @@ function s:ECRIndent(...)
     return result
   endif
 
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
   call cursor(open.lnum, open.col)
 
@@ -200,7 +197,7 @@ function s:ECRIndent(...)
   " not have a corresponding ending keyword, then this tag starts an
   " indent.
   while search(s:ecr_indent_regex, 'z', close.lnum)
-    let [lnum, col] = s:Cursor()
+    let [lnum, col] = [line('.'), col('.')]
 
     if lnum == close.lnum && col > close.col
       break
@@ -231,7 +228,7 @@ function s:ECRIndent(...)
     endif
   endwhile
 
-  call cursor(pos)
+  call setpos('.', pos)
   return result
 endfunction
 
@@ -254,14 +251,14 @@ function s:ECRDedent(...)
     return result
   endif
 
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
   call cursor(open.lnum, open.col)
 
   " Find each Crystal keyword that ends an indent; if any of them do not
   " have a corresponding starting keyword, then this tag ends an indent
   while search(s:ecr_dedent_regex, 'z', close.lnum)
-    let [lnum, col] = s:Cursor()
+    let [lnum, col] = [line('.'), col('.')]
 
     if lnum == close.lnum && col > close.col
       break
@@ -292,7 +289,7 @@ function s:ECRDedent(...)
     endif
   endwhile
 
-  call cursor(pos)
+  call setpos('.', pos)
   return result
 endfunction
 
@@ -303,7 +300,7 @@ function s:FindECRControl(...)
   let open = { 'lnum': 0, 'col': 0 }
   let close = { 'lnum': 0, 'col': 0 }
 
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
   call cursor(lnum, 1)
 
@@ -315,7 +312,7 @@ function s:FindECRControl(...)
     endif
   endwhile
 
-  call cursor(pos)
+  call setpos('.', pos)
   return [open, close]
 endfunction
 
@@ -339,14 +336,14 @@ function s:FindPrevECRControl(...)
   let open = { 'lnum': 0, 'col': 0 }
   let close = { 'lnum': 0, 'col': 0 }
 
-  let pos = s:Cursor()
+  let pos = getcurpos()
 
   call cursor(start, 1)
 
   let [lnum, col] = searchpos(s:ecr_close, 'bWz', stop)
 
   if !lnum
-    call cursor(pos)
+    call setpos('.', pos)
     return [open, close]
   endif
 
@@ -362,7 +359,7 @@ function s:FindPrevECRControl(...)
     let [open, close] = s:MatchECRControl()
   endwhile
 
-  call cursor(pos)
+  call setpos('.', pos)
   return [open, close]
 endfunction
 
