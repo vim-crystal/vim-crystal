@@ -2,33 +2,38 @@
 " =========
 
 " Regex of syntax group names that are strings or characters.
-const crystal#indent#syng_string =
+let g:crystal#indent#syng_string =
       \ '\<crystal\%(String\|Interpolation\|NoInterpolation\|StringEscape\|CharLiteral\|ASCIICode\)\>'
+lockvar g:crystal#indent#syng_string
 
 " Regex of syntax group names that are strings, characters, symbols,
 " regexps, or comments.
-const crystal#indent#syng_strcom =
-      \ crystal#indent#syng_string.'\|' .
+let g:crystal#indent#syng_strcom =
+      \ g:crystal#indent#syng_string.'\|' .
       \ '\<crystal\%(Regexp\|RegexpEscape\|Symbol\|Comment\)\>'
+lockvar g:crystal#indent#syng_strcom
 
 " Expression used to check whether we should skip a match with searchpair().
-const crystal#indent#skip_expr =
-      \ 'synIDattr(synID(line("."), col("."), 1), "name") =~# "'.crystal#indent#syng_strcom.'"'
+let g:crystal#indent#skip_expr =
+      \ 'synIDattr(synID(line("."), col("."), 1), "name") =~# "'.g:crystal#indent#syng_strcom.'"'
+lockvar g:crystal#indent#skip_expr
 
 " Regex for the start of a line:
 " start of line + whitespace + optional opening macro delimiter
-const crystal#indent#sol = '^\s*\zs\%(\\\={%\s*\)\='
+let g:crystal#indent#sol = '^\s*\zs\%(\\\={%\s*\)\='
+lockvar g:crystal#indent#sol
 
 " Regex for the end of a line:
 " whitespace + optional closing macro delimiter + whitespace +
 " optional comment + end of line
-const crystal#indent#eol = '\s*\%(%}\)\=\ze\s*\%(#.*\)\=$'
+let g:crystal#indent#eol = '\s*\%(%}\)\=\ze\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#eol
 
 " Regex that defines the start-match for the 'end' keyword.
 " NOTE: This *should* properly match the 'do' only at the end of the
 " line
-const crystal#indent#end_start_regex =
-      \ crystal#indent#sol .
+let g:crystal#indent#end_start_regex =
+      \ g:crystal#indent#sol .
       \ '\%(' .
       \ '\%(\<\%(private\|protected\)\s\+\)\=' .
       \ '\%(\<\%(abstract\s\+\)\=\%(class\|struct\)\>\|\<\%(def\|module\|macro\|lib\|enum\)\>\)' .
@@ -36,50 +41,61 @@ const crystal#indent#end_start_regex =
       \ '\<\%(if\|unless\|while\|until\|case\|begin\|for\|union\)\>' .
       \ '\)' .
       \ '\|' .
-      \ '.\{-}\zs\<do\s*\%(|.*|\)\='.crystal#indent#eol
+      \ '.\{-}\zs\<do\s*\%(|.*|\)\='.g:crystal#indent#eol
+lockvar g:crystal#indent#end_start_regex
 
 " Regex that defines the middle-match for the 'end' keyword.
-const crystal#indent#end_middle_regex =
-      \ crystal#indent#sol .
+let g:crystal#indent#end_middle_regex =
+      \ g:crystal#indent#sol .
       \ '\<\%(else\|elsif\|rescue\|ensure\|when\)\>'
+lockvar g:crystal#indent#end_middle_regex
 
 " Regex that defines the end-match for the 'end' keyword.
-const crystal#indent#end_end_regex =
-      \ crystal#indent#sol .
+let g:crystal#indent#end_end_regex =
+      \ g:crystal#indent#sol .
       \ '\<end\>'
+lockvar g:crystal#indent#end_end_regex
 
 " Regex used for words that add a level of indent.
-const crystal#indent#crystal_indent_keywords =
-      \ crystal#indent#end_start_regex .
+let g:crystal#indent#crystal_indent_keywords =
+      \ g:crystal#indent#end_start_regex .
       \ '\|' .
-      \ crystal#indent#end_middle_regex
+      \ g:crystal#indent#end_middle_regex
+lockvar g:crystal#indent#crystal_indent_keywords
 
 " Regex used for words that remove a level of indent.
-const crystal#indent#crystal_deindent_keywords =
-      \ crystal#indent#end_middle_regex .
+let g:crystal#indent#crystal_deindent_keywords =
+      \ g:crystal#indent#end_middle_regex .
       \ '\|' .
-      \ crystal#indent#end_end_regex
+      \ g:crystal#indent#end_end_regex
+lockvar g:crystal#indent#crystal_deindent_keywords
 
 " Regex that defines continuation lines, not including (, {, or [.
-const crystal#indent#non_bracket_continuation_regex = '\%([\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let g:crystal#indent#non_bracket_continuation_regex = '\%([\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#non_bracket_continuation_regex
 
 " Regex that defines continuation lines.
-const crystal#indent#continuation_regex =
+let g:crystal#indent#continuation_regex =
       \ '\%(%\@<![({[\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#continuation_regex
 
 " Regex that defines continuable keywords
-const crystal#indent#continuable_regex =
+let g:crystal#indent#continuable_regex =
       \ '\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(if\|for\|while\|until\|unless\):\@!\>'
+lockvar g:crystal#indent#continuable_regex
 
 " Regex that defines bracket continuations
-const crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
+let g:crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#bracket_continuation_regex
 
 " Regex that defines end of bracket continuation followed by another continuation
-const crystal#indent#bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.crystal#indent#continuation_regex
+let g:crystal#indent#bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.g:crystal#indent#continuation_regex
+lockvar g:crystal#indent#bracket_switch_continuation_regex
 
 " Regex that defines the first part of a splat pattern
-const crystal#indent#splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
+let g:crystal#indent#splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#splat_regex
 
 " Regex that defines blocks.
 "
@@ -90,13 +106,16 @@ const crystal#indent#splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 "
 " The reason is that the pipe matches a hanging "|" operator.
 "
-const crystal#indent#block_regex =
+let g:crystal#indent#block_regex =
       \ '\%(\<do:\@!\>\|%\@<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(%}\)\=\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#block_regex
 
-const crystal#indent#block_continuation_regex = '^\s*[^])}\t ].*'.crystal#indent#block_regex
+let g:crystal#indent#block_continuation_regex = '^\s*[^])}\t ].*'.g:crystal#indent#block_regex
+lockvar g:crystal#indent#block_continuation_regex
 
 " Regex that describes a leading operator (only a method call's dot for now)
-const crystal#indent#leading_operator_regex = '^\s*[.]'
+let g:crystal#indent#leading_operator_regex = '^\s*[.]'
+lockvar g:crystal#indent#leading_operator_regex
 
 " Auxiliary Functions {{{1
 " ===================

@@ -62,17 +62,17 @@ endif
 " Helper variables and functions {{{1
 " ==============================
 
-const s:ecr_open = '<%%\@!'
-const s:ecr_close = '%>'
+let s:ecr_open = '<%%\@!'
+let s:ecr_close = '%>'
 
-const s:ecr_control_open = '<%%\@!-\=[=#]\@!'
-const s:ecr_comment_open = '<%%\@!-\=#'
+let s:ecr_control_open = '<%%\@!-\=[=#]\@!'
+let s:ecr_comment_open = '<%%\@!-\=#'
 
-const s:ecr_indent_regex =
+let s:ecr_indent_regex =
       \ '\<\%(if\|unless\|else\|elsif\|case\|for\|when\|while\|until\|begin\|do\|rescue\|ensure\|' .
       \ 'class\|module\|struct\|lib\|enum\|union\)\>'
 
-const s:ecr_dedent_regex =
+let s:ecr_dedent_regex =
       \ '\<\%(end\|else\|elsif\|when\|rescue\|ensure\)\>'
 
 " Return the value of a single shift-width
