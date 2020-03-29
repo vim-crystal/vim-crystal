@@ -6,40 +6,77 @@
 " Based on eruby syntax highlight from vim-ruby
 " which was made by Tim Pope and Doug Kearns
 
-if &syntax !~# '\<ecr\>' || get(b:, 'current_syntax') =~# '\<ecr\>'
+if &syntax !~# '\<eruby\>' || get(b:, 'current_syntax') =~# '\<eruby\>'
   finish
 endif
 
-if !exists('g:main_syntax')
-  let g:main_syntax = 'ecr'
+if !exists("main_syntax")
+  let main_syntax = 'eruby'
 endif
 
-if &filetype =~# '^ecr\.'
-  let b:ecr_subtype = matchstr(&filetype,'^ecr\.\zs\w\+')
+if !exists("g:eruby_default_subtype")
+  let g:eruby_default_subtype = "html"
 endif
 
-if get(b:, 'ecr_subtype', '') !~# '^\%(ecr\)\=$' && &syntax =~# '^ecr\>'
-  exe 'runtime! syntax/' . b:ecr_subtype . '.vim'
+if &filetype =~ '^eruby\.'
+  let b:eruby_subtype = matchstr(&filetype,'^eruby\.\zs\w\+')
+elseif &filetype =~ '^.*\.eruby\>'
+  let b:eruby_subtype = matchstr(&filetype,'^.\{-\}\ze\.eruby\>')
+elseif !exists("b:eruby_subtype") && main_syntax == 'eruby'
+  let s:lines = getline(1)."\n".getline(2)."\n".getline(3)."\n".getline(4)."\n".getline(5)."\n".getline("$")
+  let b:eruby_subtype = matchstr(s:lines,'eruby_subtype=\zs\w\+')
+  if b:eruby_subtype == ''
+    let b:eruby_subtype = matchstr(substitute(expand("%:t"),'\c\%(\.erb\|\.eruby\|\.erubis\|\.example\)\+$','',''),'\.\zs\w\+\%(\ze+\w\+\)\=$')
+  endif
+  if b:eruby_subtype == 'rhtml'
+    let b:eruby_subtype = 'html'
+  elseif b:eruby_subtype == 'rb'
+    let b:eruby_subtype = 'ruby'
+  elseif b:eruby_subtype == 'yml'
+    let b:eruby_subtype = 'yaml'
+  elseif b:eruby_subtype == 'js'
+    let b:eruby_subtype = 'javascript'
+  elseif b:eruby_subtype == 'txt'
+    " Conventional; not a real file type
+    let b:eruby_subtype = 'text'
+  elseif b:eruby_subtype == ''
+    let b:eruby_subtype = g:eruby_default_subtype
+  endif
+endif
+
+if !exists("b:eruby_nest_level")
+  if &syntax =~# '\<eruby\.eruby\>'
+    let b:eruby_nest_level = strlen(substitute(substitute(&filetype,'\C\<eruby\>','@','g'),'[^@]','','g'))
+  else
+    let b:eruby_nest_level = strlen(substitute(substitute(substitute(expand("%:t"),'@','','g'),'\c\.\%(erb\|rhtml\)\>','@','g'),'[^@]','','g'))
+  endif
+endif
+if !b:eruby_nest_level
+  let b:eruby_nest_level = 1
+endif
+
+if get(b:, 'eruby_subtype', '') !~# '^\%(eruby\)\=$' && &syntax =~# '^eruby\>'
+  exe "runtime! syntax/".b:eruby_subtype.".vim"
 endif
 unlet! b:current_syntax
-syn include @crystalTop syntax/crystal.vim
+syn include @rubyTop syntax/ruby.vim
 
-syn cluster ecrRegions contains=ecrOneLiner,ecrBlock,ecrExpression,ecrComment
+syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
 
-syn region  ecrOneLiner   matchgroup=ecrDelimiter start="^%%\@!"    end="$"             contains=@crystalTop containedin=ALLBUT,@ecrRegions keepend oneline
-syn region  ecrBlock      matchgroup=ecrDelimiter start="<%%\@!-\=" end="[=-]\=%\@<!%>" contains=@crystalTop containedin=ALLBUT,@ecrRegions keepend
-syn region  ecrExpression matchgroup=ecrDelimiter start="<%=\{1,4}" end="[=-]\=%\@<!%>" contains=@crystalTop containedin=ALLBUT,@ecrRegions keepend
-syn region  ecrComment    matchgroup=ecrDelimiter start="<%-\=#"    end="[=-]\=%\@<!%>" contains=crystalTodo,@Spell containedin=ALLBUT,@ecrRegions keepend
+exe 'syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%\{1,'.b:eruby_nest_level.'\}%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline'
+exe 'syn region  erubyBlock      matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}%\@!-\=" end="[=-]\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop  containedin=ALLBUT,@erubyRegions keepend'
+exe 'syn region  erubyExpression matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}=\{1,4}" end="[=-]\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop  containedin=ALLBUT,@erubyRegions keepend'
+exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}-\=#"    end="[=-]\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend'
 
 " Define the default highlighting.
 
-hi def link ecrDelimiter PreProc
-hi def link ecrComment   Comment
+hi def link erubyDelimiter		PreProc
+hi def link erubyComment		Comment
 
-let b:current_syntax = matchstr(&syntax, '^.*\<ecr\>')
+let b:current_syntax = matchstr(&syntax, '^.*\<eruby\>')
 
-if g:main_syntax ==# 'ecr'
-  unlet g:main_syntax
+if main_syntax == 'eruby'
+  unlet main_syntax
 endif
 
 " vim: nowrap sw=2 sts=2 ts=8:
