@@ -82,6 +82,8 @@ let g:crystal#indent#non_bracket_continuation_regex =
       \ '\|' .
       \ '\W?' .
       \ '\|' .
+      \ '\<\%(if\|unless\)\>' .
+      \ '\|' .
       \ '\%('.g:crystal#indent#sol.g:crystal#indent#crystal_type_declaration.'\h\k*\)\@<!\*' .
       \ '\)' .
       \ g:crystal#indent#eol
