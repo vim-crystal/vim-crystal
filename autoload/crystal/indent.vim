@@ -139,23 +139,23 @@ lockvar g:crystal#indent#leading_operator_regex
 " ===================
 
 " Check if the character at lnum:col is inside a string, comment, or is ascii.
-function crystal#indent#IsInStringOrComment(lnum, col) abort
+function! crystal#indent#IsInStringOrComment(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# g:crystal#indent#syng_strcom
 endfunction
 
 " Check if the character at lnum:col is inside a string or character.
-function crystal#indent#IsInString(lnum, col) abort
+function! crystal#indent#IsInString(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# g:crystal#indent#syng_string
 endfunction
 
 " Check if the character at lnum:col is inside a string or regexp
 " delimiter
-function crystal#indent#IsInStringDelimiter(lnum, col) abort
+function! crystal#indent#IsInStringDelimiter(lnum, col) abort
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# '\<crystal\%(StringDelimiter\|RegexpDelimiter\)\>'
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
-function crystal#indent#PrevNonBlankNonString(lnum) abort
+function! crystal#indent#PrevNonBlankNonString(lnum) abort
   let lnum = prevnonblank(a:lnum)
 
   while lnum > 0
@@ -173,7 +173,7 @@ function crystal#indent#PrevNonBlankNonString(lnum) abort
 endfunction
 
 " Find line above 'lnum' that started the continuation 'lnum' may be part of.
-function crystal#indent#GetMSL(lnum) abort
+function! crystal#indent#GetMSL(lnum) abort
   " Start on the line we're at and use its indent.
   let msl = a:lnum
   let msl_body = getline(msl)
@@ -267,7 +267,7 @@ function crystal#indent#GetMSL(lnum) abort
 endfunction
 
 " Check if line 'lnum' has more opening brackets than closing ones.
-function crystal#indent#ExtraBrackets(lnum) abort
+function! crystal#indent#ExtraBrackets(lnum) abort
   let opening = {'parentheses': [], 'braces': [], 'brackets': []}
   let closing = {'parentheses': [], 'braces': [], 'brackets': []}
 
@@ -329,7 +329,7 @@ function crystal#indent#ExtraBrackets(lnum) abort
   return [rightmost_opening, rightmost_closing]
 endfunction
 
-function crystal#indent#Match(lnum, regex) abort
+function! crystal#indent#Match(lnum, regex) abort
   let regex = '\C'.a:regex
 
   let line = getline(a:lnum)
@@ -346,7 +346,7 @@ endfunction
 
 " Locates the containing class/module/struct/enum/lib's definition line,
 " ignoring nested classes along the way.
-function crystal#indent#FindContainingClass() abort
+function! crystal#indent#FindContainingClass() abort
   let saved_position = getcurpos()
 
   while searchpair(

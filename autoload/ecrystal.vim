@@ -10,7 +10,7 @@ if exists('g:ecrystal_extensions')
   call extend(s:ecrystal_extensions, g:ecrystal_extensions, 'force')
 endif
 
-function ecrystal#SetSubtype() abort
+function! ecrystal#SetSubtype() abort
   if exists('b:ecrystal_subtype')
     return
   endif
