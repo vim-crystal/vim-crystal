@@ -70,28 +70,44 @@ let g:crystal#indent#crystal_deindent_keywords =
       \ g:crystal#indent#end_end_regex
 lockvar g:crystal#indent#crystal_deindent_keywords
 
+" Regex that defines a type declaration
+let g:crystal#indent#crystal_type_declaration =
+      \ '@\=\h\k*\s\+:\s\+\S.*'
+lockvar g:crystal#indent#crystal_type_declaration
+
 " Regex that defines continuation lines, not including (, {, or [.
-let g:crystal#indent#non_bracket_continuation_regex = '\%([\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+let g:crystal#indent#non_bracket_continuation_regex =
+      \ '\%(' .
+      \ '[\\.,:/%+\-=~<>|&]' .
+      \ '\|' .
+      \ '\W?' .
+      \ '\|' .
+      \ '\%('.g:crystal#indent#sol.g:crystal#indent#crystal_type_declaration.'\h\k*\)\@<!\*' .
+      \ '\)' .
+      \ g:crystal#indent#eol
 lockvar g:crystal#indent#non_bracket_continuation_regex
 
-" Regex that defines continuation lines.
+" Regex that defines bracket continuations
+let g:crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
+lockvar g:crystal#indent#bracket_continuation_regex
+
+" " Regex that defines continuation lines.
 let g:crystal#indent#continuation_regex =
-      \ '\%(%\@<![({[\\.,:*/%+]\|\<and\|\<or\|\%(<%\)\@<![=-]\|\W[|&?]\|||\|&&\)\s*\%(#.*\)\=$'
+      \ g:crystal#indent#non_bracket_continuation_regex .
+      \ '\|' .
+      \ g:crystal#indent#bracket_continuation_regex
 lockvar g:crystal#indent#continuation_regex
+
+" Regex that defines end of bracket continuation followed by another continuation
+let g:crystal#indent#bracket_switch_continuation_regex =
+      \ '^\([^(]\+\zs).\+\)\+'.g:crystal#indent#continuation_regex
+lockvar g:crystal#indent#bracket_switch_continuation_regex
 
 " Regex that defines continuable keywords
 let g:crystal#indent#continuable_regex =
       \ '\%(^\s*\|[=,*/%+\-|;{]\|<<\|>>\|:\s\)\s*\zs' .
       \ '\<\%(if\|for\|while\|until\|unless\):\@!\>'
 lockvar g:crystal#indent#continuable_regex
-
-" Regex that defines bracket continuations
-let g:crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
-lockvar g:crystal#indent#bracket_continuation_regex
-
-" Regex that defines end of bracket continuation followed by another continuation
-let g:crystal#indent#bracket_switch_continuation_regex = '^\([^(]\+\zs).\+\)\+'.g:crystal#indent#continuation_regex
-lockvar g:crystal#indent#bracket_switch_continuation_regex
 
 " Regex that defines the first part of a splat pattern
 let g:crystal#indent#splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
@@ -130,9 +146,10 @@ function crystal#indent#IsInString(lnum, col)
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# g:crystal#indent#syng_string
 endfunction
 
-" Check if the character at lnum:col is inside a string delimiter
+" Check if the character at lnum:col is inside a string or regexp
+" delimiter
 function crystal#indent#IsInStringDelimiter(lnum, col)
-  return synIDattr(synID(a:lnum, a:col, 1), 'name') ==# 'crystalStringDelimiter'
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# '\<crystal\%(StringDelimiter\|RegexpDelimiter\)\>'
 endfunction
 
 " Find line above 'lnum' that isn't empty, in a comment, or in a string.
@@ -316,7 +333,9 @@ function crystal#indent#Match(lnum, regex)
   let line = getline(a:lnum)
   let col  = match(line, regex) + 1
 
-  while col && crystal#indent#IsInStringOrComment(a:lnum, col)
+  while col &&
+        \ crystal#indent#IsInStringOrComment(a:lnum, col) ||
+        \ crystal#indent#IsInStringDelimiter(a:lnum, col)
     let col = match(line, regex, col) + 1
   endwhile
 

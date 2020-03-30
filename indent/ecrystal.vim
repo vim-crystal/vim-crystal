@@ -94,6 +94,7 @@ function s:MatchAt(lnum, col, pattern)
   let pos = getcurpos()
 
   try
+    call cursor(a:lnum, a:col)
     let result = s:MatchCursor(a:pattern)
   finally
     call setpos('.', pos)
@@ -393,7 +394,7 @@ function GetEcrystalIndent() abort
       " If this is the first line after the opening delimiter, then one
       " indent is enough
       return ind
-    elseif s:MatchAt(open_tag_lnum, open_tag_col, s:ecr_comment_open)
+    elseif s:MatchAt(open_tag_lnum, open_tag_col, s:ecr_comment_open)[0]
       " eCrystal comments shouldn't be indented any further
       return ind
     else
