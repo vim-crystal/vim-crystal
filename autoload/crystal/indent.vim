@@ -78,7 +78,7 @@ lockvar g:crystal#indent#crystal_type_declaration
 " Regex that defines continuation lines, not including (, {, or [.
 let g:crystal#indent#non_bracket_continuation_regex =
       \ '\%(' .
-      \ '[\\.,:/%+\-=~<>|&]' .
+      \ '[\\.,:/%+\-=~<>|&^]' .
       \ '\|' .
       \ '\W?' .
       \ '\|' .
@@ -93,7 +93,7 @@ lockvar g:crystal#indent#non_bracket_continuation_regex
 let g:crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
 lockvar g:crystal#indent#bracket_continuation_regex
 
-" " Regex that defines continuation lines.
+" Regex that defines continuation lines.
 let g:crystal#indent#continuation_regex =
       \ g:crystal#indent#non_bracket_continuation_regex .
       \ '\|' .
