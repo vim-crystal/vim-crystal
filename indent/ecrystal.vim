@@ -7,12 +7,12 @@ endif
 
 call ecrystal#SetSubtype()
 
-if b:ecrystal_subtype != ''
+if b:ecrystal_subtype !=# ''
   exec 'runtime! indent/'.b:ecrystal_subtype.'.vim'
   unlet! b:did_indent
 endif
 
-if &l:indentexpr == ''
+if &l:indentexpr ==# ''
   if &l:cindent
     let &l:indentexpr = 'cindent(v:lnum)'
   else
