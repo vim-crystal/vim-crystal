@@ -11,7 +11,7 @@ let s:match_words = ''
 
 call ecrystal#SetSubtype()
 
-if b:ecrystal_subtype != ''
+if b:ecrystal_subtype !=# ''
   exe 'runtime! ftplugin/'.b:ecrystal_subtype.'.vim ftplugin/'.b:ecrystal_subtype.'_*.vim ftplugin/'.b:ecrystal_subtype.'/*.vim'
   unlet! b:did_ftplugin
 
@@ -75,7 +75,7 @@ if exists('AutoPairsLoaded')
 endif
 
 " Load the subtype's vim-endwise settings
-if exists('loaded_endwise') && b:ecrystal_subtype != ''
+if exists('loaded_endwise') && b:ecrystal_subtype !=# ''
   exec 'doautocmd endwise FileType ' . b:ecrystal_subtype
 endif
 

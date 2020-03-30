@@ -198,10 +198,14 @@ function GetCrystalIndent(...)
 
   " If the previous line ended with an "end", match that "end"s beginning's
   " indent.
-  let col = crystal#indent#Match(lnum, '\%(^\|[^.:@$]\)\<end\>\s*\%(#.*\)\=$')
+  let col = crystal#indent#Match(lnum, g:crystal#indent#end_end_regex)
   if col
     call cursor(lnum, col)
-    if searchpair(g:crystal#indent#end_start_regex, '', g:crystal#indent#end_end_regex, 'bW',
+    if searchpair(
+          \ g:crystal#indent#end_start_regex,
+          \ g:crystal#indent#end_middle_regex,
+          \ g:crystal#indent#end_end_regex,
+          \ 'bW',
           \ g:crystal#indent#skip_expr)
       let n = line('.')
       let ind = indent('.')
@@ -261,8 +265,9 @@ function GetCrystalIndent(...)
     return ind
   endif
 
-  " If the previous line ended with [*+/.,-=], but wasn't a block ending or a
-  " closing bracket, indent one extra level.
+  " If the previous line ended with an operator -- but wasn't a block
+  " ending, closing bracket, or type declaration -- indent one extra
+  " level.
   if crystal#indent#Match(lnum, g:crystal#indent#non_bracket_continuation_regex) &&
         \ !crystal#indent#Match(lnum, '^\s*\([\])}]\|end\)')
     if lnum == p_lnum

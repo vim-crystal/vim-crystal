@@ -8,7 +8,7 @@ endif
 
 call ecrystal#SetSubtype()
 
-if b:ecrystal_subtype != ''
+if b:ecrystal_subtype !=# ''
   exec 'runtime! syntax/'.b:ecrystal_subtype.'.vim'
   unlet! b:current_syntax
 endif
@@ -28,6 +28,6 @@ hi def link ecrystalComment   crystalComment
 
 let b:current_syntax = 'ecrystal'
 
-if main_syntax == 'ecrystal'
+if main_syntax ==# 'ecrystal'
   unlet main_syntax
 endif

@@ -10,7 +10,7 @@ if exists('g:ecrystal_extensions')
   call extend(s:ecrystal_extensions, g:ecrystal_extensions, 'force')
 endif
 
-function ecrystal#SetSubtype()
+function! ecrystal#SetSubtype() abort
   if exists('b:ecrystal_subtype')
     return
   endif
@@ -19,11 +19,11 @@ function ecrystal#SetSubtype()
 
   let b:ecrystal_subtype = get(s:ecrystal_extensions, b:ecrystal_subtype, b:ecrystal_subtype)
 
-  if b:ecrystal_subtype == ''
+  if b:ecrystal_subtype ==# ''
     let b:ecrystal_subtype = get(g:, 'ecrystal_default_subtype', 'html')
   endif
 
-  if b:ecrystal_subtype != ''
+  if b:ecrystal_subtype !=# ''
     exec 'setlocal filetype=ecrystal.' . b:ecrystal_subtype
     exec 'setlocal syntax=ecrystal.' . b:ecrystal_subtype
   endif

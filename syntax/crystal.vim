@@ -182,8 +182,8 @@ SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%
 SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\h\k*\s\+\)\@<=/[ \t=/]\@!" end="/[imx]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
 
 " Generalized Regular Expression
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"  end="}[imx]*"  skip="\\\\\|\\}"  contains=@crystalRegexpSpecial
-SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"  end=">[imx]*"  skip="\\\\\|\\>"  contains=@crystalRegexpSpecial,crystalNestedAngleBrackets,crystalDelimEscape
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r{"  end="}[imx]*"  skip="\\\\\|\\}"  contains=@crystalRegexpSpecial,crystalNestedRawCurlyBraces
+SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r<"  end=">[imx]*"  skip="\\\\\|\\>"  contains=@crystalRegexpSpecial,crystalNestedRawAngleBrackets
 SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r\[" end="\][imx]*" skip="\\\\\|\\\]" contains=@crystalRegexpSpecial
 SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r("  end=")[imx]*"  skip="\\\\\|\\)"  contains=@crystalRegexpSpecial
 SynFold '%' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="%r|"  end="|[imx]*"  skip="\\\\\|\\|"  contains=@crystalRegexpSpecial
