@@ -321,6 +321,11 @@ endfunction
 function! crystal_lang#format(option_str, ...) abort
     let on_save = a:0 > 0 ? a:1 : 0
 
+    if expand('%') =~ "\.ecr$"
+      " Do not try to format ecrystal files
+      return
+    endif
+
     if !executable(g:crystal_compiler_command)
         if on_save
             " Finish command silently on save
