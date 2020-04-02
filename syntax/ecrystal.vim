@@ -28,6 +28,6 @@ hi def link ecrystalComment   crystalComment
 
 let b:current_syntax = 'ecrystal'
 
-if main_syntax ==# 'ecrystal'
+if exists('main_syntax') && main_syntax ==# 'ecrystal'
   unlet main_syntax
 endif
