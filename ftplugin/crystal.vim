@@ -3,6 +3,11 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
+" This file is loaded on 'ecrystal' filetype
+if &filetype !=# 'crystal'
+  finish
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
