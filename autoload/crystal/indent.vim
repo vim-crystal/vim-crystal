@@ -90,7 +90,7 @@ let g:crystal#indent#non_bracket_continuation_regex =
 lockvar g:crystal#indent#non_bracket_continuation_regex
 
 " Regex that defines bracket continuations
-let g:crystal#indent#bracket_continuation_regex = '%\@<!\%([({[]\)\s*\%(#.*\)\=$'
+let g:crystal#indent#bracket_continuation_regex = '%\@1<!\%([({[]\)\s*\%(#.*\)\=$'
 lockvar g:crystal#indent#bracket_continuation_regex
 
 " Regex that defines continuation lines.
@@ -125,7 +125,7 @@ lockvar g:crystal#indent#splat_regex
 " The reason is that the pipe matches a hanging "|" operator.
 "
 let g:crystal#indent#block_regex =
-      \ '\%(\<do:\@!\>\|%\@<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(%}\)\=\s*\%(#.*\)\=$'
+      \ '\%(\<do:\@!\>\|%\@1<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(%}\)\=\s*\%(#.*\)\=$'
 lockvar g:crystal#indent#block_regex
 
 let g:crystal#indent#block_continuation_regex = '^\s*[^])}\t ].*'.g:crystal#indent#block_regex
