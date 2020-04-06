@@ -79,7 +79,7 @@ endif
 if exists('g:crystal_operators')
   syn match  crystalOperator "[~!^&|*/%+-]\|<=>\|<=\|\%(<\|\<\%(class\|struct\)\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@1<!>\|\*\*\|\.\.\.\|\.\.\|::"
   syn match  crystalOperator "->\|-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\|//"
-  syn region crystalBracketOperator matchgroup=crystalOperator start="\%(\w[?!]\=\|[]})]\)\@1<=\[" end="]" contains=TOP
+  syn region crystalBracketOperator matchgroup=crystalOperator start="\%(\w[?!]\=\|[]})]\)\@2<=\[" end="]" contains=TOP
 endif
 
 " Expression Substitution and Backslash Notation
@@ -134,7 +134,7 @@ syn match crystalInteger   "\<\d[[:digit:]_]*\%([ui]\%(8\|16\|32\|64\|128\)\|f\%
 syn match crystalFloat     "\<\d[[:digit:]_]*\.\d[[:digit:]_]*\%(f\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
 syn match crystalFloat     "\<\d[[:digit:]_]*\%(\.\d[[:digit:]_]*\)\=\%([eE][-+]\=[[:digit:]_]\+\)\%(f\%(32\|64\)\)\=\>" contains=crystalInvalidInteger display
 " Note: 042 is invalid but 0, 0_, 0_u8 and 0_1 are valid (#73)
-syn match crystalInvalidInteger "\%(\.\|[eE][+-]\)\@1<!\<0\d\+\>" contained containedin=crystalFloat,crystalInteger display
+syn match crystalInvalidInteger "\%(\.\|[eE][+-]\)\@2<!\<0\d\+\>" contained containedin=crystalFloat,crystalInteger display
 
 " Identifiers
 syn match crystalLocalVariableOrMethod "\<[_[:lower:]][_[:alnum:]]*[?!=]\=" contains=NONE display transparent
