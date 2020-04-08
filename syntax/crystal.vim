@@ -297,7 +297,7 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   SynFold 'do' syn region crystalDoBlock matchgroup=crystalControl start="\<do\>" end="\<end\>" contains=TOP
 
   " curly bracket block or hash literal
-  SynFold '{' syn region crystalCurlyBlock   matchgroup=crystalCurlyBlockDelimiter start="{"                     end="}" contains=TOP
+  SynFold '{' syn region crystalCurlyBlock   matchgroup=crystalCurlyBlockDelimiter start="{"                      end="}" contains=TOP
   SynFold '[' syn region crystalArrayLiteral matchgroup=crystalArrayDelimiter      start="\%(\w\|[\]})]\)\@1<!\[" end="]" contains=TOP
 
   " statements without 'do'
@@ -311,8 +311,8 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalConditional "\<\%(when\|else\)\>[?!]\@!" contained containedin=crystalSelectExpression
   syn match crystalConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=crystalConditionalExpression
 
-  syn match crystalExceptional       "\<\%(\%(;\|^\)\s*\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalBlockExpression
-  syn match crystalMethodExceptional "\<\%(\%(;\|^\)\s*\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalMethodBlock
+  syn match crystalExceptional       "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalBlockExpression
+  syn match crystalMethodExceptional "\<\%(\%(\%(;\|^\)\s*\)\@<=rescue\|else\|ensure\)\>[?!]\@!" contained containedin=crystalMethodBlock
 
   SynFold 'macro' syn region crystalMacroBlock matchgroup=crystalMacroRegion start="\z(\\\=\){%\s*\%(\%(if\|for\|begin\)\>.*\|.*\<do\>\)\s*%}" end="\z1{%\s*end\s*%}" transparent contains=TOP
 
