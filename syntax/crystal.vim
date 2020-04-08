@@ -172,10 +172,10 @@ syn match crystalPredefinedVariable "$_\>" display
 syn match crystalPredefinedVariable "$-[0FIKadilpvw]\>" display
 syn match crystalPredefinedVariable "$\%(deferr\|defout\|stderr\|stdin\|stdout\)\>" display
 syn match crystalPredefinedVariable "$\%(DEBUG\|FILENAME\|KCODE\|LOADED_FEATURES\|LOAD_PATH\|PROGRAM_NAME\|SAFE\|VERBOSE\)\>" display
-syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@1<!\|::\)\_s*\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>\%(\s*(\)\@!"
-syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@1<!\|::\)\_s*\zs\%(DATA\|FALSE\|NIL\)\>\%(\s*(\)\@!"
-syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@1<!\|::\)\_s*\zs\%(STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
-syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@1<!\|::\)\_s*\zs\%(crystal_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
+syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@2<!\|::\)\_s*\zs\%(MatchingData\|ARGF\|ARGV\|ENV\)\>\%(\s*(\)\@!"
+syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@2<!\|::\)\_s*\zs\%(DATA\|FALSE\|NIL\)\>\%(\s*(\)\@!"
+syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@2<!\|::\)\_s*\zs\%(STDERR\|STDIN\|STDOUT\|TOPLEVEL_BINDING\|TRUE\)\>\%(\s*(\)\@!"
+syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@2<!\|::\)\_s*\zs\%(crystal_\%(VERSION\|RELEASE_DATE\|PLATFORM\|PATCHLEVEL\|REVISION\|DESCRIPTION\|COPYRIGHT\|ENGINE\)\)\>\%(\s*(\)\@!"
 
 " Normal Regular Expression
 SynFold '/' syn region crystalRegexp matchgroup=crystalRegexpDelimiter start="\%(\%(^\|\<\%(and\|or\|while\|until\|unless\|if\|elsif\|ifdef\|when\|not\|then\|else\)\|[;\~=!|&(,[<>?:*+-]\)\s*\)\@<=/" end="/[imx]*" skip="\\\\\|\\/" contains=@crystalRegexpSpecial
