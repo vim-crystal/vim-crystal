@@ -28,3 +28,5 @@ function! ecrystal#SetSubtype() abort
     exec 'setlocal syntax=ecrystal.' . b:ecrystal_subtype
   endif
 endfunction
+
+" vim: sw=2 sts=2 et:

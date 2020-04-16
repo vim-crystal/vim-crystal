@@ -484,4 +484,4 @@ let b:current_syntax = 'crystal'
 
 delc SynFold
 
-" vim: nowrap sw=2 sts=2:
+" vim: sw=2 sts=2 et:

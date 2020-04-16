@@ -365,3 +365,5 @@ function! crystal#indent#FindContainingClass() abort
   call setpos('.', saved_position)
   return 0
 endfunction
+
+" vim: sw=2 sts=2 et:

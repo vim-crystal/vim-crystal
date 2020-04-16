@@ -21,3 +21,5 @@ end
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
+" vim: sw=2 sts=2 et:
