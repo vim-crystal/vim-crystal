@@ -40,7 +40,7 @@ function GetCrystalIndent(...)
   let clnum = a:0 ? a:1 : v:lnum
 
   " Set up variables for restoring position in file
-  let vcol = col(clnum)
+  let vcol = col('.')
 
   " Work on the current line {{{2
   " ------------------------
