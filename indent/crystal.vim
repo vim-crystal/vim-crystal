@@ -184,7 +184,7 @@ function GetCrystalIndent(...)
       endif
     elseif closing.pos != -1
       call cursor(lnum, closing.pos + 1)
-      normal! %
+      keepjumps normal! %
 
       if crystal#indent#Match(line('.'), g:crystal#indent#crystal_indent_keywords)
         return indent('.') + s:sw()
