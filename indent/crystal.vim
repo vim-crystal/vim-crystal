@@ -168,7 +168,7 @@ function GetCrystalIndent(...)
   "
   " If it contained hanging closing brackets, find the rightmost one, find its
   " match and indent according to that.
-  if line =~# '[[({]' || line =~# '[])}]\s*\%(#.*\)\=$'
+  if line =~# '[[({]' || line =~# '[])]\s*\%(#.*\)\=$'
     let [opening, closing] = crystal#indent#ExtraBrackets(lnum)
 
     if opening.pos != -1
