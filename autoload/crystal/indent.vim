@@ -122,11 +122,6 @@ lockvar g:crystal#indent#continuable_regex
 let g:crystal#indent#splat_regex = '[[,(]\s*\*\s*\%(#.*\)\=$'
 lockvar g:crystal#indent#splat_regex
 
-" Regex that defines blocks.
-" let g:crystal#indent#block_regex =
-"       \ '\%(\<do:\@!\>\|%\@1<!{\)\s*\%(|\s*(*\s*\%([*@&]\=\h\w*,\=\s*\)\%(,\s*(*\s*[*@&]\=\h\w*\s*)*\s*\)*|\)\=\s*\%(%}\)\=\s*\%(#.*\)\=$'
-" lockvar g:crystal#indent#block_regex
-
 let g:crystal#indent#block_continuation_regex = '^\s*[^])}\t ].*'.g:crystal#indent#block_regex
 lockvar g:crystal#indent#block_continuation_regex
 
