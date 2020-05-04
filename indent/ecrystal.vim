@@ -84,28 +84,19 @@ else
   endfunction
 endif
 
-" Does the given pattern match at the cursor's position?
-function s:MatchCursor(pattern)
-  return searchpos(a:pattern, 'cnz', line('.')) == [line('.'), col('.')]
+" Does the given pattern match at the given position?
+function! s:MatchAt(lnum, col, pattern) abort
+  return match(strcharpart(getline(a:lnum), a:col - 1), a:pattern) == 0
 endfunction
 
-" Does the given pattern match at the given position?
-function s:MatchAt(lnum, col, pattern)
-  let pos = getcurpos()
-
-  try
-    call cursor(a:lnum, a:col)
-    let result = s:MatchCursor(a:pattern)
-  finally
-    call setpos('.', pos)
-  endtry
-
-  return result
+" Does the given pattern match at the cursor's position?
+function! s:MatchCursor(pattern) abort
+  return s:MatchAt(line('.'), col('.'), a:pattern)
 endfunction
 
 " Is the cell at the given position part of a tag? If so, return the
 " position of the opening delimiter.
-function s:MatchECR(...)
+function! s:MatchECR(...) abort
   if a:0
     let lnum = a:1
     let col = a:2
@@ -131,7 +122,7 @@ endfunction
 " If the cell at the given position is part of a control tag, return the
 " respective positions of the opening and closing delimiters for that
 " tag.
-function s:MatchECRControl(...)
+function! s:MatchECRControl(...) abort
   let pos = getcurpos()
 
   if a:0
@@ -173,7 +164,7 @@ endfunction
 
 " Determine whether or not the control tag at the given position starts
 " an indent.
-function s:ECRIndent(...)
+function! s:ECRIndent(...) abort
   if a:0
     if type(a:1) == 0
       let [open, close] = s:MatchECRControl(a:1, a:2)
@@ -235,7 +226,7 @@ endfunction
 
 " Determine if the control tag at the given position ends an indent or
 " not.
-function s:ECRDedent(...)
+function! s:ECRDedent(...) abort
   if a:0
     if type(a:1) == 0
       let [open, close] = s:MatchECRControl(a:1, a:2)
@@ -295,7 +286,7 @@ function s:ECRDedent(...)
 endfunction
 
 " Find and match a control tag in the given line, if one exists.
-function s:FindECRControl(...)
+function! s:FindECRControl(...) abort
   let lnum = a:0 ? a:1 : line('.')
 
   let open = { 'lnum': 0, 'col': 0 }
@@ -322,7 +313,7 @@ endfunction
 " This takes two arguments: the first is the line to start searching
 " from (exclusive); the second is the line to stop searching at
 " (inclusive).
-function s:FindPrevECRControl(...)
+function! s:FindPrevECRControl(...) abort
   if a:0 == 0
     let start = line('.')
     let stop = 1
@@ -367,7 +358,7 @@ endfunction
 " GetEcrystalIndent {{{1
 " =================
 
-function GetEcrystalIndent() abort
+function! GetEcrystalIndent() abort
   let prev_lnum = prevnonblank(v:lnum - 1)
 
   if b:ecrystal_indent_multiline
@@ -459,7 +450,7 @@ endfunction
 " GetEcrystalFold {{{1
 " ===============
 
-function GetEcrystalFold() abort
+function! GetEcrystalFold() abort
   let fold = '='
 
   let col = crystal#indent#Match(v:lnum, s:ecr_control_open)
