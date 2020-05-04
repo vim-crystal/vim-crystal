@@ -86,7 +86,8 @@ endif
 
 " Does the given pattern match at the given position?
 function! s:MatchAt(lnum, col, pattern) abort
-  return match(strcharpart(getline(a:lnum), a:col - 1), a:pattern) == 0
+  let idx = a:col - 1
+  return match(getline(a:lnum), a:pattern, idx) == idx
 endfunction
 
 " Does the given pattern match at the cursor's position?
