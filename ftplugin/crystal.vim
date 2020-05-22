@@ -3,33 +3,8 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-" This file is loaded on 'ecrystal' filetype
-if &filetype !=# 'crystal'
-  finish
-endif
-
 let s:save_cpo = &cpo
 set cpo&vim
-
-if exists('loaded_matchit') && !exists('b:match_words')
-  let b:match_ignorecase = 0
-
-  let b:match_words =
-        \ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|struct\|lib\|macro\|ifdef\|def\|fun\|begin\|enum\)\>=\@!' .
-        \ ':' .
-        \ '\<\%(else\|elsif\|ensure\|when\|rescue\|break\|redo\|next\|retry\)\>' .
-        \ ':' .
-        \ '\<end\>' .
-        \ ',{:},\[:\],(:)'
-
-  let b:match_skip =
-        \ "synIDattr(synID(line('.'),col('.'),0),'name') =~ '" .
-        \ "\\<crystal\\%(String\\|StringDelimiter\\|ASCIICode\\|Escape\\|" .
-        \ "Interpolation\\|NoInterpolation\\|Comment\\|Documentation\\|" .
-        \ "ConditionalModifier\\|RepeatModifier\\|OptionalDo\\|" .
-        \ "Function\\|BlockArgument\\|KeywordAsMethod\\|ClassVariable\\|" .
-        \ "InstanceVariable\\|GlobalVariable\\|Symbol\\)\\>'"
-endif
 
 setlocal comments=:#
 setlocal commentstring=#\ %s
@@ -56,12 +31,12 @@ command! -buffer -nargs=? CrystalSpecRunCurrent call crystal_lang#run_current_sp
 command! -buffer -nargs=* -bar CrystalFormat    call crystal_lang#format(<q-args>, 0)
 command! -buffer -nargs=* CrystalExpand         echo crystal_lang#expand(expand('%'), getpos('.'), <q-args>).output
 
-nnoremap <buffer><Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
-nnoremap <buffer><Plug>(crystal-show-context)       :<C-u>CrystalContext<CR>
-nnoremap <buffer><Plug>(crystal-spec-switch)        :<C-u>CrystalSpecSwitch<CR>
-nnoremap <buffer><Plug>(crystal-spec-run-all)       :<C-u>CrystalSpecRunAll<CR>
-nnoremap <buffer><Plug>(crystal-spec-run-current)   :<C-u>CrystalSpecRunCurrent<CR>
-nnoremap <buffer><Plug>(crystal-format)             :<C-u>CrystalFormat<CR>
+nnoremap <buffer><Plug>(crystal-jump-to-definition) <Cmd><C-u>CrystalDef<CR>
+nnoremap <buffer><Plug>(crystal-show-context)       <Cmd><C-u>CrystalContext<CR>
+nnoremap <buffer><Plug>(crystal-spec-switch)        <Cmd><C-u>CrystalSpecSwitch<CR>
+nnoremap <buffer><Plug>(crystal-spec-run-all)       <Cmd><C-u>CrystalSpecRunAll<CR>
+nnoremap <buffer><Plug>(crystal-spec-run-current)   <Cmd><C-u>CrystalSpecRunCurrent<CR>
+nnoremap <buffer><Plug>(crystal-format)             <Cmd><C-u>CrystalFormat<CR>
 
 augroup plugin-ft-crystal
   autocmd BufWritePre <buffer> if g:crystal_auto_format | call crystal_lang#format('', 1) | endif
@@ -79,7 +54,29 @@ if &l:ofu ==# ''
   setlocal omnifunc=crystal_lang#complete
 endif
 
-if exists('AutoPairsLoaded')
+" Options for vim-matchit
+if exists('g:loaded_matchit') && !exists('b:match_words')
+  let b:match_ignorecase = 0
+
+  let b:match_words =
+        \ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|struct\|lib\|macro\|ifdef\|def\|begin\|enum\)\>=\@!' .
+        \ ':' .
+        \ '\<\%(else\|elsif\|ensure\|when\|rescue\|break\|next\)\>' .
+        \ ':' .
+        \ '\<end\>' .
+        \ ',{:},\[:\],(:)'
+
+  let b:match_skip =
+        \ 'synIDattr(synID(line("."), col("."), 0), "name") =~# ''' .
+        \ '\<crystal\%(String\|StringDelimiter\|ASCIICode\|Escape\|' .
+        \ 'Interpolation\|NoInterpolation\|Comment\|Documentation\|' .
+        \ 'ConditionalModifier\|' .
+        \ 'Function\|BlockArgument\|KeywordAsMethod\|ClassVariable\|' .
+        \ 'InstanceVariable\|GlobalVariable\|Symbol\)\>'''
+endif
+
+" Options for jiangmiao/auto-pairs
+if exists('g:AutoPairsLoaded')
   let b:AutoPairs = { '{%': '%}' }
   call extend(b:AutoPairs, g:AutoPairs, 'force')
 endif

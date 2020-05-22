@@ -264,10 +264,10 @@ syn cluster crystalDeclaration contains=crystalAliasDeclaration,crystalAliasDecl
 " Note: the following keywords have already been defined:
 " begin case class def do end for if module unless until while
 syn match crystalControl        "\<\%(break\|next\|rescue\|return\)\>[?!]\@!"
-syn match crystalOperator       "\<defined?" display
 syn match crystalKeyword        "\<\%(super\|previous_def\|yield\|of\|with\|uninitialized\|union\)\>[?!]\@!"
 syn match crystalBoolean        "\<\%(true\|false\)\>[?!]\@!"
-syn match crystalPseudoVariable "\<\%(nil\|self\|__DIR__\|__FILE__\|__LINE__\|__END_LINE__\)\>[?!]\@!" " TODO: reorganise
+syn match crystalPseudoVariable "\<\%(nil\|__DIR__\|__FILE__\|__LINE__\|__END_LINE__\)\>[?!]\@!" " TODO: reorganise
+syn match crystalPseudoVariable "\<self\>"
 
 " Expensive Mode - match 'end' with the appropriate opening keyword for syntax
 " based folding and special highlighting of module/class/method definitions
@@ -354,8 +354,8 @@ endif
 
 " Macro
 " Note: This definition must be put after crystalNestedCurlyBraces to give higher priority
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" oneline display contains=@crystalMacroGroup containedin=ALL
-syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" oneline display contains=@crystalMacroGroup containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={%" end="%}" display oneline contains=@crystalMacroGroup containedin=ALL
+syn region crystalMacroRegion matchgroup=crystalMacroDelim start="\\\={{" end="}}" display contains=TOP containedin=ALL
 
 " Cluster for groups that can appear inside macro expressions
 syn cluster crystalMacroGroup contains=@crystalTop
@@ -371,8 +371,7 @@ syn cluster crystalMacroGroup remove=@crystalExpensive
 " Some keywords will have to be redefined for them to be highlighted
 " properly
 syn keyword crystalMacroKeyword contained
-      \ if else elsif end for in begin do case when while until loop
-      \ rescue ensure
+      \ if unless else elsif end for in do while until loop begin
 
 syn cluster crystalMacroGroup add=crystalMacroKeyword
 
