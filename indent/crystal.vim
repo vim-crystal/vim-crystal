@@ -5,7 +5,7 @@ set cpo&vim
 " ==============
 
 " Only load this indent file when no other was loaded.
-if exists("b:did_indent")
+if exists('b:did_indent')
   finish
 endif
 
@@ -30,7 +30,7 @@ setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue
 setlocal indentkeys+==private,=protected
 
 " Only define the function once.
-if exists("*GetCrystalIndent")
+if exists('*GetCrystalIndent')
   finish
 endif
 

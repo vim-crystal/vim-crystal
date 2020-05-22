@@ -287,7 +287,7 @@ function! crystal#indent#ClosingBracketOnEmptyLine(cline_info) abort
           \ escape(bracket_pair[0], '\['), '',
           \ bracket_pair[1], 'bW',
           \ g:crystal#indent#skip_expr)
-      if closing_bracket == ')' && col('.') != col('$') - 1
+      if closing_bracket ==# ')' && col('.') != col('$') - 1
         let ind = virtcol('.') - 1
       elseif g:crystal_indent_block_style ==# 'do'
         let ind = indent(line('.'))
@@ -425,7 +425,7 @@ function! crystal#indent#ClosingHeredocDelimiter(cline_info) abort
 
   " If we are at the closing delimiter of a "<<" heredoc-style string, set the
   " indent to 0.
-  if info.cline =~ '^\k\+\s*$'
+  if info.cline =~# '^\k\+\s*$'
         \ && crystal#indent#IsInStringDelimiter(info.clnum, 1)
         \ && search('\V<<'.info.cline, 'nbW') > 0
     return 0
@@ -451,7 +451,7 @@ function! crystal#indent#EmptyInsideString(pline_info) abort
   let plnum = prevnonblank(info.clnum - 1)
   let pline = getline(plnum)
 
-  if info.cline =~ '^\s*$'
+  if info.cline =~# '^\s*$'
         \ && crystal#indent#IsInStringOrComment(plnum, 1)
         \ && crystal#indent#IsInStringOrComment(plnum, strlen(pline))
     return indent(plnum)
@@ -565,11 +565,11 @@ function! crystal#indent#AfterUnbalancedBracket(pline_info) abort
   " {1, 2, 3}.each { |i|
   "   puts i
   " }
-  if info.pline =~ '[[({]' || info.pline =~ '[])]'.g:crystal#indent#eol
+  if info.pline =~# '[[({]' || info.pline =~# '[])]'.g:crystal#indent#eol
     let [opening, closing] = crystal#indent#ExtraBrackets(info.plnum)
 
     if opening.pos != -1
-      if opening.type == '(' && searchpair('(', '', ')', 'bW', g:crystal#indent#skip_expr)
+      if opening.type ==# '(' && searchpair('(', '', ')', 'bW', g:crystal#indent#skip_expr)
         if col('.') + 1 == col('$')
           return indent(info.plnum) + info.sw
         else
@@ -723,8 +723,7 @@ function! crystal#indent#PreviousNotMSL(msl_info) abort
     if crystal#indent#Match(info.plnum, g:crystal#indent#bracket_switch_continuation_regex)
       return indent(info.plnum) - 1
       " If previous line is a continuation return its indent.
-    elseif crystal#indent#Match(info.plnum, g:crystal#indent#non_bracket_continuation_regex) ||
-          \ crystal#indent#IsInString(info.plnum, strlen(line))
+    elseif crystal#indent#Match(info.plnum, g:crystal#indent#non_bracket_continuation_regex)
       return indent(info.plnum)
     endif
   endif
@@ -803,7 +802,7 @@ function! crystal#indent#IsInStringOrCommentOrDelimiter(lnum, col) abort
 endfunction
 
 function! crystal#indent#IsAssignment(str, pos) abort
-  return strpart(a:str, 0, a:pos - 1) =~ '=\s*$'
+  return strpart(a:str, 0, a:pos - 1) =~# '=\s*$'
 endfunction
 
 " Find line above 'lnum' that isn't empty or in a string.
@@ -945,25 +944,25 @@ function! crystal#indent#ExtraBrackets(lnum) abort
   " close anything, save it for later.
   while pos != -1
     if !crystal#indent#IsInStringOrComment(a:lnum, pos + 1)
-      if line[pos] == '('
+      if line[pos] ==# '('
         call add(opening.parentheses, {'type': '(', 'pos': pos})
-      elseif line[pos] == ')'
+      elseif line[pos] ==# ')'
         if empty(opening.parentheses)
           call add(closing.parentheses, {'type': ')', 'pos': pos})
         else
           let opening.parentheses = opening.parentheses[0:-2]
         endif
-      elseif line[pos] == '{'
+      elseif line[pos] ==# '{'
         call add(opening.braces, {'type': '{', 'pos': pos})
-      elseif line[pos] == '}'
+      elseif line[pos] ==# '}'
         if empty(opening.braces)
           call add(closing.braces, {'type': '}', 'pos': pos})
         else
           let opening.braces = opening.braces[0:-2]
         endif
-      elseif line[pos] == '['
+      elseif line[pos] ==# '['
         call add(opening.brackets, {'type': '[', 'pos': pos})
-      elseif line[pos] == ']'
+      elseif line[pos] ==# ']'
         if empty(opening.brackets)
           call add(closing.brackets, {'type': ']', 'pos': pos})
         else
