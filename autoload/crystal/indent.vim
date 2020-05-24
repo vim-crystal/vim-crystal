@@ -852,7 +852,7 @@ function! crystal#indent#RelativeMacroDepth(a, b) abort
     elseif crystal#indent#Match(i, g:crystal#indent#macro_end_end_regex)
       let diff -= 1
     endif
-  endwhile
+  endfor
 
   return diff
 endfunction
