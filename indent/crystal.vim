@@ -34,6 +34,15 @@ if exists('*GetCrystalIndent')
   finish
 endif
 
+" Return the value of a single shift-width
+if exists('*shiftwidth')
+  let s:sw = function('shiftwidth')
+else
+  function! s:sw()
+    return &shiftwidth
+  endfunction
+endif
+
 " GetCrystalIndent Function {{{1
 " =========================
 
@@ -44,11 +53,7 @@ function! GetCrystalIndent(...) abort
   let indent_info = {}
 
   " The value of a single shift-width
-  if exists('*shiftwidth')
-    let indent_info.sw = shiftwidth()
-  else
-    let indent_info.sw = &sw
-  endif
+  let indent_info.sw = s:sw()
 
   " For the current line, use the first argument if given, else v:lnum
   let indent_info.clnum = a:0 ? a:1 : v:lnum
@@ -71,9 +76,9 @@ function! GetCrystalIndent(...) abort
   " Work on the previous line. {{{2
   " --------------------------
 
-  " Special case: we don't need the real PrevNonBlankNonString for an
-  " empty line inside a string. And that call can be quite expensive in
-  " that particular situation.
+  " Special case: we don't need the real PrevNonBlank for an empty line
+  " inside a string. And that call can be quite expensive in that
+  " particular situation.
   let indent = crystal#indent#EmptyInsideString(indent_info)
 
   if indent >= 0
@@ -81,7 +86,7 @@ function! GetCrystalIndent(...) abort
   endif
 
   " Previous line number
-  let indent_info.plnum = crystal#indent#PrevNonBlankNonString(indent_info.clnum - 1)
+  let indent_info.plnum = crystal#indent#PrevNonBlank(indent_info.clnum - 1)
   let indent_info.pline = getline(indent_info.plnum)
 
   for callback_name in g:crystal#indent#prev_line_callbacks
@@ -98,6 +103,7 @@ function! GetCrystalIndent(...) abort
   " Most Significant line based on the previous one -- in case it's a
   " contination of something above
   let indent_info.plnum_msl = crystal#indent#GetMSL(indent_info.plnum)
+  let indent_info.pline_msl = getline(indent_info.plnum_msl)
 
   for callback_name in g:crystal#indent#msl_callbacks
     let indent = call(function(callback_name), [indent_info])
