@@ -199,7 +199,7 @@ let g:crystal#indent#non_bracket_continuation_regex =
       \ '\%(' .
       \ g:crystal#indent#operator_regex .
       \ '\|' .
-      \ '\<\%(if\|unless\)\>' .
+      \ '\<\%(if\|unless\|then\)\>' .
       \ '\)' .
       \ g:crystal#indent#eol
 lockvar g:crystal#indent#non_bracket_continuation_regex
@@ -247,6 +247,7 @@ let g:crystal#indent#prev_line_callbacks = [
       \ 'crystal#indent#StartOfFile',
       \ 'crystal#indent#AfterTypeDeclaration',
       \ 'crystal#indent#AfterLinkAttribute',
+      \ 'crystal#indent#AfterWhenThen',
       \ 'crystal#indent#ContinuedLine',
       \ 'crystal#indent#AfterBlockOpening',
       \ 'crystal#indent#AfterHangingSplat',
@@ -503,6 +504,18 @@ function! crystal#indent#AfterLinkAttribute(pline_info) abort
   " Short circuit if the previous line was a link attribute.
 
   if info.pline =~# g:crystal#indent#link_attribute_regex
+    return indent(info.plnum)
+  endif
+
+  return -1
+endfunction
+
+function! crystal#indent#AfterWhenThen(pline_info) abort
+  let info = a:pline_info
+
+  " Don't indent after a `when ... then ...` line.
+
+  if info.pline =~# g:crystal#indent#sol.'when\>.*\<then\>\%('.g:crystal#indent#eol.'\)\@!'
     return indent(info.plnum)
   endif
 
