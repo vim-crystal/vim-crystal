@@ -8,8 +8,6 @@ execute join(['function! vital#_crystal#ColorEcho#import() abort', printf("retur
 delfunction s:_SID
 " ___vital___
 scriptencoding utf-8
-let s:save_cpo = &cpo
-set cpo&vim
 
 function! s:_is_available() abort
     if has('gui_running')
@@ -182,6 +180,3 @@ function! s:echo(str) abort
     let echorizer = s:get_echorizer(a:str)
     call echorizer.echo()
 endfunction
-
-let &cpo = s:save_cpo
-unlet s:save_cpo

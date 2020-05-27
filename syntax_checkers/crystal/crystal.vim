@@ -11,9 +11,6 @@ endif
 
 let g:loaded_syntastic_crystal_crystal_checker = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 function! SyntaxCheckers_crystal_crystal_GetLocList() dict
   let file = expand('%:p')
   let entrypoint = crystal_lang#entrypoint_for(file)
@@ -45,8 +42,5 @@ call g:SyntasticRegistry.CreateAndRegisterChecker({
       \   'filetype': 'crystal',
       \   'name': 'crystal'
       \ })
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
 
 " vim: sw=2 sts=2 et:

@@ -1,6 +1,3 @@
-let s:cpo_save = &cpo
-set cpo&vim
-
 " Initialization {{{1
 " ==============
 
@@ -11,23 +8,12 @@ endif
 
 let b:did_indent = 1
 
-if !exists('g:crystal_indent_assignment_style')
-  " Possible values: 'variable', 'hanging'
-  let g:crystal_indent_assignment_style = 'hanging'
-endif
-
-if !exists('g:crystal_indent_block_style')
-  " Possible values: 'expression', 'do'
-  let g:crystal_indent_block_style = 'expression'
-endif
-
 setlocal nosmartindent
 
 " Now, set up our indentation expression and keys that trigger it.
 setlocal indentexpr=GetCrystalIndent(v:lnum)
-setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,.
 setlocal indentkeys+==end,=else,=elsif,=when,=ensure,=rescue
-setlocal indentkeys+==private,=protected
 
 " Only define the function once.
 if exists('*GetCrystalIndent')
@@ -120,8 +106,5 @@ function! GetCrystalIndent(...) abort
 endfunction
 
 " }}}1
-
-let &cpo = s:cpo_save
-unlet s:cpo_save
 
 " vim:sw=2 sts=2 ts=8 fdm=marker et:

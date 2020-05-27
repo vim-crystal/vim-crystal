@@ -3,9 +3,6 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal suffixesadd=.cr
@@ -31,12 +28,12 @@ command! -buffer -nargs=? CrystalSpecRunCurrent call crystal_lang#run_current_sp
 command! -buffer -nargs=* -bar CrystalFormat    call crystal_lang#format(<q-args>, 0)
 command! -buffer -nargs=* CrystalExpand         echo crystal_lang#expand(expand('%'), getpos('.'), <q-args>).output
 
-nnoremap <buffer><Plug>(crystal-jump-to-definition) <Cmd><C-u>CrystalDef<CR>
-nnoremap <buffer><Plug>(crystal-show-context)       <Cmd><C-u>CrystalContext<CR>
-nnoremap <buffer><Plug>(crystal-spec-switch)        <Cmd><C-u>CrystalSpecSwitch<CR>
-nnoremap <buffer><Plug>(crystal-spec-run-all)       <Cmd><C-u>CrystalSpecRunAll<CR>
-nnoremap <buffer><Plug>(crystal-spec-run-current)   <Cmd><C-u>CrystalSpecRunCurrent<CR>
-nnoremap <buffer><Plug>(crystal-format)             <Cmd><C-u>CrystalFormat<CR>
+nnoremap <buffer><Plug>(crystal-jump-to-definition) :<C-u>CrystalDef<CR>
+nnoremap <buffer><Plug>(crystal-show-context)       :<C-u>CrystalContext<CR>
+nnoremap <buffer><Plug>(crystal-spec-switch)        :<C-u>CrystalSpecSwitch<CR>
+nnoremap <buffer><Plug>(crystal-spec-run-all)       :<C-u>CrystalSpecRunAll<CR>
+nnoremap <buffer><Plug>(crystal-spec-run-current)   :<C-u>CrystalSpecRunCurrent<CR>
+nnoremap <buffer><Plug>(crystal-format)             :<C-u>CrystalFormat<CR>
 
 augroup plugin-ft-crystal
   autocmd BufWritePre <buffer> if g:crystal_auto_format | call crystal_lang#format('', 1) | endif
@@ -80,8 +77,5 @@ if exists('g:AutoPairsLoaded')
   let b:AutoPairs = { '{%': '%}' }
   call extend(b:AutoPairs, g:AutoPairs, 'force')
 endif
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
 
 " vim: sw=2 sts=2 et:
