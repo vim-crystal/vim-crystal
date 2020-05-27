@@ -217,10 +217,6 @@ let g:crystal#indent#bracket_switch_continuation_regex =
       \ '^\%([^(]\+\zs).\+\)\+\%('.g:crystal#indent#continuation_regex.'\)'
 lockvar g:crystal#indent#bracket_switch_continuation_regex
 
-" Regex that defines the first part of a splat pattern
-let g:crystal#indent#splat_regex = '[[,(]\s*\*'.g:crystal#indent#eol
-lockvar g:crystal#indent#splat_regex
-
 let g:crystal#indent#block_continuation_regex =
       \ '^\s*[^])}\t ].*'.g:crystal#indent#block_regex
 lockvar g:crystal#indent#block_continuation_regex
@@ -246,7 +242,6 @@ let g:crystal#indent#prev_line_callbacks = [
       \ 'crystal#indent#AfterLinkAttribute',
       \ 'crystal#indent#ContinuedLine',
       \ 'crystal#indent#AfterBlockOpening',
-      \ 'crystal#indent#AfterHangingSplat',
       \ 'crystal#indent#AfterUnbalancedBracket',
       \ 'crystal#indent#AfterLeadingOperator',
       \ 'crystal#indent#AfterEndMacroTag',
@@ -577,17 +572,6 @@ function! crystal#indent#AfterLeadingOperator(pline_info) abort
   return -1
 endfunction
 
-function! crystal#indent#AfterHangingSplat(pline_info) abort
-  let info = a:pline_info
-
-  " If the previous line ended with the "*" of a splat, add a level of indent
-  if info.pline =~ g:crystal#indent#splat_regex
-    return indent(info.plnum) + info.sw
-  endif
-
-  return -1
-endfunction
-
 function! crystal#indent#AfterUnbalancedBracket(pline_info) abort
   let info = a:pline_info
 
@@ -889,16 +873,6 @@ function! crystal#indent#GetMSL(lnum) abort
       " If the current line starts with a leading operator, keep its indent
       " and keep looking for an MSL.
       let mslnum = lnum
-    elseif line =~# g:crystal#indent#splat_regex
-      " If the above line looks like the "*" of a splat, use the current one's
-      " indentation.
-      "
-      " Example:
-      "   Hash[*
-      "     method_call do
-      "       something
-      "
-      return mslnum
     elseif line =~# g:crystal#indent#type_declaration_regex &&
           \ line !~# ','.g:crystal#indent#eol &&
           \ line !~# g:crystal#indent#block_regex
