@@ -149,7 +149,7 @@ let g:crystal#indent#macro_end_start_regex =
       \ '\%(' .
       \ g:crystal#indent#sol .
       \ '\%(' .
-      \ '\\\=\zs{%\s*\%(if\|unless\|for\|while\|until\|begin\)\>.*%}' .
+      \ '\\\=\zs{%\s*\%(if\|unless\|for\|begin\)\>.*%}' .
       \ '\|' .
       \ '\\\=\zs{%.*\<do\s*%}' .
       \ '\)' .
