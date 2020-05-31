@@ -1,6 +1,6 @@
 Vim Filetype Support for [Crystal](http://crystal-lang.org/)
 ============================================================
-[![CI](https://github.com/rhysd/vim-crystal/workflows/CI/badge.svg?event=push)](https://github.com/rhysd/vim-crystal/actions?query=CI+branch%3Amaster)
+[![CI](https://github.com/vim-crystal/vim-crystal/workflows/CI/badge.svg?event=push)](https://github.com/vim-crystal/vim-crystal/actions?query=CI+branch%3Amaster)
 
 This is Vim filetype support for [Crystal programming language](http://crystal-lang.org/).
 
@@ -131,13 +131,18 @@ Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins
 Currently you can complete variable names.
 
 
+## Maintainers
+
+- [@rhysd](https://github.com/rhysd) (author, maintainer)
+- [@jlcrochet](https://github.com/jlcrochet) (maintainer)
+
 
 ## License
 
 This plugin is distributed under the [MIT License](http://opensource.org/licenses/MIT).
 
 ```
-Copyright (c) 2014 rhysd
+Copyright (c) 2014 vim-crystal developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

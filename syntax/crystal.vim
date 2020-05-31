@@ -1,5 +1,7 @@
 " Language: Crystal
-" Maintainer: rhysd <https://rhysd.github.io>
+" Maintainer:
+"   rhysd <https://rhysd.github.io>
+"   Jeffrey Crochet <jlcrochet@pm.me>
 "
 " Based on Ruby syntax highlight
 " which was made by Mirko Nasato and Doug Kearns
