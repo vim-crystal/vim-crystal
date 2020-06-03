@@ -87,7 +87,7 @@ let g:crystal#indent#non_bracket_continuation_regex =
       \ '\|' .
       \ '\%(\%(\<do\>\|%\@1<!{\)\s*|[^|]*\)\@<!|' .
       \ '\|' .
-      \ '\W?' .
+      \ '[)\]}[:alnum:]]\@1<!?' .
       \ '\|' .
       \ '\<\%(if\|unless\)\>' .
       \ '\|' .
