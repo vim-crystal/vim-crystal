@@ -1,3 +1,10 @@
+---
+name: Indentation issue
+about: Create a bug report about indentation
+labels: bug
+
+---
+
 <!-- Fill all sections -->
 
 ### Output of `vim --version` or `nvim --version`

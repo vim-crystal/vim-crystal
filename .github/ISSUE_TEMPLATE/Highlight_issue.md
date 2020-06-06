@@ -1,3 +1,10 @@
+---
+name: Highlighting issue
+about: Create a bug report about syntax highlighting
+labels: bug
+
+---
+
 <!-- Fill all sections -->
 
 ### Output of `vim --version` or `nvim --version`
