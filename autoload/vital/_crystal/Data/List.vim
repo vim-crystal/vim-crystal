@@ -9,9 +9,6 @@ delfunction s:_SID
 " ___vital___
 " Utilities for list.
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 function! s:pop(list) abort
   return remove(a:list, -1)
 endfunction
@@ -457,8 +454,5 @@ function! s:combinations(list, r) abort
   endfor
   return result
 endfunction
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
 
 " vim:set et ts=2 sts=2 sw=2 tw=0:

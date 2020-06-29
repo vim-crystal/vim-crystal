@@ -6,8 +6,6 @@ if exists('g:loaded_syntastic_crystal_filetype')
 endif
 
 let g:loaded_syntastic_crystal_filetype = 1
-let s:save_cpo = &cpo
-set cpo&vim
 
 " This is to let Syntastic know about the Crystal filetype.
 " It enables tab completion for the 'SyntasticInfo' command.
@@ -19,7 +17,16 @@ else
   let g:syntastic_extra_filetypes = ['crystal']
 end
 
-let &cpo = s:save_cpo
-unlet s:save_cpo
+" Indent configuration variables:
+
+if !exists('g:crystal_indent_assignment_style')
+  " Possible values: 'variable', 'hanging'
+  let g:crystal_indent_assignment_style = 'hanging'
+endif
+
+if !exists('g:crystal_indent_block_style')
+  " Possible values: 'expression', 'do'
+  let g:crystal_indent_block_style = 'expression'
+endif
 
 " vim: sw=2 sts=2 et:
