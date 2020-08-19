@@ -1,3 +1,4 @@
+" Filetype plugin for https://crystal-lang.org/api/0.35.1/ECR.html
 if exists('b:did_ftplugin')
   finish
 endif
