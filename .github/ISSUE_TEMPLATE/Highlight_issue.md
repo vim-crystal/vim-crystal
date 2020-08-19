@@ -1,7 +1,7 @@
 ---
 name: Highlighting issue
 about: Create a bug report about syntax highlighting
-labels: bug
+labels: bug, highlight
 
 ---
 

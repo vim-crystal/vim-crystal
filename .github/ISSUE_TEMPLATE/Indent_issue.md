@@ -1,7 +1,7 @@
 ---
 name: Indentation issue
 about: Create a bug report about indentation
-labels: bug
+labels: bug, indent
 
 ---
 
