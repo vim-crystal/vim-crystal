@@ -13,6 +13,12 @@ labels: bug
 
 ```
 
+### vim-crystal configuration in your `.vimrc`
+
+```vim
+
+```
+
 ### Steps to reproduce
 
 1. 

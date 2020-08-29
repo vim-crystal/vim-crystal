@@ -13,6 +13,12 @@ labels: bug, highlight
 
 ```
 
+### vim-crystal configuration in your `.vimrc`
+
+```vim
+
+```
+
 ### Steps to reproduce
 
 Open below code with `filetype=crystal`
