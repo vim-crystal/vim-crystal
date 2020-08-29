@@ -1,7 +1,7 @@
 ---
 name: Other issue
 about: Create a bug report about neither syntax highlighting nor indentation
-labels: bug
+labels: bug, other
 
 ---
 
