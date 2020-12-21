@@ -17,16 +17,4 @@ else
   let g:syntastic_extra_filetypes = ['crystal']
 end
 
-" Indent configuration variables:
-
-if !exists('g:crystal_indent_assignment_style')
-  " Possible values: 'variable', 'hanging'
-  let g:crystal_indent_assignment_style = 'hanging'
-endif
-
-if !exists('g:crystal_indent_block_style')
-  " Possible values: 'expression', 'do'
-  let g:crystal_indent_block_style = 'expression'
-endif
-
 " vim: sw=2 sts=2 et:
