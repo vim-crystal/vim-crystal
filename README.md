@@ -128,7 +128,8 @@ Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins
 
 ![screenshot](https://raw.githubusercontent.com/rhysd/ss/master/vim-crystal/completion.gif)
 
-Currently you can complete variable names.
+Currently you can complete only variable names. If you want more advanced completion, please
+consider to use a language server like [crystalline](https://github.com/elbywan/crystalline).
 
 
 ## Maintainers
