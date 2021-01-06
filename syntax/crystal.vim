@@ -279,7 +279,6 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalDefine     "\<alias\>"      nextgroup=crystalAliasDeclaration skipwhite skipnl
   syn match crystalDefine     "\<def\>"        nextgroup=crystalMethodDeclaration skipwhite skipnl
   syn match crystalDefine     "\<fun\>"        nextgroup=crystalFunctionDeclaration skipwhite skipnl
-  syn match crystalDefine     "\<undef\>"      nextgroup=crystalFunction skipwhite skipnl
   syn match crystalDefine     "\<\%(type\|alias\)\>\%(\s*\h\w*\s*=\)\@=" nextgroup=crystalTypeDeclaration skipwhite skipnl
   syn match crystalClass      "\<class\>"      nextgroup=crystalClassDeclaration skipwhite skipnl
   syn match crystalModule     "\<module\>"     nextgroup=crystalModuleDeclaration skipwhite skipnl
@@ -338,7 +337,7 @@ else
   syn match crystalControl "\<enum\>[?!]\@!"       nextgroup=crystalEnumDeclaration skipwhite skipnl
   syn match crystalControl "\<annotation\>[?!]\@!" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
   syn match crystalControl "\<\%(case\|begin\|do\|if\|ifdef\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|in\|end\)\>[?!]\@!"
-  syn match crystalKeyword "\<\%(alias\|undef\)\>[?!]\@!"
+  syn match crystalKeyword "\<\%(alias\)\>[?!]\@!"
 endif
 
 " Link attribute
@@ -400,10 +399,10 @@ SynFold '#' syn region crystalMultilineComment start="\%(\%(^\s*#.*\n\)\@<!\%(^\
 syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(alias\|begin\|break\|case\|class\|def\|defined\|do\|else\|select\)\>" transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(elsif\|end\|ensure\|false\|for\|if\|ifdef\|in\|module\|next\|nil\)\>" transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(rescue\|return\|self\|super\|previous_def\|then\|true\)\>" transparent contains=NONE
-syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(undef\|unless\|until\|when\|in\|while\|yield\|with\|__FILE__\|__LINE__\)\>" transparent contains=NONE
+syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(unless\|until\|when\|in\|while\|yield\|with\|__FILE__\|__LINE__\)\>" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\<\%(alias\|begin\|case\|class\|def\|do\|end\)[?!]" transparent contains=NONE
-syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|undef\|unless\|until\|while\)[?!]" transparent contains=NONE
+syn match crystalKeywordAsMethod "\<\%(if\|ifdef\|module\|unless\|until\|while\)[?!]" transparent contains=NONE
 
 syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(abort\|at_exit\|caller\|exit\)\>" transparent contains=NONE
 syn match crystalKeywordAsMethod "\%(\%(\.\@1<!\.\)\|::\)\_s*\%(extend\|fork\|include\|asm\)\>" transparent contains=NONE
