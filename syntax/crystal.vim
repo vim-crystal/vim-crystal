@@ -337,7 +337,7 @@ else
   syn match crystalControl "\<enum\>[?!]\@!"       nextgroup=crystalEnumDeclaration skipwhite skipnl
   syn match crystalControl "\<annotation\>[?!]\@!" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
   syn match crystalControl "\<\%(case\|begin\|do\|if\|ifdef\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|in\|end\)\>[?!]\@!"
-  syn match crystalKeyword "\<\%(alias\)\>[?!]\@!"
+  syn match crystalKeyword "\<alias\>[?!]\@!"
 endif
 
 " Link attribute
