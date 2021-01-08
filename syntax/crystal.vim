@@ -288,13 +288,16 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalEnum       "\<enum\>"       nextgroup=crystalEnumDeclaration skipwhite skipnl
   syn match crystalAnnotation "\<annotation\>" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
 
-  SynFold 'def'        syn region crystalMethodBlock start="\<\%(def\|macro\)\>" matchgroup=crystalDefine     end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>"  contains=TOP
+  SynFold 'def'        syn region crystalMethodBlock start="\<\%(def\|macro\)\>" matchgroup=crystalDefine     end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>"  contains=TOP,crystalForallKeyword
   SynFold 'class'      syn region crystalBlock       start="\<class\>"           matchgroup=crystalClass      end="\<end\>"                                 contains=TOP
   SynFold 'module'     syn region crystalBlock       start="\<module\>"          matchgroup=crystalModule     end="\<end\>"                                 contains=TOP
   SynFold 'struct'     syn region crystalBlock       start="\<struct\>"          matchgroup=crystalStruct     end="\<end\>"                                 contains=TOP
   SynFold 'lib'        syn region crystalBlock       start="\<lib\>"             matchgroup=crystalLib        end="\<end\>"                                 contains=TOP
   SynFold 'enum'       syn region crystalBlock       start="\<enum\>"            matchgroup=crystalEnum       end="\<end\>"                                 contains=TOP
   SynFold 'annotation' syn region crystalBlock       start="\<annotation\>"      matchgroup=crystalAnnotation end="\<end\>"                                 contains=TOP
+
+  " keywords in method declaration
+  syn match crystalForallKeyword "\<forall\>[?!]\@!" contained containedin=crystalMethodBlock
 
   " modifiers
   syn match crystalConditionalModifier "\<\%(if\|unless\|ifdef\)\>" display
@@ -338,6 +341,7 @@ else
   syn match crystalControl "\<annotation\>[?!]\@!" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
   syn match crystalControl "\<\%(case\|begin\|do\|if\|ifdef\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|in\|end\)\>[?!]\@!"
   syn match crystalKeyword "\<alias\>[?!]\@!"
+  syn match crystalForallKeyword "\<forall\>[?!]\@!"
 endif
 
 " Link attribute
@@ -481,6 +485,7 @@ hi def link crystalRegexp               crystalString
 hi def link crystalMacro                PreProc
 hi def link crystalMacroDelim           crystalMacro
 hi def link crystalMacroKeyword         crystalKeyword
+hi def link crystalForallKeyword        crystalDefine
 hi def link crystalLinkAttrDelim        crystalMacroDelim
 hi def link crystalError                Error
 hi def link crystalInvalidVariable      crystalError
