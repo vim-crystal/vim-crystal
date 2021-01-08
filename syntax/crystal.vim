@@ -288,13 +288,14 @@ if !exists('b:crystal_no_expensive') && !exists('g:crystal_no_expensive')
   syn match crystalEnum       "\<enum\>"       nextgroup=crystalEnumDeclaration skipwhite skipnl
   syn match crystalAnnotation "\<annotation\>" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
 
-  SynFold 'def'        syn region crystalMethodBlock start="\<\%(def\|macro\)\>" matchgroup=crystalDefine     end="\%(\<\%(def\|macro\)\_s\+\)\@<!\<end\>"  contains=TOP,crystalForallKeyword
-  SynFold 'class'      syn region crystalBlock       start="\<class\>"           matchgroup=crystalClass      end="\<end\>"                                 contains=TOP
-  SynFold 'module'     syn region crystalBlock       start="\<module\>"          matchgroup=crystalModule     end="\<end\>"                                 contains=TOP
-  SynFold 'struct'     syn region crystalBlock       start="\<struct\>"          matchgroup=crystalStruct     end="\<end\>"                                 contains=TOP
-  SynFold 'lib'        syn region crystalBlock       start="\<lib\>"             matchgroup=crystalLib        end="\<end\>"                                 contains=TOP
-  SynFold 'enum'       syn region crystalBlock       start="\<enum\>"            matchgroup=crystalEnum       end="\<end\>"                                 contains=TOP
-  SynFold 'annotation' syn region crystalBlock       start="\<annotation\>"      matchgroup=crystalAnnotation end="\<end\>"                                 contains=TOP
+  SynFold 'def'        syn region crystalMethodBlock start="\<def\>"        matchgroup=crystalDefine     end="\%(\<def\_s\+\)\@<!\<end\>"   contains=TOP,crystalForallKeyword
+  SynFold 'macro'      syn region crystalMethodBlock start="\<macro\>"      matchgroup=crystalDefine     end="\%(\<macro\_s\+\)\@<!\<end\>" contains=TOP
+  SynFold 'class'      syn region crystalBlock       start="\<class\>"      matchgroup=crystalClass      end="\<end\>"                      contains=TOP
+  SynFold 'module'     syn region crystalBlock       start="\<module\>"     matchgroup=crystalModule     end="\<end\>"                      contains=TOP
+  SynFold 'struct'     syn region crystalBlock       start="\<struct\>"     matchgroup=crystalStruct     end="\<end\>"                      contains=TOP
+  SynFold 'lib'        syn region crystalBlock       start="\<lib\>"        matchgroup=crystalLib        end="\<end\>"                      contains=TOP
+  SynFold 'enum'       syn region crystalBlock       start="\<enum\>"       matchgroup=crystalEnum       end="\<end\>"                      contains=TOP
+  SynFold 'annotation' syn region crystalBlock       start="\<annotation\>" matchgroup=crystalAnnotation end="\<end\>"                      contains=TOP
 
   " keywords in method declaration
   syn match crystalForallKeyword "\<forall\>[?!]\@!" contained containedin=crystalMethodBlock
