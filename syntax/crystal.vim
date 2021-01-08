@@ -340,7 +340,7 @@ else
   syn match crystalControl "\<macro\>[?!]\@!"      nextgroup=crystalMacroDeclaration skipwhite skipnl
   syn match crystalControl "\<enum\>[?!]\@!"       nextgroup=crystalEnumDeclaration skipwhite skipnl
   syn match crystalControl "\<annotation\>[?!]\@!" nextgroup=crystalAnnotationDeclaration skipwhite skipnl
-  syn match crystalControl "\<\%(case\|begin\|do\|if\|ifdef\|unless\|while\|until\|else\|elsif\|ensure\|then\|when\|in\|end\)\>[?!]\@!"
+  syn match crystalControl "\<\%(case\|begin\|do\|if\|ifdef\|unless\|while\|select\|until\|else\|elsif\|ensure\|then\|when\|in\|end\)\>[?!]\@!"
   syn match crystalKeyword "\<alias\>[?!]\@!"
   syn match crystalForallKeyword "\<forall\>[?!]\@!"
 endif
