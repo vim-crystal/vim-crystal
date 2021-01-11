@@ -353,7 +353,7 @@ if !exists('g:crystal_no_special_methods')
   syn keyword crystalAccess    protected private
   " attr is a common variable name
   syn keyword crystalAttribute abstract
-  syn match   crystalAttribute "\<\%(class_\)\=\%(getter\|setter\|property\)[!?]\=\s" display
+  syn match   crystalAttribute "\<\%(\%(class_\)\=\%(getter\|setter\|property\)[!?]\=\|def_\%(clone\|equals\|equals_and_hash\|hash\)\|delegate\|forward_missing_to\)\s" display
   syn match   crystalControl   "\<\%(abort\|at_exit\|exit\|fork\|loop\)\>[?!]\@!" display
   syn keyword crystalException raise
   " false positive with 'include?'
