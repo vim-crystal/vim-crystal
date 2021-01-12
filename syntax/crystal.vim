@@ -91,7 +91,7 @@ syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C
 syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=TOP
 syn match  crystalInterpolation      "#\%(\$\|@@\=\)\w\+" display contained contains=crystalInterpolationDelim,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable,crystalPredefinedVariable
 syn match  crystalInterpolationDelim "#\ze\%(\$\|@@\=\)\w\+" display contained
-syn match  crystalInterpolation      "#\$\%(-\w\|\W\)" display contained contains=crystalInterpolationDelim,crystalPredefinedVariable,crystalInvalidVariable
+syn match  crystalInterpolation      "#\$\%(-\w\|\W\)" display contained contains=crystalInterpolationDelim,crystalPredefinedVariable
 syn match  crystalInterpolationDelim "#\ze\$\%(-\w\|\W\)" display contained
 syn region crystalNoInterpolation    start="\\#{" end="}" contained
 syn match  crystalNoInterpolation    "\\#{" display contained
@@ -168,11 +168,10 @@ SynFold ':' syn region crystalSymbol start="[]})\"':]\@1<!:\"" end="\"" skip="\\
 syn match  crystalBlockParameter     "\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" contained
 syn region crystalBlockParameterList start="\%(\%(\<do\>\|{\)\s*\)\@<=|" end="|" oneline display contains=crystalBlockParameter
 
-syn match crystalInvalidVariable    "$[^ %A-Za-z_-]"
-syn match crystalPredefinedVariable #$[!$&"'*+,./0:;<=>?@\`~]#
-syn match crystalPredefinedVariable "$\d\+" display
-syn match crystalPredefinedVariable "$_\>" display
-syn match crystalPredefinedVariable "$-[0FIKadilpvw]\>" display
+" In Crystal, almost all special variables were removed and global variables
+" are not supported https://github.com/crystal-lang/crystal/commit/e872c716d0e936557b34c614efc5a4c24d845f79
+" NOTE: Only $~ and $? are supported since they are actually not global.
+syn match crystalPredefinedVariable "$[~?]"
 syn match crystalPredefinedConstant "\%(\%(\.\@1<!\.\)\@2<!\|::\)\_s*\zs\%(ARGF\|ARGV\|ENV\|STDERR\|STDIN\|STDOUT\)\>\%(\s*(\)\@!"
 
 " Normal Regular Expression
@@ -484,7 +483,6 @@ hi def link crystalMacroKeyword         crystalKeyword
 hi def link crystalForallKeyword        crystalDefine
 hi def link crystalLinkAttrDelim        crystalMacroDelim
 hi def link crystalError                Error
-hi def link crystalInvalidVariable      crystalError
 hi def link crystalSpaceError           crystalError
 hi def link crystalInvalidInteger       crystalError
 
