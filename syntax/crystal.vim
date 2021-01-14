@@ -89,7 +89,7 @@ syn match crystalStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"    
 syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 
 syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=TOP
-syn match  crystalInterpolation      "#\%(\$\|@@\=\)\w\+" display contained contains=crystalInterpolationDelim,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable,crystalPredefinedVariable
+syn match  crystalInterpolation      "#@@\=\w\+" display contained contains=crystalInterpolationDelim,crystalInstanceVariable,crystalClassVariable,,crystalPredefinedVariable
 syn match  crystalInterpolationDelim "#\ze\%(\$\|@@\=\)\w\+" display contained
 syn match  crystalInterpolation      "#\$\%(-\w\|\W\)" display contained contains=crystalInterpolationDelim,crystalPredefinedVariable
 syn match  crystalInterpolationDelim "#\ze\$\%(-\w\|\W\)" display contained
@@ -152,7 +152,6 @@ syn match  crystalAnnotationName   "\%(\%([.@$]\@1<!\.\)\@1<!\<\|::\)\_s*\zs\u\w
 syn match  crystalConstant         "\%(\%([.@$]\@1<!\.\)\@1<!\<\|::\)\_s*\zs\u\w*\%(\>\|::\)\@="
 syn match  crystalClassVariable    "@@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
 syn match  crystalInstanceVariable "@\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
-syn match  crystalGlobalVariable   "$\%(\%(\h\|%\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*\|-.\)"
 syn match  crystalFreshVariable    "\%(\h\|[^\x00-\x7F]\)\@1<!%\%(\h\|[^\x00-\x7F]\)\%(\w\|%\|[^\x00-\x7F]\)*" display
 syn match  crystalSymbol           "[]})\"':]\@1<!:\%(\^\|\~\|<<\|<=>\|<=\|<\|===\|[=!]=\|[=!]\~\|!\|>>\|>=\|>\||\|-@\|-\|/\|\[][=?]\|\[]\|\*\*\|\*\|&\|%\|+@\|+\|`\)"
 syn match  crystalSymbol           "[]})\"':]\@1<!:\$\%(-.\|[`~<=>_,;:!?/.'"@$*\&+0]\)"
@@ -240,9 +239,9 @@ SynFold '<<' syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\
 SynFold '<<' syn region crystalString start=+\%(\%(class\|::\)\_s*\|\%([]}).]\)\s\|\w\)\@<!<<-`\z([^`]*\)`\ze\%(.*<<-\=['`"]\=\h\)\@!+hs=s+3 matchgroup=crystalStringDelimiter end=+^\s*\zs\z1$+ contains=crystalHeredocStart,@crystalStringSpecial keepend
 
 " Module, Class, Method, and Alias Declarations
-syn match crystalAliasDeclaration      "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable nextgroup=crystalAliasDeclaration2 skipwhite
-syn match crystalAliasDeclaration2     "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalGlobalVariable,crystalPredefinedVariable
-syn match crystalMethodDeclaration     "[^[:space:];#(]\+"   contained contains=crystalConstant,crystalFunction,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable,crystalGlobalVariable
+syn match crystalAliasDeclaration      "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalPredefinedVariable nextgroup=crystalAliasDeclaration2 skipwhite
+syn match crystalAliasDeclaration2     "[^[:space:];#.()]\+" contained contains=crystalSymbol,crystalPredefinedVariable
+syn match crystalMethodDeclaration     "[^[:space:];#(]\+"   contained contains=crystalConstant,crystalFunction,crystalBoolean,crystalPseudoVariable,crystalInstanceVariable,crystalClassVariable
 syn match crystalFunctionDeclaration   "[^[:space:];#(=]\+"  contained contains=crystalFunction
 syn match crystalTypeDeclaration       "[^[:space:];#=]\+"   contained contains=crystalTypeName
 syn match crystalClassDeclaration      "[^[:space:];#<]\+"   contained contains=crystalClassName,crystalOperator
@@ -444,7 +443,6 @@ hi def link crystalStructName           crystalConstant
 hi def link crystalLibName              crystalConstant
 hi def link crystalEnumName             crystalConstant
 hi def link crystalAnnotationName       crystalConstant
-hi def link crystalGlobalVariable       crystalIdentifier
 hi def link crystalBlockParameter       crystalIdentifier
 hi def link crystalInstanceVariable     crystalIdentifier
 hi def link crystalFreshVariable        crystalIdentifier
