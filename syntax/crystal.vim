@@ -89,10 +89,6 @@ syn match crystalStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"    
 syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-\|\\M-\)\%(\\\o\{1,3}\|\\x\x\{1,2}\|\\\=\S\)" contained display
 
 syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=TOP
-syn match  crystalInterpolation      "#@@\=\w\+" display contained contains=crystalInterpolationDelim,crystalInstanceVariable,crystalClassVariable,,crystalPredefinedVariable
-syn match  crystalInterpolationDelim "#\ze\%(\$\|@@\=\)\w\+" display contained
-syn match  crystalInterpolation      "#\$\%(-\w\|\W\)" display contained contains=crystalInterpolationDelim,crystalPredefinedVariable
-syn match  crystalInterpolationDelim "#\ze\$\%(-\w\|\W\)" display contained
 syn region crystalNoInterpolation    start="\\#{" end="}" contained
 syn match  crystalNoInterpolation    "\\#{" display contained
 syn match  crystalNoInterpolation    "\\#\%(\$\|@@\=\)\w\+" display contained
