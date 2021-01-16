@@ -91,8 +91,6 @@ syn match crystalStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C
 syn region crystalInterpolation      matchgroup=crystalInterpolationDelim start="#{" end="}" contained contains=TOP
 syn region crystalNoInterpolation    start="\\#{" end="}" contained
 syn match  crystalNoInterpolation    "\\#{" display contained
-syn match  crystalNoInterpolation    "\\#\%(\$\|@@\=\)\w\+" display contained
-syn match  crystalNoInterpolation    "\\#\$\W" display contained
 
 syn match crystalDelimEscape "\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
