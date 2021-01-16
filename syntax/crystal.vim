@@ -258,7 +258,7 @@ syn match crystalControl        "\<\%(break\|next\|rescue\|return\)\>[?!]\@!"
 syn match crystalKeyword        "\<\%(super\|previous_def\|yield\|of\|with\|uninitialized\|union\)\>[?!]\@!"
 syn match crystalBoolean        "\<\%(true\|false\)\>[?!]\@!"
 syn match crystalPseudoVariable "\<\%(nil\|__DIR__\|__FILE__\|__LINE__\|__END_LINE__\)\>[?!]\@!" " TODO: reorganise
-syn match crystalPseudoVariable "\<self\>"
+syn match crystalPseudoVariable "\<self\>[?!]\@!"
 
 " Expensive Mode - match 'end' with the appropriate opening keyword for syntax
 " based folding and special highlighting of module/class/method definitions
