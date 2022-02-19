@@ -131,6 +131,7 @@ Omni completion for crystal can be used by `<C-x><C-o>`.  (Please see `:help ins
 Currently you can complete only variable names. If you want more advanced completion, please
 consider to use a language server like [crystalline](https://github.com/elbywan/crystalline).
 
+If you want to disable this feature, set `0` to `g:crystal_enable_completion`.
 
 ## Maintainers
 
