@@ -136,7 +136,6 @@ If you want to disable this feature, set `0` to `g:crystal_enable_completion`.
 ## Maintainers
 
 - [@rhysd](https://github.com/rhysd) (author, maintainer)
-- [@jlcrochet](https://github.com/jlcrochet) (maintainer)
 
 ## License
 
